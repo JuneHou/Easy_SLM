@@ -1,0 +1,33 @@
+# Test prompts for SLM Prompting Tool
+
+Use these in the app to try Decompose with effGen and Send (effGen chat).
+
+effGen decomposition does not require a long prompt. For multiple steps, the prompt should be structured so the engine can split it: use "and" to list parts, use numbered items (1. 2. 3.), or include both research/gather and summarize/synthesis wording. Very short single sentences often become one step.
+
+---
+
+## 1. Decomposition (paste into Prompt Plan instructions, then click "Decompose with effGen")
+
+Longer example (explain + compare + list → multiple subtasks, no web search):
+
+Summarize the key concepts of object-oriented programming and compare classes with interfaces. Then list three best practices for writing clean code and suggest when to use inheritance vs composition.
+
+Shorter structured example (uses "and" so it splits into steps, no web search):
+
+Define recursion and give a simple example. Then explain when to use it and when to avoid it and suggest an alternative for deep nesting.
+
+Long example with websearch
+
+Research the latest Python release and summarize the new features. Then compare it with the previous version and list breaking changes. Finally suggest whether our team should upgrade.
+
+---
+
+## 2. Chat (type in the composer and click Send)
+
+What is 15% tip on a $42.50 bill? Reply in one short sentence.
+
+---
+
+## 3. Optional: multi-step goal for Goal Wizard
+
+Explain a lab procedure as a checklist for a rural clinic assistant. Use simple language and avoid jargon.
