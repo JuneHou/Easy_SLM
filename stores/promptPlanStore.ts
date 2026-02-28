@@ -3,12 +3,28 @@ import type { PromptPlan, VariantId } from "@/types/prompt.types";
 import type { IntentSpec } from "@/types/intent.types";
 import { compilePrompt, generateVariants } from "@/lib/promptCompiler";
 
+export interface DecompositionSubtask {
+  id: string;
+  description: string;
+  expected_output?: string;
+  depends_on?: string[];
+  estimated_complexity?: number;
+  required_specialization?: string;
+}
+
+export interface DecompositionDetails {
+  subtasks: DecompositionSubtask[];
+  routing_meta: { strategy?: string; reasoning?: string; num_subtasks?: number };
+}
+
 interface PromptPlanState {
   plan: PromptPlan;
   variants: { A: PromptPlan; B: PromptPlan; C: PromptPlan } | null;
+  decompositionDetails: DecompositionDetails | null;
   setPlan: (plan: Partial<PromptPlan>) => void;
   setSteps: (steps: string[]) => void;
   setSchemaHint: (hint: string) => void;
+  setDecompositionDetails: (details: DecompositionDetails | null) => void;
   recompile: (intent: IntentSpec) => void;
   generateVariantsForCompare: (intent: IntentSpec) => void;
   pickBest: (variantId: VariantId) => void;
@@ -18,6 +34,7 @@ interface PromptPlanState {
 export const usePromptPlanStore = create<PromptPlanState>((set, get) => ({
   plan: { steps: [], compiledPrompt: "" },
   variants: null,
+  decompositionDetails: null,
   setPlan: (partial) =>
     set((s) => ({
       plan: { ...s.plan, ...partial },
@@ -30,6 +47,8 @@ export const usePromptPlanStore = create<PromptPlanState>((set, get) => ({
     set((s) => ({
       plan: { ...s.plan, schemaHint },
     })),
+  setDecompositionDetails: (decompositionDetails) =>
+    set({ decompositionDetails }),
   recompile: (intent) =>
     set((s) => ({
       plan: {

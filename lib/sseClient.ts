@@ -4,9 +4,18 @@ export interface StreamCallbacks {
   onError?: (err: Error) => void;
 }
 
+export interface ChatRequestBody {
+  messages: { role: string; content: string }[];
+  model?: string;
+  intent?: unknown;
+  promptPlan?: unknown;
+  modelConfig?: unknown;
+  reuseLoadedModel?: boolean;
+}
+
 export async function streamChat(
   url: string,
-  body: { messages: { role: string; content: string }[]; model?: string },
+  body: ChatRequestBody,
   callbacks: StreamCallbacks
 ): Promise<void> {
   const controller = new AbortController();

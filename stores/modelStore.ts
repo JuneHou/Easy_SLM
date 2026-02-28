@@ -4,8 +4,8 @@ import { getShortlist, getModelById } from "@/lib/modelCatalog";
 
 const defaultProfile: ModelProfile = {
   provider: "local",
-  modelName: "llama3.2:3b",
-  deviceTier: "cpu",
+  modelName: "Qwen/Qwen2.5-3B-Instruct",
+  deviceTier: "gpu",
   params: {
     temperature: 0.7,
     topP: 0.9,
@@ -25,8 +25,8 @@ interface ModelState {
 
 export const useModelStore = create<ModelState>((set, get) => ({
   profile: defaultProfile,
-  deviceTier: "cpu",
-  shortlist: getShortlist("cpu"),
+  deviceTier: "gpu",
+  shortlist: getShortlist("gpu"),
   setDeviceTier: (deviceTier) =>
     set({
       deviceTier,

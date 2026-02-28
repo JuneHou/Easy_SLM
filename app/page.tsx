@@ -10,6 +10,35 @@ import { ComposerBar } from "@/components/ComposerBar";
 import { RightInspector } from "@/components/RightInspector";
 import { CompareDrawer } from "@/components/CompareDrawer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useChatStore } from "@/stores/chatStore";
+import { useModelStore } from "@/stores/modelStore";
+import { Button } from "@/components/ui/button";
+
+function SessionHistoryPanel() {
+  const { messages, clearMessages } = useChatStore();
+  const { profile } = useModelStore();
+  const handleClear = () => {
+    clearMessages();
+    fetch("/api/effgen/clear-memory", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model: profile.modelName }),
+    }).catch(() => {});
+  };
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-muted-foreground">
+        Chat history is saved in this browser. Refresh the page to keep your conversation.
+      </p>
+      <p className="text-xs text-muted-foreground">
+        {messages.length} message{messages.length !== 1 ? "s" : ""} in this conversation.
+      </p>
+      <Button variant="outline" size="sm" onClick={handleClear}>
+        Clear chat history
+      </Button>
+    </div>
+  );
+}
 
 export default function Home() {
   const [sidebarSection, setSidebarSection] = useState<SidebarSection | null>(null);
@@ -48,7 +77,7 @@ export default function Home() {
                   <PromptPlanEditor onOpenGoalWizard={() => setGoalWizardOpen(true)} />
                 )}
                 {sidebarSection === "history" && (
-                  <p className="text-sm text-muted-foreground">Session history (demo: use Run store to list runs).</p>
+                  <SessionHistoryPanel />
                 )}
                 {sidebarSection === "settings" && (
                   <p className="text-sm text-muted-foreground">Settings (theme, API endpoint, etc.).</p>

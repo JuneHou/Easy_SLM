@@ -6,14 +6,33 @@ const defaultParams: ModelParams = {
   maxTokens: 1024,
 };
 
+// effGen uses Hugging Face model IDs (e.g. Qwen/Qwen2.5-3B-Instruct). Ollama-style names (llama3.2:3b) are not valid for HF.
 export const modelCatalog: ModelCatalogEntry[] = [
+  {
+    id: "hf-qwen-1.5b",
+    provider: "local",
+    modelName: "Qwen/Qwen2.5-1.5B-Instruct",
+    deviceTier: "cpu",
+    tags: ["Fast", "Low Memory"],
+    whyRecommended: "Works with effGen. Small, runs on CPU.",
+    defaultParams: { ...defaultParams, maxTokens: 512 },
+  },
+  {
+    id: "hf-qwen-3b",
+    provider: "local",
+    modelName: "Qwen/Qwen2.5-3B-Instruct",
+    deviceTier: "gpu",
+    tags: ["Better Instructions", "Fast"],
+    whyRecommended: "Default for effGen. Good balance of speed and quality.",
+    defaultParams,
+  },
   {
     id: "ollama-llama3.2",
     provider: "local",
     modelName: "llama3.2:3b",
     deviceTier: "cpu",
     tags: ["Fast", "Low Memory"],
-    whyRecommended: "Runs well on CPU and responds quickly for short tasks.",
+    whyRecommended: "Ollama only (not effGen). Runs well on CPU.",
     defaultParams: { ...defaultParams, maxTokens: 512 },
   },
   {

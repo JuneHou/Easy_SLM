@@ -11,16 +11,66 @@ A single-page web app that helps users without domain knowledge use small/local 
 
 - **Frontend:** Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, Zustand, Lucide React
 - **Backend (demo):** Next.js Route Handlers, REST + SSE for streaming
-- **Storage:** Local-only (in-memory / can be extended to IndexedDB or localStorage)
+- **Storage:** Chat history persisted in localStorage; intent/prompt/model state is in-memory
 
 ## Getting Started
+
+### 1. Install and run the web app
+
+**Node.js 18 or newer is required** (Next 14 and the app use features that need Node 18+). Your current shell may be using an older Node (e.g. conda env `causal` often has Node 12). Check with `node -v`; you must see v18.x or v20.x before running `npm install`.
+
+- **nvm:** `nvm install 18` then `nvm use 18`, or in this project run `nvm use` (see `.nvmrc`).
+- **Conda:** use an env with Node 18+, e.g. `conda create -n slm nodejs=20 -c conda-forge` then `conda activate slm`.
+- **System:** install Node 20 LTS from [nodejs.org](https://nodejs.org/).
+
+If you run `npm install` with Node &lt; 18, install will fail (engine-strict). Fix the Node version first, then `rm -rf node_modules package-lock.json` and run `npm install` again.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). If you get `next: not found`, run `npm install` in the project root so the local Next.js (in `node_modules`) is used.
+
+### 2. (Optional) effGen backend for chat and decomposition
+
+Chat and **Decompose with effGen** are powered by [effGen](https://github.com/ctrl-gaurav/effGen). To use them:
+
+1. Clone and run effGen locally (e.g. port 8000). Use a **virtual environment or conda env** so installs go into the env instead of system Python (avoiding permission errors).
+
+   **Option A – Conda (e.g. env at `/home/jun/Workspace/envs/causal`):**
+
+   ```bash
+   conda activate /home/jun/Workspace/envs/causal
+   cd /path/to/effGen
+   which python   # should show .../envs/causal/bin/python
+   python -m pip install -e .
+   effgen serve --port 8000
+   ```
+
+   Use `python -m pip install -e .` (not plain `pip install -e .`) so the install definitely uses the active env’s Python and installs into that env.
+
+   **Option B – venv:**
+
+   ```bash
+   cd /path/to/effGen
+   python3 -m venv venv
+   source venv/bin/activate   # Windows: venv\Scripts\activate
+   pip install -e .
+   effgen serve --port 8000
+   ```
+
+   **Option C – no env:** `pip install -e . --user` (installs into your user site-packages).
+
+2. Point the app at the effGen API. Copy `.env.example` to `.env.local` and set:
+
+   ```bash
+   EFFGEN_BASE_URL=http://localhost:8000
+   ```
+
+   If unset, the app defaults to `http://localhost:8000`.
+
+Without effGen, **Send** and **Decompose with effGen** will return connection errors until the server is running.
 
 ## Interface Guide
 
@@ -49,7 +99,7 @@ The collapsible sidebar provides access to different sections:
 - **🎯 Goal Wizard** - Opens the Goal Wizard interface in the left column
 - **📋 Template Gallery** - Displays pre-built prompt templates
 - **📖 Examples** - Shows demo use cases
-- **🕐 Session History** - View past conversations (demo placeholder)
+- **🕐 Session History** - Chat is saved in the browser (localStorage). View message count and clear history.
 - **⚙️ Settings** - Application settings (demo placeholder)
 
 ---
@@ -108,7 +158,8 @@ A two-step wizard that helps you define your intent:
 - Placeholder: "Enter or edit steps..."
 
 **Action Buttons:**
-- **Break into steps Button** - Automatically breaks your text into individual steps
+- **Decompose with effGen Button** (primary) - Sends the current prompt text to effGen, which returns subtasks; the Steps list is replaced by the decomposed steps and "Decomposition details" shows strategy and subtask info. Requires effGen server.
+- **Break into steps Button** - Local fallback: automatically breaks your text into steps (no server).
 - **Add step Button** - Adds the current textarea content as a new step
 
 **Steps List:**
@@ -121,6 +172,10 @@ Each step in the list has three action buttons:
 - Click to expand/collapse
 - Shows the compiled prompt that will be sent to the model
 - Displays "Broken into steps" section when steps exist
+
+**Decomposition details (Accordion):**
+- Appears after using **Decompose with effGen**
+- Shows strategy, number of subtasks, and each subtask’s description and expected output
 
 ---
 
@@ -156,8 +211,8 @@ Access via **📋 Template Gallery** in the sidebar.
 - Disabled while streaming
 
 **Send Button:**
-- Sends your message to the model
-- Uses current intent and prompt plan as context
+- Sends your message to the effGen backend (POST /api/chat → effGen `/run`)
+- Request includes current intent, prompt plan, and model config; response is streamed as SSE
 - Disabled when input is empty or while streaming
 - Shows a message icon
 
@@ -188,6 +243,9 @@ Opens automatically when you click **Generate variants (A/B/C)**.
 - Displays recommended models based on your intent
 - Shows model information and suitability
 
+#### **effGen (Reuse loaded model)**
+- **Reuse loaded model** (default on): While the selected model in the recommendation panel does not change, effGen keeps the model in memory and does not reload it for each message. This avoids reload delays and keeps conversation flow. Turn off to force a full model reload on every Send.
+
 #### **Simple Controls**
 - Basic model and parameter controls
 - Easy-to-use sliders and inputs
@@ -214,11 +272,14 @@ Opens automatically when you click **Generate variants (A/B/C)**.
 
 ```
 slm-prompting-tool/
+├── test-prompts.txt          # Sample prompts for decomposition and chat
 ├── app/
 │   ├── page.tsx              # Main page layout
 │   ├── layout.tsx             # Theme provider + shell
 │   ├── globals.css            # Design tokens (dark/light)
-│   └── api/chat/route.ts     # POST → SSE stream (mock or Ollama-compatible)
+│   └── api/
+│       ├── chat/route.ts           # POST → proxy to effGen /run, SSE stream
+│       └── effgen/decompose/route.ts # POST → proxy to effGen /decompose
 ├── components/
 │   ├── SidebarNav.tsx         # Left navigation sidebar
 │   ├── GoalWizardModal.tsx    # Goal definition wizard
@@ -275,7 +336,32 @@ slm-prompting-tool/
 
 ## API
 
-- **POST /api/chat** — Body: `{ messages: [{ role, content }], model? }`. Responds with SSE stream (`data: {"text":"..."}` then `data: [DONE]`). Replace the mock in `app/api/chat/route.ts` with an Ollama-compatible or OpenAI adapter for real SLM calls.
+- **POST /api/chat** — Body: `{ messages, intent?, promptPlan?, modelConfig? }`. Proxies to effGen `POST /run` with task (last user message), system_prompt (from intent + prompt plan), model, temperature. Returns SSE stream (`data: {"text":"..."}` then `data: [DONE]`). Requires `EFFGEN_BASE_URL` pointing at a running effGen server.
+- **POST /api/effgen/decompose** — Body: `{ intent?, current_prompt_text }`. Proxies to effGen `POST /decompose`. Returns `{ subtasks, wrapped_prompts, routing_meta }` for the Prompt Plan Editor.
+
+---
+
+## Test prompt
+
+Sample prompts are also in **`test-prompts.txt`** in the project root. Use the steps below to try **Decompose with effGen** and **Send**.
+
+**Decompose with effGen:** The prompt does not need to be long. For multiple steps, structure it so effGen can split it: use **"and"** to list parts (e.g. "Do A and B and C"), use **numbered items** (1. 2. 3.), or include both research/gather and summarize/synthesis wording. A single short sentence often becomes one step.
+
+1. In the Prompt Plan Editor, paste the text below into the instructions textarea.
+2. Click **Decompose with effGen** (with effGen running). The steps list should fill with decomposed subtasks; open "Decomposition details" to see the full breakdown.
+3. In the composer, type the second prompt and click **Send** to get a streamed reply from effGen.
+
+**Prompt for decomposition (paste into Prompt Plan; no web search needed):**
+
+```
+Summarize the key concepts of object-oriented programming and compare classes with interfaces. Then list three best practices for writing clean code and suggest when to use inheritance vs composition.
+```
+
+**Prompt for chat (type in composer):**
+
+```
+What is 15% tip on a $42.50 bill? Reply in one short sentence.
+```
 
 ---
 
@@ -296,9 +382,9 @@ slm-prompting-tool/
 
 ✅ **Goal Wizard** - Guided intent definition  
 ✅ **Template Gallery** - Pre-built prompt templates  
-✅ **Prompt Plan Editor** - Step-by-step prompt construction  
+✅ **Prompt Plan Editor** - Step-by-step prompt construction; **Decompose with effGen** (DG2)  
 ✅ **Variant Generation** - Compare multiple prompt versions  
-✅ **Real-time Chat** - Stream responses from SLMs  
+✅ **Real-time Chat** - Stream responses via effGen `/run` (Phase 1)  
 ✅ **Model Recommendations** - Context-aware model suggestions  
 ✅ **Progressive Disclosure** - Advanced options hidden by default  
 ✅ **Dark/Light Theme** - Theme support (via layout)
@@ -308,7 +394,6 @@ slm-prompting-tool/
 ## Contributing
 
 This is a demo project. Feel free to extend it with:
-- Backend integration for real SLM APIs
 - Persistent storage (IndexedDB/localStorage)
 - Session history functionality
 - Model benchmarking
