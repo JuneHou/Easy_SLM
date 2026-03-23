@@ -1,144 +1,137 @@
-# Work Log: effGen Integration & Interface Updates
+# Work Log: effGen + LLM Comparative Interface Updates
 
-Summary of features added with effGen and functionality/interface updates in the SLM Prompting Tool (Easy_SLM) during this integration work.
-
----
-
-## 1. effGen Backend Changes
-
-### 1.1 Phase 1 — Chat (POST /run)
-- **Extended request body:** `TaskRequest` now accepts optional `system_prompt`. The app sends intent + compiled prompt plan as system context.
-- **Behavior:** Each request can pass a different system prompt; when model is cached, the first request’s system prompt is kept for that cached agent.
-
-### 1.2 Phase 2 — Decomposition (POST /decompose)
-- **New endpoint:** `POST /decompose`
-- **Request:** `{ "intent": {...}, "current_prompt_text": "..." }`
-- **Response:** `{ "subtasks", "wrapped_prompts", "routing_meta" }`
-- **Implementation:** Uses `DecompositionEngine` in rule-based mode (no LLM). Splits by “and”, numbered items, or research/synthesis keywords.
-
-### 1.3 Model Caching (Reuse Loaded Model)
-- **Agent cache:** `app.state.agent_cache` keyed by model id. When the same model is requested and `force_reload` is false, the cached agent is reused (no reload).
-- **New request field:** `force_reload: Optional[bool] = False`. When true, a new agent is created and not taken from cache.
-- **Cache rules:**  
-  - Only cache an agent if `agent.model` is not `None` (do not cache after a failed load).  
-  - When reusing, if the cached agent has no model, remove it from cache and create a new agent.
-
-### 1.4 Async Tools + uvloop
-- **Issue:** Under FastAPI/uvicorn (uvloop), `nest_asyncio.apply()` raised `ValueError: Can't patch loop of type uvloop.Loop`.
-- **Change:** Catch `(ImportError, ValueError)` and fall back to running the async tool in a `ThreadPoolExecutor` with `asyncio.run()` in a separate thread. Tool timeout in fallback increased to 60s.
-
-### 1.5 8-bit Quantization + GPU Memory
-- **Issue:** 8-bit load could fail with “Some modules are dispatched on the CPU or the disk” when GPU RAM was tight.
-- **Changes in `transformers_engine.py`:**  
-  - For 8-bit: set `llm_int8_enable_fp32_cpu_offload=True` in `BitsAndBytesConfig`.  
-  - When a quantization config is used, always pass `device_map` into `from_pretrained` so CPU offload can be used.
-
-### 1.6 Clear Memory (POST /clear_memory)
-- **New endpoint:** `POST /clear_memory`
-- **Request:** `{ "model": "<model_id>" }` or `{}`
-- **Behavior:** Calls `reset_memory()` on the cached agent(s) for the given model (or all cached agents if no model). Clears short-term conversation memory so the next `/run` has no prior turns.
-- **Response:** `{ "cleared": true, "model": "..." }` or `{ "cleared": true, "models": [...] }`
+Current status of integration and UI behavior in `Easy_SLM`, including both SLM (effGen) and closed-source LLM paths.
 
 ---
 
-## 2. Easy_SLM (Next.js) Backend & API
+## 1. effGen Backend Changes (completed)
 
-### 2.1 Chat Proxy (Phase 1)
-- **Route:** `POST /api/chat`
-- **Body:** `{ messages, intent?, promptPlan?, modelConfig?, reuseLoadedModel? }`
-- **Behavior:** Builds `task` (last user message) and `system_prompt` from intent + prompt plan. Proxies to `EFFGEN_BASE_URL/run` with `task`, `model`, `system_prompt`, `temperature`, `max_iterations`, `force_reload: !reuseLoadedModel`. Returns response as SSE stream (`data: {"text": output}` then `data: [DONE]`).
-- **Config:** `EFFGEN_BASE_URL` from env (default `http://localhost:8000`).
+### 1.1 Chat (`POST /run`)
+- Added optional `system_prompt` in request body.
+- Easy_SLM passes compiled scaffolding prompt (intent + prompt plan) when in SLM mode.
 
-### 2.2 Decompose Proxy (Phase 2)
-- **Route:** `POST /api/effgen/decompose`
-- **Body:** `{ intent?, current_prompt_text }`
-- **Behavior:** Proxies to effGen `POST /decompose`, returns `{ subtasks, wrapped_prompts, routing_meta }`.
+### 1.2 Decomposition (`POST /decompose`)
+- Added endpoint to return `{ subtasks, wrapped_prompts, routing_meta }`.
+- Uses rule-based decomposition engine (no external LLM required).
 
-### 2.3 Clear Memory Proxy
-- **Route:** `POST /api/effgen/clear-memory`
-- **Body:** `{ model?: string }`
-- **Behavior:** Proxies to effGen `POST /clear_memory` so the cached agent’s conversation memory is cleared.
+### 1.3 Model Reuse Cache
+- Added in-memory `agent_cache` keyed by model.
+- Added `force_reload` field (Easy_SLM sends this from reuse toggle).
+- Cache guardrails:
+  - cache only successful model loads (`agent.model` exists),
+  - drop invalid cached agent and recreate when needed.
 
----
+### 1.4 Async Runtime / uvloop Fix
+- Added uvloop-safe fallback for async tool execution (thread + `asyncio.run`), avoiding `nest_asyncio` failure under uvicorn/uvloop.
 
-## 3. Easy_SLM Interface & Frontend
+### 1.5 Quantization Reliability
+- Improved 8-bit loading with CPU offload (`llm_int8_enable_fp32_cpu_offload=True`) and proper `device_map` usage.
 
-### 3.1 Composer (Send + effGen)
-- **ComposerBar:** Sends to `/api/chat` with `messages`, `intent`, `promptPlan`, `modelConfig`, and `reuseLoadedModel` from stores.
-- **SSE:** Unchanged contract; backend converts effGen JSON response into SSE chunks.
-
-### 3.2 Prompt Plan Editor (Decompose with effGen)
-- **New primary action:** “Decompose with effGen” button. Calls `/api/effgen/decompose` with current intent and prompt text (textarea or steps).
-- **Behavior:** Replaces the Steps list with `wrapped_prompts`; stores `subtasks` and `routing_meta` for the accordion; recompiles prompt.
-- **“Decomposition details” accordion:** Shows when decomposition has been run: strategy, number of subtasks, and each subtask’s description and expected output.
-- **Fallback:** “Break into steps” remains as local, non-effGen option.
-
-### 3.3 Model Selection (effGen-Compatible)
-- **Model catalog:** Default and first options use Hugging Face model ids (e.g. `Qwen/Qwen2.5-1.5B-Instruct`, `Qwen/Qwen2.5-3B-Instruct`) so effGen Transformers backend can load them. Ollama-style names (e.g. `llama3.2:3b`) kept with note “Ollama only (not effGen)”.
-- **Default profile:** `modelName: "Qwen/Qwen2.5-3B-Instruct"`, `deviceTier: "gpu"` so the app works with effGen out of the box.
-
-### 3.4 Chat History Persistence
-- **Chat store:** Zustand `persist` middleware; key `easy-slm-chat`; only `messages` persisted to localStorage.
-- **Result:** Conversations survive refresh and new tabs (same origin).
-
-### 3.5 Session History Panel
-- **Content:** Short note that chat is saved in the browser; message count for current conversation; “Clear chat history” button.
-- **Clear:** Clears local chat store and calls `POST /api/effgen/clear-memory` with current model so backend memory is cleared too.
-
-### 3.6 Reuse Loaded Model (Setting)
-- **Store:** `settingsStore` with `reuseLoadedModel: boolean` (default `true`), persisted as `easy-slm-settings`.
-- **UI:** Right panel “effGen” card with checkbox “Reuse loaded model” and short description (reuse vs force reload).
-- **Flow:** When on, `/api/chat` sends `force_reload: false` so effGen reuses the cached agent; when off, sends `force_reload: true`.
-
-### 3.7 Clear Chat Button (by Message Input)
-- **Placement:** Next to Send (trash icon below Send) in ComposerBar.
-- **Action:** Clears chat store (UI + persisted history) and calls `POST /api/effgen/clear-memory` with current model. Tooltip: “Clear chat and backend memory”.
-- **Disabled:** While streaming.
+### 1.6 Memory Reset (`POST /clear_memory`)
+- Added endpoint to clear conversation memory per model (or all models).
 
 ---
 
-## 4. Stores & Types (Easy_SLM)
+## 2. Easy_SLM API (Next.js) Current Behavior
 
-### 4.1 promptPlanStore
-- **New state:** `decompositionDetails: DecompositionDetails | null` and `setDecompositionDetails`.
-- **Types exported:** `DecompositionDetails`, `DecompositionSubtask` (for subtasks and routing_meta).
+### 2.1 Unified Chat Route
+- Route: `POST /api/chat`
+- Request now supports:
+  - `provider?: "effgen" | "openai" | "anthropic"`
+  - `messages`, `intent`, `promptPlan`, `modelConfig`, `reuseLoadedModel`
 
-### 4.2 settingsStore (new)
-- **State:** `reuseLoadedModel: boolean`, `setReuseLoadedModel`.
-- **Persistence:** `easy-slm-settings` in localStorage.
+### 2.2 Provider Routing
+- `provider === "effgen"`:
+  - proxy to effGen `/run` with `task`, `system_prompt`, `model`, `temperature`, `force_reload`
+- `provider === "openai"`:
+  - server-side call to OpenAI Chat Completions (streaming)
+- `provider === "anthropic"`:
+  - server-side call to Anthropic Messages API (streaming)
 
-### 4.3 sseClient
-- **Body type:** `ChatRequestBody` extended with `reuseLoadedModel?: boolean`.
+### 2.3 SSE Contract (unchanged to frontend)
+- All providers emit normalized SSE:
+  - `data: {"text":"..."}`
+  - `data: [DONE]`
 
----
-
-## 5. Config, Docs & Test Data
-
-### 5.1 Environment & Node
-- **.env.example:** `EFFGEN_BASE_URL=http://localhost:8000`.
-- **.nvmrc:** `18`.
-- **.npmrc:** `engine-strict=true` so install fails fast on Node &lt; 18.
-- **package.json:** `engines: { "node": ">=18.0.0" }`; scripts use `next` (no npx) so local install is used after `npm install`.
-
-### 5.2 README
-- **Getting started:** Node 18+ requirement; effGen setup (venv/conda, `effgen serve`, `EFFGEN_BASE_URL`).
-- **Interface:** Documented “Decompose with effGen”, “Decomposition details” accordion, Send → effGen `/run`, Session History (persistence + clear), effGen “Reuse loaded model” setting.
-- **API:** Documented `POST /api/chat`, `POST /api/effgen/decompose`, and proxy behavior.
-- **Test prompt:** Example prompts that do not require web search (OOP, recursion); reference to `test-prompts.txt`.
-
-### 5.3 test-prompts.txt
-- **Decomposition (long):** OOP summary, classes vs interfaces, three clean-code practices, inheritance vs composition (no web search).
-- **Decomposition (short):** Recursion definition, example, when to use/avoid, alternative for deep nesting (no web search).
-- **Chat:** e.g. 15% tip on a bill.
-- **Note:** Clarified that effGen decomposition does not require long prompts; structure (“and”, numbered items, or research/synthesis wording) matters for multiple steps.
+### 2.4 effGen Support Routes
+- `POST /api/effgen/decompose` → effGen `/decompose`
+- `POST /api/effgen/clear-memory` → effGen `/clear_memory`
 
 ---
 
-## 6. Summary Table
+## 3. UI / UX Current State
 
-| Area | Addition / update |
-|------|-------------------|
-| **effGen** | `system_prompt` on `/run`; new `/decompose` and `/clear_memory`; agent cache + `force_reload`; only cache successful loads; uvloop-safe async tool execution; 8-bit CPU offload + device_map. |
-| **Easy_SLM API** | `/api/chat` → effGen `/run` (SSE); `/api/effgen/decompose`; `/api/effgen/clear-memory`. |
-| **Easy_SLM UI** | Decompose with effGen + Decomposition details; Reuse loaded model setting; chat persistence; Session History with clear; Clear (trash) by composer; model catalog defaults for effGen. |
-| **Easy_SLM state** | Chat persist; `decompositionDetails` in prompt plan; new `settingsStore`; Composer and Session History clear both UI and backend memory. |
+### 3.1 Sidebar Mode Tabs
+- Left sidebar now has **SLM** / **LLM** tabs.
+- SLM tab maps to `chatProvider = "effgen"`.
+- LLM tab maps to LLM provider mode (`openai` default unless user switched to `anthropic` in right panel).
+
+### 3.2 Right Panel
+- **SLM mode:** shows model recommendation panel + effGen card (`Reuse loaded model`) + controls.
+- **LLM mode:** shows new LLM model selector:
+  - provider sub-choice: OpenAI / Anthropic
+  - provider-specific model list
+  - same control area location as SLM mode.
+
+### 3.3 Left Middle Column Behavior (latest)
+- **SLM mode:** full behavior remains (Goal Wizard / Prompt Plan / Template Gallery / Examples / History / Settings).
+- **LLM mode (requested behavior):**
+  - left column is hidden for Goal Wizard and Template Gallery,
+  - left column still appears for:
+    - `Session History`
+    - `Examples` (currently placeholder: `TODO: Design LLM-specific examples`).
+
+### 3.4 Composer + Clear
+- Composer sends `provider` with chat request.
+- Clear chat:
+  - always clears local persisted messages,
+  - calls effGen clear-memory **only when provider is effgen**.
+
+### 3.5 Chat Persistence
+- Chat messages persist in browser (`easy-slm-chat`) via Zustand persist middleware.
+
+---
+
+## 4. Stores / Types Updated
+
+### 4.1 `settingsStore`
+- Existing:
+  - `reuseLoadedModel`
+- Added:
+  - `chatProvider: "effgen" | "openai" | "anthropic"`
+  - `setChatProvider(...)`
+- Persist key remains `easy-slm-settings`.
+
+### 4.2 `modelCatalog`
+- Kept effGen-compatible HF defaults.
+- Added LLM catalog entries for:
+  - OpenAI
+  - Anthropic
+- Added helper `getShortlistForChatProvider(...)`.
+
+### 4.3 `sseClient`
+- `ChatRequestBody` now includes optional `provider`.
+
+---
+
+## 5. Config / Environment
+
+- `.env.example` now includes:
+  - `EFFGEN_BASE_URL`
+  - commented placeholders for:
+    - `OPENAI_API_KEY`
+    - `ANTHROPIC_API_KEY`
+- Node 18+ remains required (`.nvmrc`, `engines`, `.npmrc` strict setting already configured).
+
+---
+
+## 6. Current Comparative-Study Readout
+
+| Area | Current state |
+|------|---------------|
+| **Provider switch** | Sidebar tabs: SLM vs LLM |
+| **SLM path** | effGen + prompt scaffolding + decomposition + model reuse |
+| **LLM path** | OpenAI/Anthropic via `/api/chat` with normalized SSE |
+| **Layout parity** | Chat and right panel locations unchanged across modes |
+| **LLM no-scaffolding policy** | Goal Wizard/Template hidden; LLM Examples + Session History still available |
+| **Memory clear** | effGen memory cleared only in SLM mode; LLM mode clears local chat only |

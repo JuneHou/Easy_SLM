@@ -9,9 +9,12 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  Cpu,
+  Cloud,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { useSettingsStore } from "@/stores/settingsStore";
 
 const items = [
   { id: "goal", label: "Goal Wizard", icon: Target },
@@ -30,6 +33,8 @@ interface SidebarNavProps {
 
 export function SidebarNav({ activeSection, onSectionChange }: SidebarNavProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const { chatProvider, setChatProvider } = useSettingsStore();
+  const isSlm = chatProvider === "effgen";
 
   return (
     <aside
@@ -51,6 +56,33 @@ export function SidebarNav({ activeSection, onSectionChange }: SidebarNavProps) 
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
       </div>
+      {/* SLM vs LLM tabs */}
+      {!collapsed && (
+        <div className="flex border-b border-border p-2 gap-1">
+          <button
+            type="button"
+            onClick={() => setChatProvider("effgen")}
+            className={cn(
+              "flex-1 flex items-center justify-center gap-1.5 rounded-md px-2 py-2 text-sm font-medium transition-colors",
+              isSlm ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"
+            )}
+          >
+            <Cpu className="h-4 w-4 shrink-0" />
+            SLM
+          </button>
+          <button
+            type="button"
+            onClick={() => setChatProvider(isSlm ? "openai" : chatProvider)}
+            className={cn(
+              "flex-1 flex items-center justify-center gap-1.5 rounded-md px-2 py-2 text-sm font-medium transition-colors",
+              !isSlm ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"
+            )}
+          >
+            <Cloud className="h-4 w-4 shrink-0" />
+            LLM
+          </button>
+        </div>
+      )}
       <nav className="flex-1 space-y-0.5 p-2">
         {items.map(({ id, label, icon: Icon }) => (
           <button

@@ -11,6 +11,8 @@ export interface ChatRequestBody {
   promptPlan?: unknown;
   modelConfig?: unknown;
   reuseLoadedModel?: boolean;
+  /** Backend: effgen | openai | anthropic. Default effgen. */
+  provider?: "effgen" | "openai" | "anthropic";
 }
 
 export async function streamChat(

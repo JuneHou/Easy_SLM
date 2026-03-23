@@ -16,18 +16,20 @@ export function ComposerBar() {
   const { spec } = useIntentStore();
   const { plan } = usePromptPlanStore();
   const { profile } = useModelStore();
-  const { reuseLoadedModel } = useSettingsStore();
+  const { chatProvider, reuseLoadedModel } = useSettingsStore();
   const { addMessage, appendStreaming, commitStreaming, clearStreaming, clearMessages } = useChatStore();
 
   const systemContent = plan.compiledPrompt || `Goal: ${spec.goalText || "No goal"}. Output format: ${spec.outputFormat}.`;
 
   const handleClearChat = () => {
     clearMessages();
-    fetch("/api/effgen/clear-memory", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: profile.modelName }),
-    }).catch(() => {});
+    if (chatProvider === "effgen") {
+      fetch("/api/effgen/clear-memory", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model: profile.modelName }),
+      }).catch(() => {});
+    }
   };
 
   const handleSend = async () => {
@@ -52,6 +54,7 @@ export function ComposerBar() {
         promptPlan: plan,
         modelConfig: profile,
         reuseLoadedModel,
+        provider: chatProvider,
       },
       {
         onChunk: (chunk) => appendStreaming(chunk),
