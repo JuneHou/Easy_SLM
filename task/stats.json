@@ -1,0 +1,25 @@
+{
+  "total_records": 1149,
+  "by_month": {
+    "2025-03": 516,
+    "2025-04": 463,
+    "2025-05": 170
+  },
+  "by_stream": {
+    "large_general": 234,
+    "small_local": 915
+  },
+  "by_label": {
+    "small_local": 915,
+    "large_general": 234
+  },
+  "stream_names": {
+    "small_local": "Small / Local LLM Use",
+    "large_general": "Large / General LLM Use",
+    "unclassified": "Unclassified"
+  },
+  "query_counts": {
+    "stream1_queries": 12,
+    "stream2_queries": 12
+  }
+}

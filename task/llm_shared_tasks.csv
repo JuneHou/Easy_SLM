@@ -1,0 +1,1469 @@
+manual_label,manual_notes,id,kind,subreddit,date,stream,title,body,url,score,task_canonical,task_raw,theme,subtheme,evidence,annotation_notes
+,,mfdtzlp,comment,LocalLLaMA,2025-03-01,small_local,,"I've not tried this new model yet, but the experimental Gemini 2.0 does speech better than Deepgram.  You don't get transcripts though.  I'm currently using both AssemblyAI and Deepgram and feeding both transcripts into the LLM and tell it to combine them.   Helps with the ever present transcription errors.
+
+If you are not already using it, try the newer nova-3 on Deepgram.  It works better for my use case.",https://reddit.com/r/LocalLLaMA/comments/1j0n56h/finally_a_realtime_lowlatency_voice_chat_model/mfdtzlp/,1,scripting,combine transcripts,Information Search,Summarize,tell it to combine them,Combining transcripts to reduce errors.
+,,1j1m4ep,submission,LocalLLM,2025-03-02,small_local,14b models too dumb for summarization,"Hey, I have been trying to setup a Workflow for my coding progressing tracking. My plan was to extract transcripts off youtube coding tutorials and turn it into an organized checklist along with relevant one line syntax or summaries. I opted for a local LLM to be able to feed large amounts of transcription texts with no restrictions, but the models are not proving useful and return irrelevant outputs. I am currently running it on a 16 gb ram system, any suggestions?",https://reddit.com/r/LocalLLM/comments/1j1m4ep/14b_models_too_dumb_for_summarization/,0,scripting,extract transcripts,Information Search,Search,extract transcripts off youtube coding tutorials|turn it into an organized checklist|relevant one line syntax or summaries,"User aims to extract, organize, and summarize tutorial content."
+,,mflmtqg,comment,selfhosted,2025-03-02,small_local,,"Not OP, but I've made a couple workflows already:
+
+1) Whenever I create or update a stack in Portainer, it feeds it to my local LLM, who updates or creates documentation in Obsidian, where I keep my second brain. Saves me the time and effort of writing it all myself, and more often than not I wouldn't have done it at all.
+
+2) I've integrated my Apple calendar and Trello, where I keep everything I need to get done. I have it look specifically at my home maintenance calendar, and if there's something I need to do in the next two weeks, it makes a Trello card and sends me a Telegram alert. I find it's a lot more consistent than relying on the built in notifications or reminders on my iPhone, and I look at Trello more than my calendar anyway.
+
+3) Auto sorts my incoming emails on my Gmail into Promotions (archive them), Taxes/Finance (put in a folder for me), and High Priority (write a response draft and notify me so I can approve it being sent).
+
+4) Right now I'm working on a flow that activates when I save a post on Reddit, and it will add it to my Hoarder instance automatically, since I check that more than my saves. Haven't finished this one yet.
+
+
+It's also a good playground where I can get familiar and then incorporate it into my job so I can save administrative time.",https://reddit.com/r/selfhosted/comments/1j14yc1/what_is_the_most_fun_new_app_youre_currently/mflmtqg/,5,creative writing,write response draft,Creation,Artifact,updates or creates documentation|makes a Trello card|sends me a Telegram alert|Auto sorts my incoming emails|write a response draft,Tasks involve automation and creation of artifacts.
+,,1j2tdtt,submission,LocalLLaMA,2025-03-03,small_local,"Build your own evals in minutes, including comparing to human preferences. Plus: Sonnet 3.7 Thinking fine-tuning &amp; eval. [KilnAI Guide]","I've just released an update of Kiln on Github which provides a powerful toolkit for evaluating AI models and tasks.
+
+* The [walkthrough vid](https://docs.getkiln.ai/docs/evaluations#video-walkthrough) shows the process from start to end
+* Our docs have [evaluation guide](https://docs.getkiln.ai/docs/evaluations) if you want to try it out yourself
+* Here's the \~[Github repo](https://github.com/Kiln-AI/Kiln)\~ with all of the source code
+
+The eval feature includes:
+
+* Multiple state of the art evaluation methods (G-Eval, LLM as Judge)
+* Synthetic data generation makes it easy to generaet hundreds or thousands of eval data samples in minutes.
+* Includes tooling to find the best evaluation method for your task. It finds the eval algo+model which best correlates to human preference (Kendall’s Tau, Spearman, MSE, etc).
+* Includes eval dashboard to find the highest quality method to run your task (prompt+model)
+* Fine-tunes: create then evaluate custom fine-tunes for your task
+* Intuitive UI for eval dataset management: create eval sets, manage golden sets, add human ratings, etc.
+* Automatic eval generation: it will examine your task definition, then automatically create an evaluator for you.
+* Supports custom evaluators: create evals for any score/goals/instructions you want.
+* Built in eval templates for common scenarios: toxicity, bias, jailbreaking, factual correctness, and maliciousness.
+* Synthetic data templates to generate adversarial datasets using uncensored and unaligned models like Dolphin/Grok. Weird use case where very inappropriate content has a very ethical use. The video has a demo of Dolphin trying to jailbreak the core model.
+
+**Bonus**: this release also includes the ability to distill Sonnet 3.7 Thinking into an open model you can run locally. I evaluate a few of these fine-tunes against foundation models, and they do quite well (at task-specific metrics).
+
+Kiln runs locally and we never have access to your dataset. If you use Ollama, data never lea",https://reddit.com/r/LocalLLaMA/comments/1j2tdtt/build_your_own_evals_in_minutes_including/,12,fine-tuning models,create custom fine-tunes,Creation,Artifact,generate hundreds or thousands of eval data samples|evaluating AI models and tasks|find the best evaluation method for your task|create then evaluate custom fine-tunes,"Tasks involve data generation, model evaluation, and fine-tuning creation."
+,,mfrej7a,comment,LocalLLaMA,2025-03-03,small_local,,"1) I would search around the internet for approaches to such task. Often there is a repo on github that tackles your specific problem.
+
+2) If not, since LLM accuracy seriously deteriorates after context of 2-4k tokens ([reddit post about it](https://www.reddit.com/r/LocalLLaMA/comments/1io3hn2/nolima_longcontext_evaluation_beyond_literal/)), I would chunk your document into parts to tackle them one by one. You can include summary of previous chunks into next one to keep the context and special terms. This should be an output instruction for LLM like ""When finishing chunk tranlsation, prepare summary of the document up to this point. Make sure to include list of specific terms"".
+
+3) We have built a short text (up to 2k tokens) translation product and 3-roles CoT works great. The prompt is like:  
+""""""  
+\- Generate translation normally  
+\- Imagine you are native speaker and review translation  
+\- Imagine you are industry expert and review translation  
+\- Imagine you are professional translator...  
+\- Generate final translation based on reviews  
+""""""
+
+You can utilise similar approach to translate chunks.
+
+4) ""recommendations on models"" - for non-English language you just have to chat and decide on model-language fit for yourself. Right now Gemini 2.0 Flash covers most of languages in our use case.",https://reddit.com/r/LocalLLaMA/comments/1j2f87b/approach_to_translate_english_to_non_english/mfrej7a/,14,summarization,summarize document chunks,Information Search,Summarize,prepare summary of the document up to this point|Generate translation normally,Tasks involve summarizing and translating text.
+,,mfrej7a,comment,LocalLLaMA,2025-03-03,small_local,,"1) I would search around the internet for approaches to such task. Often there is a repo on github that tackles your specific problem.
+
+2) If not, since LLM accuracy seriously deteriorates after context of 2-4k tokens ([reddit post about it](https://www.reddit.com/r/LocalLLaMA/comments/1io3hn2/nolima_longcontext_evaluation_beyond_literal/)), I would chunk your document into parts to tackle them one by one. You can include summary of previous chunks into next one to keep the context and special terms. This should be an output instruction for LLM like ""When finishing chunk tranlsation, prepare summary of the document up to this point. Make sure to include list of specific terms"".
+
+3) We have built a short text (up to 2k tokens) translation product and 3-roles CoT works great. The prompt is like:  
+""""""  
+\- Generate translation normally  
+\- Imagine you are native speaker and review translation  
+\- Imagine you are industry expert and review translation  
+\- Imagine you are professional translator...  
+\- Generate final translation based on reviews  
+""""""
+
+You can utilise similar approach to translate chunks.
+
+4) ""recommendations on models"" - for non-English language you just have to chat and decide on model-language fit for yourself. Right now Gemini 2.0 Flash covers most of languages in our use case.",https://reddit.com/r/LocalLLaMA/comments/1j2f87b/approach_to_translate_english_to_non_english/mfrej7a/,14,translation,generate translation,Creation,Artifact,prepare summary of the document up to this point|Generate translation normally,Tasks involve summarizing and translating text.
+,,mfreyo8,comment,LocalLLaMA,2025-03-03,small_local,,"One aspect I haven't seen others comment on is **effective context.** While many models claim 128k+ or even 1m+ context windows, effectively they are not this large for practical use cases like translation.
+
+My fav solution for working with long documents right now is the rolling window method. You break the input down into chunks of 100 lines for example, and then maintaining context by a prompt like this:
+
+    You are a professional translator tasked with translating English text into natural, fluent Japanese. Translate the following passage accurately while preserving its meaning and tone.
+    
+    {chunk 1, 2, .., n}  
+    
+    Please provide the translation below:
+
+If you'd like, you can even have overlap between the chunks (so first chunk is line 1-100, second is 90-190 etc.) to enable the LLM to continue the task smoothly. Another enhancement is to add the last input-output pair as an example:
+
+    You are a professional translator tasked with translating English text into natural, fluent Japanese. Below is the previous translation to provide context and continuity.
+    
+    Previous translation:
+    English: ""{last input}""
+    Japanese: ""{last output}""
+    
+    Now, continue translating the next passage:
+    
+    {chunk N}
+    
+    Please provide the translation below:",https://reddit.com/r/LocalLLaMA/comments/1j2f87b/approach_to_translate_english_to_non_english/mfreyo8/,9,translation,translate long documents,Creation,Artifact,"translating English text into natural, fluent Japanese",Uses a rolling window method for translation.
+,,1j2xzsj,submission,LocalLLaMA,2025-03-04,small_local,I used a 100-line LLM Framework to let AI Agents build Agents for me (Step-by-Step Video Tutorial),"I made a video tutorial on a personal hack that can let Cursor AI build complex LLM Agents and greatly improve my productivity : [https://youtu.be/wc9O-9mcObc](https://youtu.be/wc9O-9mcObc)
+
+For example, in this tutorial, I mostly write the high-level design doc, and Cursor AI handles all the implementation and coding to build an [AI YouTube Summarizer](https://github.com/The-Pocket/Tutorial-Youtube-Made-Simple). The secret is [Pocket Flow](https://github.com/The-Pocket/PocketFlow), a 100-line framework that fits easily into Cursor’s [rules](https://docs.cursor.com/context/rules-for-ai), remains flexible for all sorts of designs, and nudges Cursor to follow good coding practices.
+
+**Background of 100-line framework**
+
+I built this [100-line LLM framework](https://github.com/The-Pocket/PocketFlow) over Christmas. It provides the core “graph abstraction” that LLM workflows need—for ([multi-](https://the-pocket.github.io/PocketFlow/design_pattern/multi_agent.html))[agents](https://the-pocket.github.io/PocketFlow/design_pattern/agent.html), [Retrieval-Augmented Generation (RAG)](https://the-pocket.github.io/PocketFlow/design_pattern/rag.html), [workflow](https://the-pocket.github.io/PocketFlow/design_pattern/workflow.html), and more. I built this because:
+
+1. Most big frameworks have *messy abstractions*, deprecated methods, and annoying dependencies that are very hard to use.
+2. These issues don’t just confuse humans; they confuse AI coding assistants as well! For example, if you let *Cursor AI* build a LLM project with those frameworks, you’ll likely run into a bunch of version or deprecation errors.
+
+So I stripped everything down to **100 lines**, making it easy for AI tools (like *Cursor AI*) to read and build on top of it as “rules.” Surprisingly, **Cursor understands Pocket Flow really well**\-its generated code is modular, maintainable, and has *greatly boosted my productivity* over the past year.
+
+**Demo in the YouTube Video**
+
+To demonstrate this further, I mad",https://reddit.com/r/LocalLLaMA/comments/1j2xzsj/i_used_a_100line_llm_framework_to_let_ai_agents/,1,summarization,implement AI YouTube summarizer,Creation,Artifact,let Cursor AI build complex LLM Agents|Cursor AI handles all the implementation and coding,Automation of agent building and creation of a summarizer.
+,,1j5sfsz,submission,LocalLLaMA,2025-03-07,small_local,Local LLM for academic writing and polishing emails,"I'm looking for a local LLM to run on a rig with four RTX 3090 GPUs. My main use cases include improving academic writing and polishing emails to sound more professional. Basically, I want to quickly draft something and have the LLM rephrase it more elegantly. Ideally, the model should also not be slow. I'm curious about your experiences and would appreciate any recommendations.",https://reddit.com/r/LocalLLaMA/comments/1j5sfsz/local_llm_for_academic_writing_and_polishing/,1,creative writing,improve academic writing,Advice,Improve,improving academic writing|polishing emails to sound more professional|rephrase it more elegantly,Tasks focus on improving written communication.
+,,1j63vk3,submission,LocalLLaMA,2025-03-07,small_local,What is everyone's daily driver models and what do you use them for?,"I am just starting to get really serious about replacing my paid Claude account with local LLMs. I was using Claude for a variety of things such as...
+
+* Helping me troubleshoot and/or suggest potential approaches to programming problems
+* Summarize ToC and long documents
+* Help write business documents 
+* Bounce idea's off for marketing and product/services
+* Learning new concepts and providing suggested learning strategies
+
+I feel like local LLMs could potentially do an even better job since there are so many models with many of them having much more narrow scope of their use cases. Instead of using Claude for all the above I will likely have a variety of LLMs installed locally and then select the appropriate model for the task.
+
+That leads me to wonder how many people have dedicated models for their own purposes. I'd love to hear from others how they are using their local LLMs and which ones they are gravitating to for specific tasks. ",https://reddit.com/r/LocalLLaMA/comments/1j63vk3/what_is_everyones_daily_driver_models_and_what_do/,1,summarization,summarize ToC and documents,Information Search,Summarize,Helping me troubleshoot and/or suggest potential approaches|Summarize ToC and long documents|Help write business documents|Bounce idea's off for marketing|Learning new concepts,"Multiple tasks related to programming, summarization, writing, and learning."
+,,1j63vk3,submission,LocalLLaMA,2025-03-07,small_local,What is everyone's daily driver models and what do you use them for?,"I am just starting to get really serious about replacing my paid Claude account with local LLMs. I was using Claude for a variety of things such as...
+
+* Helping me troubleshoot and/or suggest potential approaches to programming problems
+* Summarize ToC and long documents
+* Help write business documents 
+* Bounce idea's off for marketing and product/services
+* Learning new concepts and providing suggested learning strategies
+
+I feel like local LLMs could potentially do an even better job since there are so many models with many of them having much more narrow scope of their use cases. Instead of using Claude for all the above I will likely have a variety of LLMs installed locally and then select the appropriate model for the task.
+
+That leads me to wonder how many people have dedicated models for their own purposes. I'd love to hear from others how they are using their local LLMs and which ones they are gravitating to for specific tasks. ",https://reddit.com/r/LocalLLaMA/comments/1j63vk3/what_is_everyones_daily_driver_models_and_what_do/,1,creative writing,write business documents,Creation,Artifact,Helping me troubleshoot and/or suggest potential approaches|Summarize ToC and long documents|Help write business documents|Bounce idea's off for marketing|Learning new concepts,"Multiple tasks related to programming, summarization, writing, and learning."
+,,1j6dcm8,submission,LocalLLM,2025-03-08,small_local,Simple Local LLM for Mac Without External Data Flow?,"I’m looking for an easy way to run an LLM locally on my Mac without any data being sent externally. Main use cases: translation, email drafting, etc. No complex or overly technical setups—just something that works.
+
+I previously tried Fullmoon with Llama and DeepSeek, but it got stuck in endless loops when generating responses.
+
+Bonus would be the ability to upload PDFs and generate summaries, but that’s not a must.
+
+Any recommendations for a simple, reliable solution?",https://reddit.com/r/LocalLLM/comments/1j6dcm8/simple_local_llm_for_mac_without_external_data/,1,translation,translate text,Creation,Artifact,translation|email drafting|generate summaries,"User seeks local LLM for translation, email drafting, and optional PDF summarization."
+,,1j6dcm8,submission,LocalLLM,2025-03-08,small_local,Simple Local LLM for Mac Without External Data Flow?,"I’m looking for an easy way to run an LLM locally on my Mac without any data being sent externally. Main use cases: translation, email drafting, etc. No complex or overly technical setups—just something that works.
+
+I previously tried Fullmoon with Llama and DeepSeek, but it got stuck in endless loops when generating responses.
+
+Bonus would be the ability to upload PDFs and generate summaries, but that’s not a must.
+
+Any recommendations for a simple, reliable solution?",https://reddit.com/r/LocalLLM/comments/1j6dcm8/simple_local_llm_for_mac_without_external_data/,1,summarization,summarize PDFs,Information Search,Summarize,translation|email drafting|generate summaries,"User seeks local LLM for translation, email drafting, and optional PDF summarization."
+,,mgoeev5,comment,LocalLLaMA,2025-03-08,small_local,,"\&gt; academic writing and polishing emails
+
+For these tasks, we take the following approaches quite often. If you have any specific use cases, we'd be glad to make it happen.
+
+\* [Rewrite in Bulk with Local LLMs in Microsoft Word](https://youtu.be/KSUaoa1PlGc)
+
+\* [Use Local LLMs to Add Topic and Concluding Sentences in Microsoft Word](https://youtu.be/lFCfB1SKIbU)
+
+\* [Summarize 10+ Pages in Microsoft Word Using Local LLMs](https://youtu.be/YyghLO5_SVQ)",https://reddit.com/r/LocalLLaMA/comments/1j5sfsz/local_llm_for_academic_writing_and_polishing/mgoeev5/,1,creative writing,rewrite in bulk,Advice,Improve,Rewrite in Bulk with Local LLMs|Add Topic and Concluding Sentences|Summarize 10+ Pages in Microsoft Word,Tasks involve improving and creating text in Word.
+,,mgoeev5,comment,LocalLLaMA,2025-03-08,small_local,,"\&gt; academic writing and polishing emails
+
+For these tasks, we take the following approaches quite often. If you have any specific use cases, we'd be glad to make it happen.
+
+\* [Rewrite in Bulk with Local LLMs in Microsoft Word](https://youtu.be/KSUaoa1PlGc)
+
+\* [Use Local LLMs to Add Topic and Concluding Sentences in Microsoft Word](https://youtu.be/lFCfB1SKIbU)
+
+\* [Summarize 10+ Pages in Microsoft Word Using Local LLMs](https://youtu.be/YyghLO5_SVQ)",https://reddit.com/r/LocalLLaMA/comments/1j5sfsz/local_llm_for_academic_writing_and_polishing/mgoeev5/,1,summarization,summarize pages,Information Search,Summarize,Rewrite in Bulk with Local LLMs|Add Topic and Concluding Sentences|Summarize 10+ Pages in Microsoft Word,Tasks involve improving and creating text in Word.
+,,1j7gljh,submission,selfhosted,2025-03-09,small_local,Running Open-Source LLMs Locally – What’s Your Experience?,"Hey everyone,
+
+I’ve been experimenting with running open-source LLMs locally for privacy reasons, mainly due to GDPR concerns and the need to keep sensitive information off third-party servers. I’ve been looking into solutions like **Ollama &amp; Chatbox** to manage and interact with these models efficiently.
+
+A few things I’m trying to figure out:
+
+1. **Performance vs. Model Size** – How well do smaller distilled models (e.g., DeepSeek-R1-Distill-Qwen-7B or similar) handle everyday office tasks like rewriting, formatting, and summarization? Do they feel snappy enough, or do you notice a big drop in quality compared to cloud-hosted alternatives?
+2. **Hardware Requirements** – What kind of setup are you running, and what’s been the best balance between cost and performance for casual AI-assisted writing/coding?
+3. **Latency &amp; Responsiveness** – Have you noticed significant differences between local and cloud-based LLMs in terms of speed? Any tips to optimize response times? (MoE?)
+4. **Ease of Setup &amp; Updates** – How seamless has it been to deploy and maintain your local LLM instance? Any tools or workflows that have made it easier?
+
+Would love to hear your experiences—especially if you've found a good trade-off between **performance, privacy, and usability**. Thanks in advance! 🚀",https://reddit.com/r/selfhosted/comments/1j7gljh/running_opensource_llms_locally_whats_your/,1,creative writing,rewrite text,Advice,Improve,"rewriting, formatting, and summarization|rewriting, formatting, and summarization|rewriting, formatting, and summarization",User explores local LLMs for text-related tasks.
+,,1j7gljh,submission,selfhosted,2025-03-09,small_local,Running Open-Source LLMs Locally – What’s Your Experience?,"Hey everyone,
+
+I’ve been experimenting with running open-source LLMs locally for privacy reasons, mainly due to GDPR concerns and the need to keep sensitive information off third-party servers. I’ve been looking into solutions like **Ollama &amp; Chatbox** to manage and interact with these models efficiently.
+
+A few things I’m trying to figure out:
+
+1. **Performance vs. Model Size** – How well do smaller distilled models (e.g., DeepSeek-R1-Distill-Qwen-7B or similar) handle everyday office tasks like rewriting, formatting, and summarization? Do they feel snappy enough, or do you notice a big drop in quality compared to cloud-hosted alternatives?
+2. **Hardware Requirements** – What kind of setup are you running, and what’s been the best balance between cost and performance for casual AI-assisted writing/coding?
+3. **Latency &amp; Responsiveness** – Have you noticed significant differences between local and cloud-based LLMs in terms of speed? Any tips to optimize response times? (MoE?)
+4. **Ease of Setup &amp; Updates** – How seamless has it been to deploy and maintain your local LLM instance? Any tools or workflows that have made it easier?
+
+Would love to hear your experiences—especially if you've found a good trade-off between **performance, privacy, and usability**. Thanks in advance! 🚀",https://reddit.com/r/selfhosted/comments/1j7gljh/running_opensource_llms_locally_whats_your/,1,summarization,summarize text,Information Search,Summarize,"rewriting, formatting, and summarization|rewriting, formatting, and summarization|rewriting, formatting, and summarization",User explores local LLMs for text-related tasks.
+,,mh6idfu,comment,LocalLLaMA,2025-03-11,small_local,,Transcription can be done by openAi whisper model works best for English but didn't go well on other local language in my use cases,https://reddit.com/r/LocalLLaMA/comments/1j8ndmn/i_want_to_build_speech_to_text_model_on_2/mh6idfu/,1,transcription,transcribe audio,Creation,Artifact,Transcription can be done,Transcription implies creating a text artifact from audio.
+,,mh642sa,comment,selfhosted,2025-03-11,small_local,,"Really I have one use myself and seen one god use case to host. 
+
+My use case is that I run a Dungeons and dragons campaign and I need to generate large amounts of descriptive text which used to be a pain in the arse. Doing this manually takes up hours and hours of time while LLMs will get me 90% of the way there in a few minutes. The last 10% is just editing for consistency which I have seen LLMs struggle with. 
+
+The other use case I have only seen (level 1 mentioned it a few times) is running a local ai with a local voice assistant to be able to give voice prompts the assistant doesn't understand but the ai can then use to do stuff. It is a very privacy driven method but I like that specially after some of the horror stories I have heard.",https://reddit.com/r/selfhosted/comments/1j8iwy9/why_host_ai/mh642sa/,1,scripting,generate descriptive text,Creation,Artifact,generate large amounts of descriptive text,User generates text for D&D campaigns.
+,,1j9suxl,submission,selfhosted,2025-03-12,small_local,Looking for a suggestion on a program and model for my use case.,"I know this likely isn't the ideal place for this post, however over a week ago I posted in LocalLLaMA and was told my post was auto removed because I don't have enough credit in the community.  My request to the mods went ignored.  So I will try here.
+
+The quick and dirty:
+
+I run Windows and have a 3090. I have ultra limited knowledge of Python and other programing languages, so an easy install solution is best for me, ideally something with a GUI for the install that checks everything and installs all the dependencies itself.  
+I need to be able to have multiple different ""story building brainstorm"" sessions with it and it not to get mixed up between them, and it needs to be able to remember these sessions between sessions, and remember a fair bit of information about them. It also should be as creative as it can be. ""Way out in left field"" creativity is acceptable, and even preferred at times.
+
+Additional information that will help you provide a useful answer:
+
+I run multiple different Homebrew Table Top RPG sessions (For those that don't really know what those are, you should still be able to help me if you imagine I am writing multiple different books at the same time.) I have started using ChatGPT (free) to come up with story ideas, but have noticed that it mixes different chats together, and at times completely forgets things when I ask it for a summary, or ask it things about the campaign. I think (But am not sure) it is because its memory is full. So please correct me if I am wrong. If this is an issue that isn't fixable by running local, then sticking with what I am using may be the best idea.  
+So I thought I should be able to run something local, that will have a MUCH bigger memory so it will be less prone to forget things, ideally.
+
+The model I run doesn't (I don't think) need to be powerful. I don't generally get the LLM to write the story, most often I ask it to come up with a list of things that may happen next which usually gets my creativity flowin",https://reddit.com/r/selfhosted/comments/1j9suxl/looking_for_a_suggestion_on_a_program_and_model/,1,brainstorming,brainstorm story ideas,Creation,Idea,story building brainstorm,User seeks a tool for creative brainstorming sessions.
+,,mhfqu1s,comment,LocalLLaMA,2025-03-12,small_local,,"[https://n8n.io/ai/](https://n8n.io/ai/)
+
+Towards the bottom of this page is a workflow called ""Scrape and summarize webpages with AI""
+
+You can point the AI endpoint to your local llm rather that use openai.  
+
+  
+that said, I do think you will need to do data cleanup before sending it to the AI.  Puppeteer would help with that",https://reddit.com/r/LocalLLaMA/comments/1j9pzko/which_agent_to_automate_checking_1000_company/mhfqu1s/,1,summarization,summarize webpages,Information Search,Summarize,Scrape and summarize webpages|Scrape and summarize webpages,Two tasks: scrape and summarize webpages.
+,,mhbkdsk,comment,LocalLLaMA,2025-03-12,small_local,,"I have a workflow that will create tools and agents in real time in Manifold. I have not published it. I need to make it so it is validated, and once it passes that validation, there is a way to save it so it can be loaded as a tool. I can confidently say that most of the features are in place to create *almost* anything. The Python runner node in particular can be very powerful in and of itself when inserted into a workflow. Imagine having a workflow where you convert any user's prompt into an optimized search engine query, then the web search node searches with that query, then we fetch an optimized markdown formatted page of those URL's from the search results, then we store all of that in the SEFII engine (RAG), then we retrieve the relevant chunks to your original (non search engine formatted prompt), have one of the LLM nodes take all of that and write a Python script that does X, and ...
+
+You have to shift your perspective. How far can you get with simple ""primitives""? That's what Manifold currently has implemented. Combining the nodes in creative ways will get you very far.
+
+I am dilligently working as time permits on documenting all of this. 
+
+Stay tuned! :)",https://reddit.com/r/LocalLLaMA/comments/1j8ibs2/dont_underestimate_the_power_of_local_models/mhbkdsk/,1,scripting,write Python script,Creation,Artifact,make it so it is validated|save it so it can be loaded|convert any user's prompt into an optimized search engine query|fetch an optimized markdown formatted page|write a Python script that does X,Multiple tasks in a complex workflow.
+,,mhgyip6,comment,LocalLLM,2025-03-12,small_local,,"I have an entire workflow for this, which has also been automated.
+
+The repos I have up are outdated version, but a similar principle
+
+You set up a codebase to call an LLM with a system prompt telling it that you are going to walk it through every step of a project building process, and it will need to provide comprehensive and thoughtful solutions to each request. Then you begin an iterative loop
+
+1. Give the LLM a goal you desire and ask it to break that goal down into however many phases 
+
+2. Call it again and ask it (one at a time) to break the phases down into smaller tasks
+
+3. Again, except break the tasks down into actionable steps that are clear, have a measurable impact, are quantifiable, and can be tested and verified
+
+4. After each phase you call it back to check everything / summarize
+
+5. You can do this as many times as you need, or get creative with what you do (I like to create a very thorough 8 phase process where the LLM does deep research (using the same idea) takes that deep research and pulls out the most important ideas, summarizes them, adds that as context to its next prompt, then it begins the planning phase, (mentioned above) planning out the structure of the codebase etc.
+
+I then have it go through referencing the architecture docs it made to generate a script that instantly builds the project as folders, and empty files in their final locations.
+
+Then one at a time I walk the LLM recursively through every single file, dynamically auto prompting it with the exact context it needs (that’s why we spent so much time building up a plan and researching)
+
+This isn’t necessarily easy to do because there are many hurdles, but I have gotten it to work extremely well and it’s getting better the more I work on it",https://reddit.com/r/LocalLLM/comments/1j85u4x/best_opensource_or_paid_llms_with_the_largest/mhgyip6/,1,summarization,summarize each phase,Information Search,Summarize,break that goal down into however many phases|break the phases down into smaller tasks|break the tasks down into actionable steps|call it back to check everything / summarize,Tasks involve iterative breakdown and summarization.
+,,mhgywex,comment,LocalLLM,2025-03-12,small_local,,"I have an entire workflow for this, which has also been automated.
+
+The repos I have up are outdated version, but a similar principle
+
+You set up a codebase to call an LLM with a system prompt telling it that you are going to walk it through every step of a project building process, and it will need to provide comprehensive and thoughtful solutions to each request. Then you begin an iterative loop
+
+1. Give the LLM a goal you desire and ask it to break that goal down into however many phases 
+
+2. Call it again and ask it (one at a time) to break the phases down into smaller tasks
+
+3. Again, except break the tasks down into actionable steps that are clear, have a measurable impact, are quantifiable, and can be tested and verified
+
+4. After each phase you call it back to check everything / summarize
+
+5. You can do this as many times as you need, or get creative with what you do (I like to create a very thorough 8 phase process where the LLM does deep research (using the same idea) takes that deep research and pulls out the most important ideas, summarizes them, adds that as context to its next prompt, then it begins the planning phase, (mentioned above) planning out the structure of the codebase etc.
+
+I then have it go through referencing the architecture docs it made to generate a script that instantly builds the project as folders, and empty files in their final locations.
+
+Then one at a time I walk the LLM recursively through every single file, dynamically auto prompting it with the exact context it needs (that’s why we spent so much time building up a plan and researching)
+
+This isn’t necessarily easy to do because there are many hurdles, but I have gotten it to work extremely well and it’s getting better the more I work on it
+
+
+The way I have it, is I built my own IDE and I can just enter a single basic prompt and walk away, the LLM can spend hours grinding out your project with zero guidance, because your program is objective and hierarchical, almost like an algo",https://reddit.com/r/LocalLLM/comments/1j85u4x/best_opensource_or_paid_llms_with_the_largest/mhgywex/,1,planning / scheduling,automate project planning,Automation,Automation,"workflow for this, which has also been automated|break that goal down into however many phases|break the phases down into smaller tasks|break the tasks down into actionable steps|call it back to check everything / summarize",Describes an automated workflow for project planning using LLM.
+,,mhgywex,comment,LocalLLM,2025-03-12,small_local,,"I have an entire workflow for this, which has also been automated.
+
+The repos I have up are outdated version, but a similar principle
+
+You set up a codebase to call an LLM with a system prompt telling it that you are going to walk it through every step of a project building process, and it will need to provide comprehensive and thoughtful solutions to each request. Then you begin an iterative loop
+
+1. Give the LLM a goal you desire and ask it to break that goal down into however many phases 
+
+2. Call it again and ask it (one at a time) to break the phases down into smaller tasks
+
+3. Again, except break the tasks down into actionable steps that are clear, have a measurable impact, are quantifiable, and can be tested and verified
+
+4. After each phase you call it back to check everything / summarize
+
+5. You can do this as many times as you need, or get creative with what you do (I like to create a very thorough 8 phase process where the LLM does deep research (using the same idea) takes that deep research and pulls out the most important ideas, summarizes them, adds that as context to its next prompt, then it begins the planning phase, (mentioned above) planning out the structure of the codebase etc.
+
+I then have it go through referencing the architecture docs it made to generate a script that instantly builds the project as folders, and empty files in their final locations.
+
+Then one at a time I walk the LLM recursively through every single file, dynamically auto prompting it with the exact context it needs (that’s why we spent so much time building up a plan and researching)
+
+This isn’t necessarily easy to do because there are many hurdles, but I have gotten it to work extremely well and it’s getting better the more I work on it
+
+
+The way I have it, is I built my own IDE and I can just enter a single basic prompt and walk away, the LLM can spend hours grinding out your project with zero guidance, because your program is objective and hierarchical, almost like an algo",https://reddit.com/r/LocalLLM/comments/1j85u4x/best_opensource_or_paid_llms_with_the_largest/mhgywex/,1,summarization,summarize each phase,Information Search,Summarize,"workflow for this, which has also been automated|break that goal down into however many phases|break the phases down into smaller tasks|break the tasks down into actionable steps|call it back to check everything / summarize",Describes an automated workflow for project planning using LLM.
+,,mhkhqda,comment,LocalLLaMA,2025-03-13,small_local,,"I mean, everyone got different use cases. It's probably completely pointless for you, but in my case I mostly use LLMs locally on my mid-range phone, so a new 4B model is exciting. I also like to do cooperative storywriting / longform roleplaying, and the new Gemma has a nice writing style. I tried with a complicated test character card with a lot of different aspects, and Gemma 3 4B is the first small model that actually nailed everything. 
+
+Even Llama 8b and Nemo, while they get most of it right, miss the golden opportunity offered to advance the scenario toward one specific goal. Most Mistral Small and up always got it right, and the smarter smaller RP-focused finetunes like Lunaris occasionally did, but something less than 7B parameters? That has never happened before Gemma 3 4B, and it is still is small enough to run well on my phone.
+
+So for me, Gemma 3 4b is insanely good: there's nothing that compares to it at that size for that use case. Does that use case mean anything for you? Probably not, but it does to some people.",https://reddit.com/r/LocalLLaMA/comments/1j9v3lf/gemma_3_insanely_good/mhkhqda/,1,creative writing,write stories,Creation,Artifact,cooperative storywriting / longform roleplaying,User engages in storywriting and roleplaying.
+,,1jcoavq,submission,LocalLLaMA,2025-03-16,small_local,LLM Recommendations,"Hi, i just wanted to get recommendations on local llms. I know there is always new stuff coming out and have liked the results of reasoning models better overall. I am in medical school so primarily I use it for summarization, highlighting key points, and creating practice questions. I have a MacBook Pro m2max 64gb ram, 38 core gpu.",https://reddit.com/r/LocalLLaMA/comments/1jcoavq/llm_recommendations/,1,summarization,summarize content,Information Search,Summarize,use it for summarization|highlighting key points|creating practice questions,User describes three tasks related to study activities.
+,,1jdt99j,submission,LocalLLaMA,2025-03-18,small_local,Feedback for my app for running local LLM,"Hello everyone, so I made this free open source app called kolosal.ai in which you can run LLM as an open source alternative to LM Studio. I made it in C++ so the size is really small, around 16mb and it would be awesome to get your feedback and if you want, you can also contribute to kolosal.
+
+I also want to share my experience in building a local RAG system. I’ve found that parsing documents into markdown format, summarizing them using an LLM, and leveraging that summary for vector/BM25 reranking and search yields strong results. Additionally, I use an LLM to refine the search query based on the initial input, improving retrieval accuracy.
+
+That said, the biggest challenge remains the data itself—it must be correctly parsed and queried. Many people expect an LLM to handle complex tasks simply by feeding it raw or extracted PDFs, which is often ineffective. For any AI or LLM-powered project—whether running locally, on a server, or via third-party APIs—the workflow must be well-defined. A good approach is to model the system after how humans naturally process and retrieve information.
+
+Thank you.
+
+You can try and check it out at kolosal.ai website",https://reddit.com/r/LocalLLaMA/comments/1jdt99j/feedback_for_my_app_for_running_local_llm/,1,summarization,summarize documents,Information Search,Summarize,parsing documents into markdown format|summarizing them using an LLM|refine the search query based on the initial input,Tasks involve document processing and query refinement.
+,,mihdyia,comment,LocalLLaMA,2025-03-18,small_local,,"What are your use case? I use deepgram for transcription simply because it is convenient, accurate and I don't need it to run locally.",https://reddit.com/r/LocalLLaMA/comments/1jdaomq/which_whisper_file_should_i_download_from/mihdyia/,1,transcription,transcribe audio,Creation,Artifact,use deepgram for transcription,User transcribes audio using Deepgram.
+,,mikxjjs,comment,LocalLLaMA,2025-03-19,small_local,,"I'm not sure what level Japanese you comprehend, but if you know a bit but just need the occasional odd ball kanji lookup, a simple capture2text ahk script would be easy to highlight the kanji you need the definition for. capture2text automatically puts the highlighted text on screen (like a screenshot) into the clipboard as a text, and if you use JGlossator you can have it instantly read out the copied kanji and see the definition! little manual input all you need to do is select the kanji.
+
+However, for direct translations of full sentences, you can do the following;
+
+use textractor to get the raw text of the game in real time, then copy and feed that into an LLM, for ease of access use something like LM Studio. Give it the system prompt: I'm currently playing a Japanese visual novel, your task is to convert the provided japanese text into _target language_. Be accurate and describe the 
+
+I've had great success with Gemma 3 12b for translative workflows, recently I gave it about 100k tokens worth of a movie's subtitle file, and had it analyze the text for sentences containing vocab at the N1 level and create about 50 anki flash cards for me. Really awesome stuff.",https://reddit.com/r/LocalLLaMA/comments/1jeqx85/best_llm_to_play_untranslated_visual_novels_with/mikxjjs/,1,translation,translate full sentences,Creation,Artifact,highlight the kanji you need the definition for|convert the provided japanese text into _target language_,Two tasks: kanji lookup and sentence translation.
+,,miockl0,comment,LocalLLaMA,2025-03-19,small_local,,"There is no problem in building a model, I wish companies or other folks building pipelines/applications which can use those models.
+
+For example, give me a polished application which can interact with a model or documents, or do automation of routines, or something more interesting. 
+
+I personally like the folks at https://khoj.dev/ they have a nice application which can do a bunch of stuff, notify you over messages and so on.
+
+Look at things like this: https://watershed.bio/resources/large-language-models-in-biology where LLMs are being used for modeling proteins with specific functions, drug discovery and so on and so forth. 
+
+I want to have stuff that stacks on top of models to actually do stuff. This is where the money is going to be eventually.",https://reddit.com/r/LocalLLaMA/comments/1jex61b/if_the_model_is_the_product_article_is_true_a_lot/miockl0/,1,task automation,automate routines,Automation,Automation,do automation of routines,The comment suggests automating routines as a desired application.
+,,mip7ls5,comment,LocalLLM,2025-03-19,small_local,,"Hello. I used local llm to generate an emoji that represents the task description and update the task/page icon. I like it more engaging when I see icons representing the task that’s due
+
+In another use case I save a YouTube links in notes notion database that gets monitored and downloads this you tube video, using mlx whisper ai do transcript of video and then pass it to llm to summarize the transcript in a markdown format for easy reference and digest",https://reddit.com/r/LocalLLM/comments/1jdrozd/any_notion_users_here/mip7ls5/,1,scripting,summarize video transcript,Information Search,Summarize,generate an emoji|summarize the transcript in a markdown format,Two distinct tasks: emoji creation and transcript summarization.
+,,1jh4vni,submission,LocalLLaMA,2025-03-22,small_local,Choosing Hardware for Local LLM Inference and Automated Data Structuring,"Hi Reddit,
+
+I work in the medical field, and we are currently trying to structure unstructured data from text using local LLMs. This already works quite well using ensembles of models such as:
+
+* Lamarck-14B-v0.7-Q6\_K
+* Mistral-Small-24B-Instruct-2501-IQ4\_XS
+* Qwen2.5-32B-Instruct-IQ3\_XS
+
+on a 16 GB VRAM shared from another group at our institution. However, as expected, it takes time, and we would like to use larger models. We also want to leverage LLMs for tasks like summarizing documentation, assisting with writing, and other related use cases.
+
+As such, we’re looking to upgrade our hardware at the institution. I’d like some advice on what you think about the hardware choices, especially considering the following constraints and requirements:
+
+1. **Hardware provider**: We have to use (if not choosing a Mac) our official hardware provider.
+2. **Procurement process**: We have to go through our IT department. For previous orders, it took around three months just to receive quotes. Requesting another quote would likely delay the purchase by another six months.
+3. **Main task**: The primary workload involves repeated processing and annotation of data—e.g., generating JSON outputs from text. One such task involves running 60,000 prompts to extract one-hot encoded variables from 60,000 text snippets (currently takes \~16 hours).
+4. **Other use cases**: Summarizing medical histories, writing assistance, and some light coding support (e.g., working with our codebase and sensitive data).
+5. **Deployment**: The machine would be used **both as a workstation and a remote server**.
+
+# Option 1:
+
+* **GPU**: 2 x NVIDIA RTX 5000 Ada (32 GB GDDR6 each, 4 DP)
+* **CPU**: Intel Xeon W5-2465X (33.75 MB cache, 16 cores, 32 threads, 3.1–4.7 GHz, 200 W)
+* **RAM**: 64 GB (2 x 32 GB, DDR5, 4800 MHz)
+* **Storage**: 3 TB SSD NVMe
+* **Total Cost**: €12,000 (including the mandatory service fee and a Widnows licnese as well as, i cant believe it either: a price for setting it upt with an ubu",https://reddit.com/r/LocalLLaMA/comments/1jh4vni/choosing_hardware_for_local_llm_inference_and/,1,summarization,summarize documentation,Information Search,Summarize,structure unstructured data from text|summarizing documentation|assisting with writing,"Tasks involve automation, summarization, and writing assistance."
+,,1jh4vni,submission,LocalLLaMA,2025-03-22,small_local,Choosing Hardware for Local LLM Inference and Automated Data Structuring,"Hi Reddit,
+
+I work in the medical field, and we are currently trying to structure unstructured data from text using local LLMs. This already works quite well using ensembles of models such as:
+
+* Lamarck-14B-v0.7-Q6\_K
+* Mistral-Small-24B-Instruct-2501-IQ4\_XS
+* Qwen2.5-32B-Instruct-IQ3\_XS
+
+on a 16 GB VRAM shared from another group at our institution. However, as expected, it takes time, and we would like to use larger models. We also want to leverage LLMs for tasks like summarizing documentation, assisting with writing, and other related use cases.
+
+As such, we’re looking to upgrade our hardware at the institution. I’d like some advice on what you think about the hardware choices, especially considering the following constraints and requirements:
+
+1. **Hardware provider**: We have to use (if not choosing a Mac) our official hardware provider.
+2. **Procurement process**: We have to go through our IT department. For previous orders, it took around three months just to receive quotes. Requesting another quote would likely delay the purchase by another six months.
+3. **Main task**: The primary workload involves repeated processing and annotation of data—e.g., generating JSON outputs from text. One such task involves running 60,000 prompts to extract one-hot encoded variables from 60,000 text snippets (currently takes \~16 hours).
+4. **Other use cases**: Summarizing medical histories, writing assistance, and some light coding support (e.g., working with our codebase and sensitive data).
+5. **Deployment**: The machine would be used **both as a workstation and a remote server**.
+
+# Option 1:
+
+* **GPU**: 2 x NVIDIA RTX 5000 Ada (32 GB GDDR6 each, 4 DP)
+* **CPU**: Intel Xeon W5-2465X (33.75 MB cache, 16 cores, 32 threads, 3.1–4.7 GHz, 200 W)
+* **RAM**: 64 GB (2 x 32 GB, DDR5, 4800 MHz)
+* **Storage**: 3 TB SSD NVMe
+* **Total Cost**: €12,000 (including the mandatory service fee and a Widnows licnese as well as, i cant believe it either: a price for setting it upt with an ubu",https://reddit.com/r/LocalLLaMA/comments/1jh4vni/choosing_hardware_for_local_llm_inference_and/,1,creative writing,assist with writing,Advice,Improve,structure unstructured data from text|summarizing documentation|assisting with writing,"Tasks involve automation, summarization, and writing assistance."
+,,1jha1vl,submission,LocalLLaMA,2025-03-22,small_local,Local LoRA + RAG Academic Writing Setup – Build Check Before I Pull the Trigger,"Hey all, just chasing a bit of feedback while I'm finalising a build. I'm setting up a local AI writing system to automate the structure and style of academic work. I’m not training it to learn knowledge or reason, just to mimic how I write using a dataset of my own essays and theses (formatted in JSONL). I’ll be fine-tuning a small model like Phi-2 or OpenLLaMA 3B using LoRA or QLoRA, and keeping that completely separate from a RAG setup that pulls content from a chunked academic library (\~100+ PDFs split into 5KB txt files). The idea is to feed it the right research chunks, and have it paraphrase in my voice without hallucinating or plagiarising. It’s basically a local ghostwriter with me in the driver’s seat.
+
+I’m building this on an i9-14900KF with 96GB DDR5-5600 (2x48GB Corsair Vengeance), an MSI MAG Z790 Tomahawk WiFi board, RTX 3070 8GB, DeepCool AK620 Digital air cooler, Samsung 980 Pro 1TB SSD, and decent airflow (6-fan white case). Everything will run locally with CPU offloading where needed. No full-model training, no 13B model insanity—just stable overnight LoRA fine-tunes and section-by-section writing using a RAG-fed workflow.
+
+Just wondering if this sounds like a balanced setup for what I’m doing—fine-tuning small models locally and generating paraphrased academic content from chunked research via RAG. Any issues I should expect with the 2x48GB RAM setup on Z790, or LoRA/QLoRA performance on this sort of hardware? Appreciate any real-world experience or heads-ups before I finalise it. Cheers!",https://reddit.com/r/LocalLLaMA/comments/1jha1vl/local_lora_rag_academic_writing_setup_build_check/,1,creative writing,automate academic writing,Automation,Automation,automate the structure and style of academic work|paraphrase in my voice,Automating writing and paraphrasing tasks.
+,,mj729bd,comment,LocalLLaMA,2025-03-22,small_local,,"My main use case is stock research.
+
+I dump SEC filings into an RAG and can ask questions about the filings/company.
+
+I dump earnings calls into ""whisper"" then query an llm about the transcribed text.
+
+I have it analyze articles that are scraped. This one is trickier. The LLM does fine, but the underlying bias in the article could be misleading (depending on the source).
+
+I never use it solely to make an investment. I don't ask, ""what's the best stock to make me rich"". But it has improved the amount I can research by magnitudes.
+
+Also maybe worth noting. I run all of this in python, so it gives me a lot of flexibility on gathering data, and what to do with it. Most of these processes are predefined prompts. So rather than typing in the prompts every time, it is just a function call.",https://reddit.com/r/LocalLLaMA/comments/1jhf6x3/has_anyone_switched_from_remote_models_claude_etc/mj729bd/,51,transcription,query transcribed text,Information Search,Search,ask questions about the filings/company|query an llm about the transcribed text|analyze articles that are scraped,Tasks involve searching and analyzing financial documents and articles.
+,,mj4iq71,comment,LocalLLM,2025-03-22,small_local,,"There are use cases to smaller models, mostly very specific tasks. For example if you wanted to grade hundreds of thousand of images of writing (purely hypothetical), you could just dump it to a local LLM and let it do its magic. In the long run, it's (mostly) cheaper than using cloud APIs. 
+Keep in mind these models are only getting better too, seeing Gemma 3 27B's performance is comparable to GPT-4o",https://reddit.com/r/LocalLLM/comments/1jgl4bb/why_run_your_local_llm/mj4iq71/,3,creative writing,grade images of writing,Automation,Automation,grade hundreds of thousand of images of writing,Hypothetical task using a local LLM.
+,,1jia4bo,submission,LocalLLaMA,2025-03-23,small_local,LLM-Tournament - Have 4 Frontier Models Duke It Out over 5 Rounds to Solve Your Problem,"I had this idea yesterday and wrote this article. In the process, I decided to automate the entire method, and the project that does that is linked at the end of the article.
+
+Right now, it’s set up to use LLM APls, but it would be trivially easy to switch it to use local LLMs, and I'll probably add that soon as an option. The more interesting part is the method itself and how well it works in practice.
+
+I’m really excited about this and think I’m going to be using this very intensively for my own development work, for any code that has to solve messy, ill-defined problems that admit a lot of possible approaches and solutions.",https://reddit.com/r/LocalLLaMA/comments/1jia4bo/llmtournament_have_4_frontier_models_duke_it_out/,1,task automation,automate problem-solving method,Automation,Automation,automate the entire method,The task involves automating a problem-solving method.
+,,1jizflh,submission,LocalLLM,2025-03-24,small_local,Local LLM for work,"I was thinking to have a local LLM to work with sensitive information, company projects, employee personal information, stuff companies don’t want to share on ChatGPT :)
+I imagine the workflow as loading documents or minute of the meeting and getting improved summary, create pre read or summary material for meetings based on documents, provide me questions and gaps to improve the set of informations, you get the point …
+What is your recommendation?
+",https://reddit.com/r/LocalLLM/comments/1jizflh/local_llm_for_work/,1,summarization,summarize meeting documents,Information Search,Summarize,improved summary|create pre read or summary material|provide me questions and gaps,"Tasks involve summarizing, creating materials, and generating questions."
+,,mjodajf,comment,LocalLLaMA,2025-03-25,small_local,,"thanks for the quick reply, really appreciate the context and elaboration been struggling to understand the implications for tool use for a bit now. was debating whether to opt for a DeepSeek model like the 32B or 72B that apparently is optimized for RooCode (although I'm unclear exactly how one fine tunes the model to do that): https://ollama.com/tom_himanen/deepseek-r1-roo-cline-tools/tags
+
+I've also seen mention of using a LoRA adapter as well..I'm still learning so not sure precisely how tool use is best implemented..ultimately want to create an end to end pipeline hosted all locally for audio transcription, language identification, translation, vision (image and video), and create a custom interface using gradio
+
+I just built a threadripper desktop tower with 4 x V100 SXM2 32GB that I have installed into PCIe 3.0 active cooling adapter boards. Cuda cores support FP8 quantization &amp; the tensor cores support FP16. They are compatible with flash attention V1 (mostly). Will likely use vLLM or Sglang to ensure tensor parallelism. Also have enough RAM to create a dedicated RAM disk for cache and model loading. Will set a power limit to 150v for each card...preliminary tests I performed indicate 175v average consumption and the ECC VRAM will ensure there aren't any memory errorrs cause by undervolt. This will get me to 600W TDP for all four cards collectively totalling 20,480 cuda cores | 2,560 Tensor cores | 128VRAM | 981 GB/s memory bandwidth. Have a separate PCIe 4.0 eGPU connected through oculink M.2 adapter to handle display output, and will probably set a voltage limit for this as well to ensure I have about 100v buffer to stay under 1150W (80%) 120v 15amp circuit. 
+
+That all said, I plan to use the cuda cores for FP8 input tokens and the output tokens will be at FP16 leveraging the tensor cores. The us of speculative decoding leans me towards the distilled Deepseek models, however, I've seen people have success using a smaller Qwen 2.5  model as a draft with",https://reddit.com/r/LocalLLaMA/comments/1jhf6x3/has_anyone_switched_from_remote_models_claude_etc/mjodajf/,1,transcription,transcribe audio,Creation,Artifact,audio transcription|language identification|translation|vision (image and video)|create a custom interface using gradio,Multiple tasks for an end-to-end pipeline.
+,,mjodajf,comment,LocalLLaMA,2025-03-25,small_local,,"thanks for the quick reply, really appreciate the context and elaboration been struggling to understand the implications for tool use for a bit now. was debating whether to opt for a DeepSeek model like the 32B or 72B that apparently is optimized for RooCode (although I'm unclear exactly how one fine tunes the model to do that): https://ollama.com/tom_himanen/deepseek-r1-roo-cline-tools/tags
+
+I've also seen mention of using a LoRA adapter as well..I'm still learning so not sure precisely how tool use is best implemented..ultimately want to create an end to end pipeline hosted all locally for audio transcription, language identification, translation, vision (image and video), and create a custom interface using gradio
+
+I just built a threadripper desktop tower with 4 x V100 SXM2 32GB that I have installed into PCIe 3.0 active cooling adapter boards. Cuda cores support FP8 quantization &amp; the tensor cores support FP16. They are compatible with flash attention V1 (mostly). Will likely use vLLM or Sglang to ensure tensor parallelism. Also have enough RAM to create a dedicated RAM disk for cache and model loading. Will set a power limit to 150v for each card...preliminary tests I performed indicate 175v average consumption and the ECC VRAM will ensure there aren't any memory errorrs cause by undervolt. This will get me to 600W TDP for all four cards collectively totalling 20,480 cuda cores | 2,560 Tensor cores | 128VRAM | 981 GB/s memory bandwidth. Have a separate PCIe 4.0 eGPU connected through oculink M.2 adapter to handle display output, and will probably set a voltage limit for this as well to ensure I have about 100v buffer to stay under 1150W (80%) 120v 15amp circuit. 
+
+That all said, I plan to use the cuda cores for FP8 input tokens and the output tokens will be at FP16 leveraging the tensor cores. The us of speculative decoding leans me towards the distilled Deepseek models, however, I've seen people have success using a smaller Qwen 2.5  model as a draft with",https://reddit.com/r/LocalLLaMA/comments/1jhf6x3/has_anyone_switched_from_remote_models_claude_etc/mjodajf/,1,translation,translate language,Creation,Artifact,audio transcription|language identification|translation|vision (image and video)|create a custom interface using gradio,Multiple tasks for an end-to-end pipeline.
+,,mjr4rg4,comment,LocalLLaMA,2025-03-26,small_local,,"Welcome! You are where I was about 2 years ago, and the single most important thing was my motivation to solve problems I had. For example transcribing meetings on my own machine, reading and categorizing e-mails, setting up a gpu server etc.
+
+If you have something that sparks your interest about LLMs, a use-case that means something to you - could be running your local LLM with a webUI - then start working on this and search for tutorials for that specific thing.
+
+This way you have something that pushes you and you learn specific things releavnt to that use case. When you have completed it and do a second one, you will be able to re-use let's say 50% of the knowledge from the previous project and you learn new stuff. This goes on and on and on and eventually you have the most important stuff together and you can start specializing.
+
+Sure you can read general stuff - I did that in the beginning - and it kinda helped, but didn't keep me motivated to improve. What helped was my wonky transcription app that ran as a node application on my own server, about which I was super proud. And then I decided to rebuild it better, and better and so on.
+
+Find something that peeks your interest and implement it, no matter how little you know.",https://reddit.com/r/LocalLLaMA/comments/1jjysyz/where_to_start_learning_about_ai/mjr4rg4/,1,transcription,transcribe meetings,Creation,Artifact,transcribing meetings on my own machine|categorizing e-mails,Two specific tasks mentioned as examples of problem-solving.
+,,mjst6pv,comment,LocalLLaMA,2025-03-26,small_local,,"I have to say, after 1 month, this Granite 3.2 is up there with Gemma3 on my daily use: URLs scrape and summarization, RAG, and custom tool use on Open-webui. 
+
+The model is really good to support my work needs. 
+
+Temperature at 0.15
+
+Good work IBM.",https://reddit.com/r/LocalLLaMA/comments/1iyudod/ibm_launches_granite_32/mjst6pv/,1,summarization,summarize URLs,Information Search,Summarize,URLs scrape|URLs scrape and summarization,Scraping and summarizing URLs are the main tasks.
+,,1jmg7td,submission,LocalLLaMA,2025-03-29,small_local,"Best models to run with 8GB VRAM, 16GB RAM","Been experimenting with local LLMs on my gaming laptop (4070 8GB, 16GB of RAM). My use cases have been coding and creative writing. Models that work well and that I like:
+
+**Gemma 3 12B** \- low quantization (IQ3\_XS), 100% offloaded to GPU, spilling into RAM. \~10t/s. Great at following instructions and general knowledge. *This is the sweet spot and my main model*.
+
+**Gemma 3 4B** \- full quantization (Q8), 100% offloaded to GPU, minimal spill. \~30-40t/s. Still smart and competent but more limited knowledge. *This is an amazing model at this performance level*.
+
+**MN GRAND Gutenburg Lyra4 Lyra 23.5B,** medium quant (Q4) (lower quants are just too wonky) about 50% offloaded to GPU, 2-3t/s. When quality of prose and writing a captivating story matters. Tends to break down so needs some supervision, but it's in another league entirely - Gemma 3 just cannot write like this *whatsoever* (although Gemma follows instructions more closely). Great companion for creative writing. **12B version** of this is way faster (100% GPU, 15t/s) and still strong stylistically, although its stories aren't nearly as engaging so I tend to be patient and wait for the 23.5B.
+
+I was disappointed with:
+
+**Llama 3.1 8B** \- runs fast, but responses are short, superficial and uninteresting compared with Gemma 3 4B.
+
+**Mistral Small 3.1** \- Can barely run on my machine, and for the extreme slowness, wasn't impressed with the responses. Would rather run **Gemma 3 27B** instead.
+
+I wish I could run:
+
+**QWQ 32B** \- doesn't do well at the lower quants that would allow it to run on my system, just too slow.  
+**Gemma 3 27B** \- it runs but the jump in quality compared to **12B** hasn't been worth going down to 2t/s.
+
+
+
+",https://reddit.com/r/LocalLLaMA/comments/1jmg7td/best_models_to_run_with_8gb_vram_16gb_ram/,1,creative writing,write creatively,Creation,Artifact,use cases have been coding|creative writing,User engages in coding and creative writing with local models.
+,,mk9yz3z,comment,LocalLLaMA,2025-03-29,small_local,,"I wouldn’t say the only thing they’re good for is summarizing, (my personal project is https://github.com/rmusser01/tldw ) but that’s a solid use case where they can beat/perform similar to a human.
+
+The thing here is that using an LLM almost certainly will help, but not in the way you were initially thinking. I could see it used for query rewriting, relevance checking/ranking for returning the results, or creating the final answer for the user depending on what questions you’re trying to answer. But the big thing is that the main issue first is search, and mapping, which LLMs don’t really do.",https://reddit.com/r/LocalLLaMA/comments/1jm4z61/rags_knowledge_graphs_llms_oh_my/mk9yz3z/,1,creative writing,rewrite queries,Advice,Improve,used for query rewriting|relevance checking/ranking|creating the final answer,Tasks involve improving search and generating answers.
+,,1jn370u,submission,LocalLLaMA,2025-03-30,small_local,Best 'Entry' Level AMD 16gb GPU?,"Hi all,
+
+I'm just starting out on running local LLM's. On Linux, Pop!Os specifically. I'll likely be using Ollama for my tasks as it integrates well with my system.
+
+I plan to be using AI for things like summarizing documents, sorting and categorizing docs etc. I don't plan to do much machine learning etc, just looking at integrating AI into my workflow. A typical document might be 10-50 pages of a book. Or a bunch of pdf's etc.
+
+Finally, I'd like to do some basic data crunching, regression etc for datasets. Nothing ginormous, just basic stuff.
+
+I'm open to Nvidia, but I look at this gpu as 'entry level' meaning if I can integrate AI into my workflow in a significant way, I'll then look at something like a Nvidia 'Digits' dedicated computer for serving AI. Or maybe a beefier, heavy duty Nvidia card for 5-6x the price. I'd like to keep it under $600 USD or so at this point. So it seems I can get more bang for my limited buck from AMD.
+
+I'm running an ASUS x570 motherboard with 64gb ram, 8 cores if it matters. 
+
+Looking forward to some genius suggestions!
+
+",https://reddit.com/r/LocalLLaMA/comments/1jn370u/best_entry_level_amd_16gb_gpu/,1,summarization,summarize documents,Information Search,Summarize,"summarizing documents|sorting and categorizing docs|basic data crunching, regression","User plans to integrate AI for summarizing, categorizing, and data analysis."
+,,1jn82rs,submission,LocalLLM,2025-03-30,small_local,How do I get local model to write job applications?,"Hello all, my use case is writing job applications for myself.   
+Current work flow is that I have saved relevant information in ChatGPT memory about my job history and skills and then I copy paste the person spec and it writes it for me.  
+The thing is that the person spec has several categories each divided into essential and desirable criteria. ChatGPT writes me the initial introduction, then I proved the different categories and form an application.
+
+Yesterday it was super slow and was failing to connect several times, make a 1 hr process extend to 3hrs. So I'm hoping to switch to a local LLM.
+
+I downloaded LM Studio + Anything LLM, downloaded models Gemma 3 12B, and Deepseek R1. I added my CV as a document (vector I think?) in the anythingLLM. Then I asked Gemma to read it, it successfully did so.
+
+Then when I asked it to write a application by copy pasting the person spec, it started asking me for my job history, despite it reading it a chat ago. I uploaded the person spec document and asked it to write it, but again it failed. 
+
+Can someone please help me?
+
+tldr: AnythingLLM is not reading/remembering pdf I upload and keeps asking for details again.",https://reddit.com/r/LocalLLM/comments/1jn82rs/how_do_i_get_local_model_to_write_job_applications/,1,creative writing,write job applications,Creation,Artifact,write job applications for myself,User wants to automate job application writing.
+,,mkk4dua,comment,LocalLLaMA,2025-03-30,small_local,,"Mainly just using the chat interface. I use Open WebUI or llm for local UI. I also use ChatGPTs interface (free one) and Google's one for Gemini 2.5 Pro. I just do copy and paste.
+
+I asked a friend who is an elite coder what he did for LLMs and was surprised when he told me he did the same (just copy and paste from chat) so I figured I wouldn't then bother with cursor etc.
+
+For non-interactive workflows, I use python scripts. 
+
+I'm currently working on a workflow which takes scanned PDFs, OCRs them, and then translates them and indexes them.",https://reddit.com/r/LocalLLaMA/comments/1jni70u/how_do_you_interact_with_llms/mkk4dua/,1,translation,translate scanned PDFs,Creation,Artifact,OCRs them|translates them|indexes them,"Describes a workflow involving OCR, translation, and indexing."
+,,1jp7o2i,submission,LocalLLaMA,2025-04-01,small_local,"workflow for recording audio/video, transcript and automatic document generation","Hi All,
+
+I need to create a set of video tutorials (and doc/pdf version) on how to use a non-public facing application, and i'm not allowed to send the data to any cloud service.
+
+I was thinking to implement the following workflow:
+
+* Use OBS(i'm working on mac) to capture screen and audio/voice
+* Use whisper transcription to create the transcription
+* Use some local llm to organize the doc and generate output in sphinx format
+* Once in sphinx format i'll double check and adjust the output
+
+Now, my questions are:
+
+* did someone had a similar use case? How do you deal with it?
+* what local llm is better to use?
+* Is there any local app/model i can use that takes i input the audio/file and create the doc with also screenshots? Currently, i have to add them manually when editing the sphinx format, but it would be nice to have them already there.
+
+Thanks",https://reddit.com/r/LocalLLaMA/comments/1jp7o2i/workflow_for_recording_audiovideo_transcript_and/,1,transcription,transcribe audio,Information Search,Summarize,create the transcription|organize the doc and generate output|generate output in sphinx format,"Tasks involve transcription, document organization, and format generation."
+,,1jp7mw1,submission,LocalLLM,2025-04-01,small_local,"workflow for recording audio/video, transcript and automatic document generation","Hi All,
+
+I need to create a set of video tutorials (and doc/pdf version) on how to use a non-public facing application, and i'm not allowed to send the data to any cloud service.
+
+I was thinking to implement the following workflow:
+
+* Use OBS(i'm working on mac) to capture screen and audio/voice
+* Use whisper transcription to create the transcription
+* Use some local llm to organize the doc and generate output in sphinx format
+* Once in sphinx format i'll double check and adjust the output
+
+Now, my questions are:
+
+* did someone had a similar use case? How do you deal with it?
+* what local llm is better to use?
+* Is there any local app/model i can use that takes i input the audio/file and create the doc with also screenshots? Currently, i have to add them manually when editing the sphinx format, but it would be nice to have them already there.
+
+Thanks.",https://reddit.com/r/LocalLLM/comments/1jp7mw1/workflow_for_recording_audiovideo_transcript_and/,1,transcription,transcribe audio,Information Search,Summarize,create the transcription|organize the doc and generate output|generate output in sphinx format,"Tasks involve transcription, document organization, and format generation."
+,,mkv78x6,comment,LocalLLaMA,2025-04-01,small_local,,"I'm personally still very much in the ""experiment with everything with no rhyme or reason"" phase, but I've had great success playing with batched inference with MLX (which unfortunately isn't available with the official mlx-lm package, but does exist at https://github.com/willccbb/mlx\_parallm). I've got a few projects in mind, but haven't started working on them in earnest yet.
+
+For chat use cases, the machine works really well with prompt caching and DeepSeek V3 and R1.
+
+I'm optimistic about the ability for me and my family to use this machine to ensure privacy of LLM interactions, to eventually plug AI into various automations that I want to build, and I am also very optimistic that speeds will improve over time.",https://reddit.com/r/LocalLLaMA/comments/1jnzq51/pc_build_run_deepseekv30324671bq8_locally_68_toks/mkv78x6/,1,task automation,build AI automations,Automation,Automation,ensure privacy of LLM interactions|plug AI into various automations,User plans to ensure privacy and build automations.
+,,ml8h7wg,comment,LocalLLaMA,2025-04-03,small_local,,"Yeah, I suppose it's very use case dependent. I was thinking more along the line of other sources of PDFs, which may contain company data of various types, sometimes in the form of pictures like photos or schematics or diagrams or figures and illustrations with a lot of visual information that's non-textual and other forms of graphics in general. For a RAG setup, you kind of have two main approaches. Either you have the LLM interpret the image and generate a chunk of text describing what the image is trying to convey or what it contains or any such form of textual description. Or you can detect the location of the image and you can extract it and using the ID of the image you can insert an inline reference in the text to where the image is supposed to be. And then when you do retrieval you can retrieve the image and send it along with the text to a multimodal model and then have the multimodal model tokenize both the image as image tokens and the text as text tokens and then answer out whatever questions you have. Of course, you cannot do retrieval with images very easily in a RAG setup. So if the if you're going to match the user query to the content in images you kind of have to interpret it and convert it to text to do the retrieval part. So there's a design choice there as well. By the way, I dictated this with speech-to-text, that's why it's so long and poorly structured. But I'm on my phone right now, so I don't want to type it.",https://reddit.com/r/LocalLLaMA/comments/1jqhgzq/confused_with_too_many_llm_benchmarks_what/ml8h7wg/,1,scripting,generate image description,Creation,Artifact,LLM interpret the image|generate a chunk of text describing|detect the location of the image|extract it and using the ID|insert an inline reference in the text,Tasks involve image processing and text generation.
+,,1jrkdjh,submission,selfhosted,2025-04-04,small_local,"Trying to build self-hosted AI to automate legal drafting using 10K+ past documents — GPT &amp; Gemini failed, need advice","**TL;DR:**  
+Elder law attorney trying to build a secure AI system to auto-draft legal documents using 10,000+ past HotDocs and Word files. GPT and Gemini failed. Need recommendations for local/hybrid LLMs, document templating, and tools that can learn from past work without sharing sensitive data.
+
+I’m trying to replace an outdated HotDocs workflow with something smarter, secure, and efficient. If you’ve tackled anything like this — or have ideas for tools or architecture — I’d really appreciate your insight.
+
+Thanks in advance.
+
+**Elder Law Attorney Using 10K Past Cases to Build Secure AI Document Drafter — Need Stack Recs After GPT &amp; Gemini Fails**
+
+I'm an elder law attorney trying to build a secure, AI-driven system to auto-draft legal documents for guardianship and estate planning.
+
+We have over 10,000 completed client files from past cases — filled-out HotDocs templates, Word docs, and PDFs. The goal isn’t to mass-generate documents, but to teach the system how we structure and draft legal documents so we can use that knowledge to generate accurate drafts for new clients.
+
+**What We Tried (and Why It Failed):**
+
+We tested ChatGPT and Gemini. Both failed for real-world legal use:
+
+* Token limits made it impossible to process long or multiple documents
+* No persistent memory or learning from examples
+* Could not retain structure or logic from prior cases
+* Struggled with legal formatting (Word/RTF)
+* Could not scale or process documents for variable extraction
+* No way to handle updates to legal rules or logic
+
+They’re decent for Q&amp;A — but completely unusable for this kind of automation.
+
+**Our Current Environment:**
+
+* Office 365 with Word templates and OneDrive file storage
+* Thin clients with limited local storage
+* Staff works in shared OneDrive folders to review/finalize documents
+* Document types: guardianships, wills, POAs, trusts, court letters, client communications
+
+**What We’re Trying to Build:**
+
+* Learn from our 10,000+ past documents (struc",https://reddit.com/r/selfhosted/comments/1jrkdjh/trying_to_build_selfhosted_ai_to_automate_legal/,1,task automation,automate legal drafting,Automation,Automation,auto-draft legal documents,The task is to automate drafting using past documents.
+,,1jsmnsh,submission,LocalLLM,2025-04-06,small_local,Best bang for buck hardware for basic LLM usage?,"Hi all,
+
+I'm just starting to dip my toe into local llm research and am getting overwhelmed by all the different opinions I've read, so thought I'd make a post here to at least get a centralized discussion. 
+
+I'm interested in running a local LLM for basic Home Assistant usage voice recognition (smart home commands and basic queries like weather). As a ""nice to have"", would be great if it could be used for, like, document summary, but my budget is limited and I'm not working on anything particularly sensitive, so cloud llms are okay. 
+
+The hardware options I've come across so far are: Mac Mini M4 24GB ram, Nvidia Jetson Orin Nano (just came across this), a dedicated GPU (though I'd also need to buy everything else to build out a desktop pc), or the new Framework Desktop computer. 
+
+I guess, my questions are: 
+1. Which option (either listed or not listed) is the cheapest option to offer an ""adequate"" experience for the above use case?
+2. Which option (either listed or not listed) is considered to be the ""best value"" system (not necessarily cheapest)?
+
+Thanks in advance for taking the time to reply!",https://reddit.com/r/LocalLLM/comments/1jsmnsh/best_bang_for_buck_hardware_for_basic_llm_usage/,1,summarization,summarize documents,Information Search,Summarize,document summary,User is interested in document summarization as a potential task.
+,,1jso257,submission,selfhosted,2025-04-06,small_local,Screenpipe: Open-source alternative to Rewind - Run your own AI-powered screen capture locally,"    Accessing via localhost:3000 gives you a clean chat interface. The OCR capabilities are impressive - it can read and analyze anything on your screen in real-time.
+    
+    Great for:
+    • Meeting recordings &amp; summaries
+    • Personal knowledge management
+    • Workflow analysis
+    • Interview recordings
+    • Privacy-focused screen capture
+    
+
+    Just discovered Screenpipe - an amazing open-source alternative to Rewind that prioritizes privacy. Key features that got me excited:
+    
+    • Fully local processing - all data stays on your machine
+    • Built in Rust for performance
+    • Works with both OpenAI and local LLMs
+    • Real-time screen &amp; audio capture with AI analysis
+    • Perfect for meeting summaries and workflow optimization
+    
+    Accessing via localhost:3000 gives you a clean chat interface. The OCR capabilities are impressive - it can read and analyze anything on your screen in real-time.
+    
+    Great for:
+    • Meeting recordings &amp; summaries
+    • Personal knowledge management
+    • Workflow analysis
+    • Interview recordings
+    • Privacy-focused screen capture
+    
+
+
+
+",https://reddit.com/r/selfhosted/comments/1jso257/screenpipe_opensource_alternative_to_rewind_run/,1,summarization,summarize meeting recordings,Information Search,Summarize,meeting recordings & summaries|workflow analysis,Tasks inferred from feature list and use cases.
+,,mlp7z86,comment,LocalLLaMA,2025-04-06,small_local,,"Yea but compared to alternatives it’s pretty bad. I can also load a 24b param llm for local tasks and get better tok/s for tasks I automate and if I need coding I’d just use a qwen coder based model (in the extremely rare case I use local llms) or something closed source like o1 or Gemini. 
+
+All I’m saying is it’s not the best for anything realistically. It’s not in the top 5 llms which means I don’t use it for performance and it’s not the smallest ones either so I don’t use it cuz it’s small and good. It’s just in the middle, idk a use case for this tbh.",https://reddit.com/r/LocalLLaMA/comments/1jsrz5v/109b_vs_24b_whats_this_benchmark/mlp7z86/,1,task automation,automate tasks,Automation,Automation,tasks I automate,User automates tasks with local LLMs.
+,,1jtm085,submission,LocalLLaMA,2025-04-07,small_local,Learning LLM Engineering From Scratch - Hands-On Approach,"I'm looking to dive deep into LLM engineering with a hands-on approach. I'm a masters student at a good university and eager to learn by actually building and training models rather than just theory.
+
+**My hardware setup:**
+- Access to a GPU cluster where I can use up to 8 GPUs simultaneously
+- Available GPU types include:
+  * NVIDIA A40 (46GB VRAM)
+  * NVIDIA TITAN RTX (24GB VRAM)
+- CPUs include AMD EPYC 7543 (64 cores) and Intel Xeon Gold 6132
+- 503GB system RAM on some nodes
+- High-speed interconnect for distributed training
+
+**What I'm hoping to learn:**
+1. Train a small LLM from scratch (100M-250M parameters for feasibility)
+2. Fine-tuning techniques
+3. Knowledge distillation methods
+4. Model quantization workflows
+5. Post-training optimization steps
+6. Eventually add vision capabilities
+7. Reinforcement learning applications for LLMs
+
+I'm looking for resources like:
+- Step-by-step guides
+- Open-source projects I can follow
+- Recommended open datasets
+- GitHub repositories with good documentation
+- Tutorial series that walk through the entire pipeline
+
+While I understand good results take time and expertise, I'm focusing on understanding the entire process and building practical skills.
+
+Is what I'm trying to do reasonable with my hardware setup? Any suggestions for specific projects, resources, or learning paths I should consider?
+
+I know I'm asking for a lot, but I imagine many people here are in a similar boat trying to learn these skills. Hopefully, the responses to this post can become a useful resource for others looking to explore LLM engineering as well.",https://reddit.com/r/LocalLLaMA/comments/1jtm085/learning_llm_engineering_from_scratch_handson/,1,fine-tuning models,learn fine-tuning techniques,Information Search,Learn,Train a small LLM from scratch|Fine-tuning techniques|Knowledge distillation methods|Model quantization workflows|Post-training optimization steps|Eventually add vision capabilities|Reinforcement learning applications for LLMs,The user aims to learn and create various LLM-related tasks.
+,,1jubtvw,submission,selfhosted,2025-04-08,small_local,Agent Heroes - Automate your characters with images and videos,"Hi community :)
+
+I love creating pictures and video on socials using things like ChatGPT and Mid-journey and convert it to video on Replicate and Fal.
+
+But I realized it's super time consuming 😅
+
+So I created a AgentHeroes, a repository to train models, generate pictures, video and schedule it on social media.
+
+[https://github.com/agentheroes/agentheroes](https://github.com/agentheroes/agentheroes)
+
+Not sure if it's something anybody needs so happy for feedback.
+
+Of course a star would be awesome too 💕
+
+**Here is what you can do:**
+
+* Connect different services like Fal, Replicate, ChatGPT, Runway, etc.
+* Train images based on models you upload or using models that create characters.
+* Generate images from all the models or use the trained model.
+* Generate video from the generated image
+* Schedule it on social media (currently I added only X, but it's modular)
+* Build agents that can be used with an API or scheduler (soon MCP):
+   * Check reddit posts
+   * Generate a character based on that post
+   * Make it a video
+   * Schedule it on social media
+
+**Everything is fully open-source AGPL-3 :)**
+
+**Some notes:**
+
+Backend is fully custom, no AI was used but the frontend is fully vibe code haha, it took me two weeks to develop it instead of of a few months.
+
+There is a full-working docker so you can easily deploy the project.
+
+**Future Feature:**
+
+* Connect ComfyUI workflow
+* Use local LLMs
+* Add MCPs
+* Add more models
+* Add more social medias to schedule to
+
+  
+And of course, let me know what else is missing :)
+
+",https://reddit.com/r/selfhosted/comments/1jubtvw/agent_heroes_automate_your_characters_with_images/,1,planning / scheduling,schedule social media posts,Automation,Automation,Generate images from all the models|Generate video from the generated image|Schedule it on social media,Tasks involve creation and automation of media content.
+,,1jxiz2y,submission,LocalLLaMA,2025-04-12,small_local,Strategies for Preserving Long-Term Context in LLMs?,"I'm working on a project that involves handling long documents where an LLM needs to continuously generate or update content based on previous sections. The challenge I'm facing is maintaining the necessary context across a large amount of text—especially when it exceeds the model’s context window.
+
+Right now, I'm considering two main approaches:
+
+1. **RAG (Retrieval-Augmented Generation):** Dynamically retrieving relevant chunks from the existing text to feed back into the prompt. My concern is that important context might sometimes not get retrieved accurately.
+2. **Summarization:** Breaking the document into chunks and summarizing earlier sections to keep a compressed version of the past always in the model’s context window.
+
+It also seems possible to combine both—summarizing for persistent memory and RAG for targeted details.
+
+I’m curious: are there any other techniques or strategies that people have used effectively to preserve long-term context in generation workflows?",https://reddit.com/r/LocalLLaMA/comments/1jxiz2y/strategies_for_preserving_longterm_context_in_llms/,1,summarization,summarize document sections,Information Search,Summarize,generate or update content|summarizing earlier sections,The post discusses strategies for content generation and summarization.
+,,1jy4slk,submission,LocalLLaMA,2025-04-13,small_local,Which LLMs Know How to Code with LLMs?,"Hello, I'm looking for advice on the most up-to-date coding-focused open source LLM that can assist with programmatically interfacing with other LLMs. My project involves making repeated requests to an LLM using tailored prompts combined with fragments from earlier interactions. 
+
+I've been exploring tools like OpenWebUI, Ollama, SillyTavern, and Kobold, but the manual process seems tedious (can it be programmed?). I'm seeking a more automated solution that ideally relies on Python scripting. 
+
+I'm particularly interested in this because I've often heard that LLMs aren't very knowledgeable about coding with LLMs. Has anyone encountered a model or platform that effectively handles this use case? Any suggestions or insights would be greatly appreciated!",https://reddit.com/r/LocalLLaMA/comments/1jy4slk/which_llms_know_how_to_code_with_llms/,1,task automation,automate LLM interfacing,Automation,Automation,seeking a more automated solution,User seeks to automate interactions with LLMs using Python.
+,,mmvaic9,comment,LocalLLaMA,2025-04-13,small_local,,"Gemini2.5 pro for coding at work (paid license). Same model for teaching me things (it can give excellent examples with real numbers if you ask it), making architecture (software) decisions
+Gemini 2 pro/flash and Codestral for hobby stuff and regular prompts like ""rewrite this function to take into account duplicates in input data""
+Local llms - qwen2.5 (3/7/14b) for my experiments and PoCs (RAGs, workflows which require tool calling, playing with lora)
+I do coding tasks with Continue.dev and local models serve with lm studio
+Openai models for some reason don't give me same consistency",https://reddit.com/r/LocalLLaMA/comments/1jxu0f7/we_should_have_a_monthly_which_models_are_you/mmvaic9/,1,creative writing,rewrite function,Advice,Improve,teaching me things|making architecture (software) decisions|rewrite this function to take into account duplicates,"Tasks involve learning, decision-making, and improving code."
+,,mmtmra2,comment,LocalLLaMA,2025-04-13,small_local,,"It is insane how good deep research is, I use it for searching for a shitload of archeology research, since most really is nitpicky and doesn't ever hit the news till something huge hits. 
+
+I switch between Claude Sonnet 3.7 thinking, R1 and GPT4.5 for creativity tasks. Sonnet usually does the draft and R1 does the rest. Sonnet 3.7 and 4.5 to judge it. 
+
+What used to take me a few days or weeks to do, like 12k words or so, now takes 6 hours. Reminder, though, I rewrite everything because LLMs are just not dynamic enough and get stuck using certain words, but the general outline is there. And since LLMs did it, I am not getting as significant editorial blindness, and use judge cards to nitpick stuff or give me the green light.
+
+Claude Sonnet 3.7 and gpt 4.5 are amazing at simply giving me so much lexical choice or sentence structure related opinions, they are so smart. GPT4-anything is sometimes bad with more, sometimes giving it as little to work with makes it shine. Claude on the other hand ... i sometimes write 4-12k context and tell it to rip. 
+
+Then there is deepseek. Deepseek r1 is a wildcard after drafting. It loves to write 'a mix of' because it likely was heavily made with gpt and claude sonnet made datasets, but if you ignore that, it shines. You want to write the most fucked thing you ever put to pen? R1 will make it worse. Want to have the most insane dialogue? It goes in. You write your character is a cunt? Your life is joeover.
+
+Deepseek r1 and 3.7 (thinking) have peak moments of brilliance, they are schizophrenic models that has had me second guessing if they weren't me, picking up on the subtlest of nuances and direction I want to go in. R1 likes to go off the rails tho, and in the most beautiful ways. All my most favorite dialogues from certain characters are from that model.",https://reddit.com/r/LocalLLaMA/comments/1jxu0f7/we_should_have_a_monthly_which_models_are_you/mmtmra2/,1,creative writing,rewrite content,Advice,Improve,searching for a shitload of archeology research|Sonnet usually does the draft|I rewrite everything|judge it|sentence structure related opinions,"Multiple tasks involving search, drafting, rewriting, and validation."
+,,1jynhz3,submission,selfhosted,2025-04-14,small_local,What if NAS could think? How far can AI go with local storage?,"I've been playing around with some built-in AI features on my NAS lately, stuff like automatic photo tagging, OCR for text recognition, and identifying people and objects in images. Honestly, it’s pretty cool and fun to play with, but I’m not sure I have many practical use cases for it in my daily life.
+
+So I'm wondering being able to run a full-fledged AI directly on my NAS (sth like my personal ChatGPT model trained specifically on my local files). So that it could help me organize data, summarize documents, generate insights from photos or notes, and answer questions using just locally stored content. And the best part would be total privacy—no need to upload stuff to cloud to use the AI features.
+
+Do y'all think NAS devices could realistically become our private AI-powered knowledge hub in the future? Would you trust NAS to handle that much responsibility? Curious to hear what everyone thinks!",https://reddit.com/r/selfhosted/comments/1jynhz3/what_if_nas_could_think_how_far_can_ai_go_with/,1,summarization,summarize documents,Information Search,Summarize,help me organize data|summarize documents|generate insights from photos or notes|answer questions using just locally stored content,Tasks involve automation and information search using local AI.
+,,1k1vvy3,submission,LocalLLaMA,2025-04-18,small_local,"No API keys, no cloud. Just local Al + tools that actually work. Too much to ask?","It's been about a month since we first posted Clara here.
+
+Clara is a local-first Al assistant - think of it like ChatGPT, but fully private and running on your own machine using Ollama.
+
+Since the initial release, I've had a small group of users try it out, and I've pushed several updates based on real usage and feedback.
+
+The biggest update is that Clara now comes with n8n built-in.
+
+That means you can now build and run your own tools directly inside the assistant - no setup needed, no external services. Just open Clara and start automating.
+
+With the n8n integration, Clara can now do more than chat. You can use it to:
+
+• Check your emails
+• Manage your calendar
+• Call APIs
+• Run scheduled tasks
+• Process webhooks
+• Connect to databases
+• And anything else you can wire up using n8n's visual flow builder
+
+The assistant can trigger these workflows directly - so you can talk to Clara and ask it to do real tasks, using tools that run entirely on your
+
+device.
+
+Everything happens locally. No data goes out, no accounts, no cloud dependency.
+
+If you're someone who wants full control of your Al and automation setup, this might be something worth trying.
+
+You can check out the project here:
+
+GitHub: https://github.com/badboysm890/ClaraVerse
+
+Thanks to everyone who's been trying it and sending feedback. Still improving things - more updates soon.
+
+Note: I'm aware of great projects like OpenWebUI and LibreChat. Clara takes a slightly different approach - focusing on reducing dependencies, offering a native desktop app, and making the overall experience more user-friendly so that more people can easily get started with local Al.",https://reddit.com/r/LocalLLaMA/comments/1k1vvy3/no_api_keys_no_cloud_just_local_al_tools_that/,1,planning / scheduling,run scheduled tasks,Automation,Automation,Check your emails|Manage your calendar|Call APIs|Run scheduled tasks|Process webhooks|Connect to databases,Tasks are automated using n8n integration.
+,,1k3ncwp,submission,LocalLLM,2025-04-20,small_local,Suggestions for raspberry pi LLMs for code gen,"Hello, I'm looking for a locally runnable LLM on raspberry pi 5 or a similar single board computer with 16 GB ram. My use case is generating scripts either in Json, Yaml or any similar format based on some rules and descriptions i have in a pdf i.e. RAG. The LLM doesn't need to be good at anything else however it should have decent reasoning capability, for example: if some asks should they want to go out somewhere for dinner, the LLM should be able to search for different necessary apis for that task in pdf provided such as current location api, nearby restaurants, their timings and among other things ask user if they want to book uber and so on and in the end generate a json script. This is just one example for what i want to achieve. Is there any LLM that could do such thing with acceptable latency while running on a raspberry pi? Do i need to fine tune LLM for that? 
+
+P. S. Sorry if i am asking a stupid or obvious question, I'm new to LLM and RAGs. ",https://reddit.com/r/LocalLLM/comments/1k3ncwp/suggestions_for_raspberry_pi_llms_for_code_gen/,1,scripting,generate scripts,Creation,Artifact,"generating scripts either in Json, Yaml|search for different necessary apis|generate a json script",User wants to generate scripts and search APIs.
+,,1k3ncwp,submission,LocalLLM,2025-04-20,small_local,Suggestions for raspberry pi LLMs for code gen,"Hello, I'm looking for a locally runnable LLM on raspberry pi 5 or a similar single board computer with 16 GB ram. My use case is generating scripts either in Json, Yaml or any similar format based on some rules and descriptions i have in a pdf i.e. RAG. The LLM doesn't need to be good at anything else however it should have decent reasoning capability, for example: if some asks should they want to go out somewhere for dinner, the LLM should be able to search for different necessary apis for that task in pdf provided such as current location api, nearby restaurants, their timings and among other things ask user if they want to book uber and so on and in the end generate a json script. This is just one example for what i want to achieve. Is there any LLM that could do such thing with acceptable latency while running on a raspberry pi? Do i need to fine tune LLM for that? 
+
+P. S. Sorry if i am asking a stupid or obvious question, I'm new to LLM and RAGs. ",https://reddit.com/r/LocalLLM/comments/1k3ncwp/suggestions_for_raspberry_pi_llms_for_code_gen/,1,scripting,generate json script,Creation,Artifact,"generating scripts either in Json, Yaml|search for different necessary apis|generate a json script",User wants to generate scripts and search APIs.
+,,mo4r12b,comment,LocalLLM,2025-04-20,small_local,,"I ran my results through ChatGPT to have it summarize them. Note that qwen performed better producing results for internal professionals to use but Gemma produced results targeted more for external people to use. Our goal was to speed up our internal processes. 
+
+⸻
+
+We tested several open-source LLMs (7B–9B class) to see which are best at generating legal and business templates (contracts, policies, etc.). We ran each model through classification and document drafting tasks and scored the outputs for clarity, structure, legal accuracy, and how much editing they’d need before use. Here’s what we learned.
+
+⸻
+
+LLM Evaluation: Best Open-Source Models for Business/Legal Templates
+
+Models Tested
+
+Model	Size	Notes
+Qwen2.5:7B	7B	Most usable outputs; clean, simple structure; minimal editing needed.
+Gemma 2:9B	9B	More formal and polished; great for client-facing docs. Slightly heavier output.
+LLaMA 3.1:8B	8B	Overwrites prompts with business jargon or policy content. Added fluff.
+DeepSeek R1:8B	8B	Reasoning-heavy. Produced explanations, not usable contracts.
+
+
+
+⸻
+
+Test Process
+	•	Classification: Determine if HR/legal review is needed and what components the document should include.
+	•	Drafting: Generate the full legal/business document (e.g., NDA, LLC agreement, policy).
+	•	Scoring: Evaluate based on usefulness to a human reviewer.
+
+⸻
+
+Scoring Criteria (1–5 scale)
+
+Category	Description
+Purpose Alignment	Matches the intended function?
+Formatting/Structure	
+Legal Soundness	
+Review Efficiency	
+Clarity &amp; Tone	
+
+
+
+⸻
+
+Results: 16 Documents Evaluated
+
+Model	Avg Score (out of 25)	Best For
+Qwen2.5	24.9	Internal templates, fast review, low-friction contracts
+Gemma 2	22.9	Client-facing docs, customization, polished legal drafts
+Mistral, Yi, Openhermes eliminated early in testing
+
+
+
+⸻
+
+✅ Why Qwen2.5 Was Best
+	•	Simple, clean, and to the point
+	•	Easy to automate for batch jobs
+	•	High-quality legal tone without over-complication
+
+✅ Why Gemma 2 Was Strong
+	•	Excellent clause formatting",https://reddit.com/r/LocalLLM/comments/1k3s1y0/good_professional_8b_local_model/mo4r12b/,1,summarization,summarize results,Information Search,Summarize,have it summarize them,The user uses ChatGPT to summarize results.
+,,1k48on7,submission,LocalLLM,2025-04-21,small_local,"I made a Grammarly alternative without clunky UI. It's completely free with Gemini Nano (Chrome's Local LLM). It helps me with improving my emails, articulation, and fixing grammar.",,https://reddit.com/r/LocalLLM/comments/1k48on7/i_made_a_grammarly_alternative_without_clunky_ui/,1,proofreading,fix grammar,Advice,Improve,"improving my emails|improving my emails, articulation|fixing grammar",Three distinct improvement tasks mentioned.
+,,mo86kmm,comment,LocalLLM,2025-04-21,small_local,,"Hey!
+
+I am a heavy user of ChatGPT to turn my emails to professional tone. And also making other changes by prompting ChatGPT in natural language. So, I wanted to simplify my workflow and built a Chrome extension to do it right inside the Gmail. It also works on all the popular sites including Outlook, Medium, Substack, Google Docs, LinkedIn, etc.
+
+Link: [https://wandpen.com/](https://wandpen.com/)
+
+It's completely free with Gemini Nano. 
+
+There are a bunch of ready made prompts to improve your writing. Also, you can write your own prompt to transform your writing for example - ""translate this to mandarin"".
+
+You can use the app to chat with LLMs for general inquiry rather than writing. 
+
+Please share your feedback. Thanks. :)",https://reddit.com/r/LocalLLM/comments/1k48on7/i_made_a_grammarly_alternative_without_clunky_ui/mo86kmm/,1,translation,translate text to mandarin,Creation,Artifact,turn my emails to professional tone|translate this to mandarin,Improving tone and translating are distinct tasks.
+,,mobr2zr,comment,selfhosted,2025-04-21,small_local,,"ooo this is really cool, thanks for sharing! I have yet to run this locally but it looks like a perfect solution to two workflow related problems i've wanted to solve  
+1. Teams meeting transcription - generating action items / summary as well as a live transcription in case im not paying attention and i need to catch up  
+2. Note to self while driving / walking - for this I was planning on implementing a simple JS website/mobile app with openai whisper. Could be as simple as a todo, or a more ambitious brainstorming tool that I could talk to for 10+ minutes.
+
+When I have time this week I will pull this locally and mess around with 1. and 2. above
+
+I don't have a ton of relevant work published on this but one key interest is ""Inserting"" notes / thoughts / ideas / todos etc... into my note vault as easily as possible. I hate the context switching of going from \`Idea -&gt; open obsidian -&gt; find the correct file -&gt; try to remember my idea and write it down\`
+
+Around a year ago I made this: [https://github.com/bs7280/Alfred-Note-Capture](https://github.com/bs7280/Alfred-Note-Capture) 
+
+which is an Alfred plugin - a mac only paid workflow tool + program launcher - but im in the process of making a more platform agnostic tool to interact with markdown documents the same way. [https://github.com/bs7280/TreeNotes](https://github.com/bs7280/TreeNotes) still in a fairly crude WIP state but the core features are there.
+
+I have a grand vision of having a central knowledge base made up of markdown files, and a suite of tools I can use to interact with it, I actually started this note system in something called Dendron [https://www.dendron.so/](https://www.dendron.so/) but it can be interchangeably used with obsidian via some plugins.",https://reddit.com/r/selfhosted/comments/1k4nl6u/what_software_did_you_wish_was_open_source_or/mobr2zr/,1,transcription,transcribe Teams meeting,Creation,Artifact,Teams meeting transcription|generating action items / summary|live transcription|Note to self while driving / walking,Tasks involve transcription and summarization for meetings and personal notes.
+,,mobr2zr,comment,selfhosted,2025-04-21,small_local,,"ooo this is really cool, thanks for sharing! I have yet to run this locally but it looks like a perfect solution to two workflow related problems i've wanted to solve  
+1. Teams meeting transcription - generating action items / summary as well as a live transcription in case im not paying attention and i need to catch up  
+2. Note to self while driving / walking - for this I was planning on implementing a simple JS website/mobile app with openai whisper. Could be as simple as a todo, or a more ambitious brainstorming tool that I could talk to for 10+ minutes.
+
+When I have time this week I will pull this locally and mess around with 1. and 2. above
+
+I don't have a ton of relevant work published on this but one key interest is ""Inserting"" notes / thoughts / ideas / todos etc... into my note vault as easily as possible. I hate the context switching of going from \`Idea -&gt; open obsidian -&gt; find the correct file -&gt; try to remember my idea and write it down\`
+
+Around a year ago I made this: [https://github.com/bs7280/Alfred-Note-Capture](https://github.com/bs7280/Alfred-Note-Capture) 
+
+which is an Alfred plugin - a mac only paid workflow tool + program launcher - but im in the process of making a more platform agnostic tool to interact with markdown documents the same way. [https://github.com/bs7280/TreeNotes](https://github.com/bs7280/TreeNotes) still in a fairly crude WIP state but the core features are there.
+
+I have a grand vision of having a central knowledge base made up of markdown files, and a suite of tools I can use to interact with it, I actually started this note system in something called Dendron [https://www.dendron.so/](https://www.dendron.so/) but it can be interchangeably used with obsidian via some plugins.",https://reddit.com/r/selfhosted/comments/1k4nl6u/what_software_did_you_wish_was_open_source_or/mobr2zr/,1,transcription,transcribe live meeting,Creation,Artifact,Teams meeting transcription|generating action items / summary|live transcription|Note to self while driving / walking,Tasks involve transcription and summarization for meetings and personal notes.
+,,mpfsbcm,comment,selfhosted,2025-04-28,small_local,,"Some cool ones I’ve found useful (all run well in Docker or LXC):
+
+1. [**BoloSign**]() – eSignature platform for signing PDFs, sending contracts, and collecting signatures securely with audit trails and templates.
+2. [**PDF Maker**](https://thepdfmaker.com/) – automate PDF generation from your forms, CRM data, or spreadsheets (great for invoices, proposals, reports, contracts).
+3. [**Paperless-ngx**](https://github.com/paperless-ngx/paperless-ngx) – a document management system for scanning, tagging, and archiving your files.
+4. [**Forgejo**](https://forgejo.org/) – self-hosted Git service, lightweight and open-source.
+5. [**MinIO**](https://min.io/) – high-performance, S3-compatible object storage, great for private cloud setups.
+6. [**Changedetection.io**](https://github.com/dgtlmoon/changedetection.io) – easily track changes on web pages, super helpful for monitoring updates.
+7. [**LocalAI**](https://github.com/go-skynet/LocalAI) – run LLMs and AI models locally for image generation, chat, and more without relying on external APIs.
+
+ If you like automation, check out [**n8n**](https://n8n.io/) for no-code/low-code workflow automation too!",https://reddit.com/r/selfhosted/comments/1k9fmjn/apps_you_recommend/mpfsbcm/,1,task automation,automate PDF generation,Automation,Automation,automate PDF generation from your forms|track changes on web pages,Tasks involve automation of PDF creation and web page monitoring.
+,,1kam3sf,submission,LocalLLaMA,2025-04-29,small_local,Qwen3 is really good at MCP/FunctionCall,"I've been keeping an eye on the performance of LLMs using MCP. I believe that MCP is the key for LLMs to make an impact on real-world workflows. I've always dreamed of having a local LLM serve as the brain and act as the intelligent core for smart-home system.
+
+Now, it seems I've found the one. Qwen3 fits the bill perfectly, and it's an absolute delight to use. This is a test for the best local LLMs. I used Cherry Studio, MCP/server-file-system, and all the models were from the free versions on OpenRouter, without any extra system prompts. The test is pretty straightforward. I asked the LLMs to write a poem and save it to a specific file. The tricky part of this task is that the models first have to realize they're restricted to operating within a designated directory, so they need to do a query first. Then, they have to correctly call the MCP interface for file - writing. The unified test instruction is:
+
+`Write a poem, an aria, with the theme of expressing my desire to eat hot pot. Write it into a file in a directory that you are allowed to access.`
+
+Here's how these models performed.
+
+|Model/Version|Rating|Key Performance|
+|:-|:-|:-|
+|**Qwen3-8B**|⭐⭐⭐⭐⭐|🌟 Directly called `list_allowed_directories` and `write_file`, executed smoothly|
+|**Qwen3-30B-A3B**|⭐⭐⭐⭐⭐|🌟 Equally clean as Qwen3-8B, textbook-level logic|
+|**Gemma3-27B**|⭐⭐⭐⭐⭐|🎵 Perfect workflow + friendly tone, completed task efficiently|
+|**Llama-4-Scout**|⭐⭐⭐|⚠️ Tried system path first, fixed format errors after feedback|
+|**Deepseek-0324**|⭐⭐⭐|🔁 Checked dirs but wrote to invalid path initially, finished after retries|
+|**Mistral-3.1-24B**|⭐⭐💫|🤔 Created dirs correctly but kept deleting line breaks repeatedly|
+|**Gemma3-12B**|⭐⭐|💔 Kept trying to read non-existent `hotpot_aria.txt`, gave up apologizing|
+|**Deepseek-R1**|❌|🚫 Forced write to invalid Windows `/mnt` path, ignored error messages|",https://reddit.com/r/LocalLLaMA/comments/1kam3sf/qwen3_is_really_good_at_mcpfunctioncall/,1,creative writing,write poem,Creation,Artifact,asked the LLMs to write a poem|save it to a specific file,Two tasks: creating and saving a poem.
+,,1katfn4,submission,selfhosted,2025-04-29,small_local,"Full-stack, self-hosted Google Meet transcription + live-translation—fork and tailor in minutes with Cursor (scales to any team)","I just open-sourced a plug-and-play front-end for the Apache 2.0 [Vexa API](https://github.com/Vexa-ai/vexa) bot that can join a Google Meet and stream real-time audio.  
+The goal: give you a *working baseline* that you can vibe-code to  reshape into a meeting assistant that matches your exact workflow—usually in **minutes, not months**.
+
+# Key features out of the box
+
+|Feature|Details|
+|:-|:-|
+|**Live transcription**🔊|1 sec latency|
+|**On-the-fly translation** |Switch target language mid-call (FR/ES/DE/…)|
+|**Instant export**|Markdown or .vtt; pipe to LLM summarizers or docs|
+|**Self-hosted**|no external SaaS; data stays with you|
+|**Hack-friendly**|Clean TypeScript + FastAPI; WebSocket event bus; modular UI|
+|**Scales**|Works for a 1-person lab or a 50-person org—just add CPU/GPU|
+
+# 
+
+# Links &amp; docs
+
+* **Client repo:** [https://github.com/Vexa-ai/vexa\_example\_client](https://github.com/Vexa-ai/vexa_example_client)
+* **Core Vexa API:** [https://github.com/Vexa-ai/vexa](https://github.com/Vexa-ai/vexa)
+* **3-min demo video:** [**https://www.youtube.com/watch?v=bA\_4DVDO\_KM**](https://www.youtube.com/watch?v=bA_4DVDO_KM)
+
+Apache 2.0 license. PRs and stars welcome.  
+Let me know what you build? Google Docs? I’m all ears!
+
+Happy self-hosting! 🚀",https://reddit.com/r/selfhosted/comments/1katfn4/fullstack_selfhosted_google_meet_transcription/,4,transcription,transcribe Google Meet,Creation,Artifact,Live transcription|On-the-fly translation|Instant export,"Tasks involve transcription, translation, and exporting features."
+,,1katfn4,submission,selfhosted,2025-04-29,small_local,"Full-stack, self-hosted Google Meet transcription + live-translation—fork and tailor in minutes with Cursor (scales to any team)","I just open-sourced a plug-and-play front-end for the Apache 2.0 [Vexa API](https://github.com/Vexa-ai/vexa) bot that can join a Google Meet and stream real-time audio.  
+The goal: give you a *working baseline* that you can vibe-code to  reshape into a meeting assistant that matches your exact workflow—usually in **minutes, not months**.
+
+# Key features out of the box
+
+|Feature|Details|
+|:-|:-|
+|**Live transcription**🔊|1 sec latency|
+|**On-the-fly translation** |Switch target language mid-call (FR/ES/DE/…)|
+|**Instant export**|Markdown or .vtt; pipe to LLM summarizers or docs|
+|**Self-hosted**|no external SaaS; data stays with you|
+|**Hack-friendly**|Clean TypeScript + FastAPI; WebSocket event bus; modular UI|
+|**Scales**|Works for a 1-person lab or a 50-person org—just add CPU/GPU|
+
+# 
+
+# Links &amp; docs
+
+* **Client repo:** [https://github.com/Vexa-ai/vexa\_example\_client](https://github.com/Vexa-ai/vexa_example_client)
+* **Core Vexa API:** [https://github.com/Vexa-ai/vexa](https://github.com/Vexa-ai/vexa)
+* **3-min demo video:** [**https://www.youtube.com/watch?v=bA\_4DVDO\_KM**](https://www.youtube.com/watch?v=bA_4DVDO_KM)
+
+Apache 2.0 license. PRs and stars welcome.  
+Let me know what you build? Google Docs? I’m all ears!
+
+Happy self-hosting! 🚀",https://reddit.com/r/selfhosted/comments/1katfn4/fullstack_selfhosted_google_meet_transcription/,4,translation,translate Google Meet,Creation,Artifact,Live transcription|On-the-fly translation|Instant export,"Tasks involve transcription, translation, and exporting features."
+,,1katfn4,submission,selfhosted,2025-04-29,small_local,"Full-stack, self-hosted Google Meet transcription + live-translation—fork and tailor in minutes with Cursor (scales to any team)","I just open-sourced a plug-and-play front-end for the Apache 2.0 [Vexa API](https://github.com/Vexa-ai/vexa) bot that can join a Google Meet and stream real-time audio.  
+The goal: give you a *working baseline* that you can vibe-code to  reshape into a meeting assistant that matches your exact workflow—usually in **minutes, not months**.
+
+# Key features out of the box
+
+|Feature|Details|
+|:-|:-|
+|**Live transcription**🔊|1 sec latency|
+|**On-the-fly translation** |Switch target language mid-call (FR/ES/DE/…)|
+|**Instant export**|Markdown or .vtt; pipe to LLM summarizers or docs|
+|**Self-hosted**|no external SaaS; data stays with you|
+|**Hack-friendly**|Clean TypeScript + FastAPI; WebSocket event bus; modular UI|
+|**Scales**|Works for a 1-person lab or a 50-person org—just add CPU/GPU|
+
+# 
+
+# Links &amp; docs
+
+* **Client repo:** [https://github.com/Vexa-ai/vexa\_example\_client](https://github.com/Vexa-ai/vexa_example_client)
+* **Core Vexa API:** [https://github.com/Vexa-ai/vexa](https://github.com/Vexa-ai/vexa)
+* **3-min demo video:** [**https://www.youtube.com/watch?v=bA\_4DVDO\_KM**](https://www.youtube.com/watch?v=bA_4DVDO_KM)
+
+Apache 2.0 license. PRs and stars welcome.  
+Let me know what you build? Google Docs? I’m all ears!
+
+Happy self-hosting! 🚀",https://reddit.com/r/selfhosted/comments/1katfn4/fullstack_selfhosted_google_meet_transcription/,4,scripting,export transcription,Creation,Artifact,Live transcription|On-the-fly translation|Instant export,"Tasks involve transcription, translation, and exporting features."
+,,mq7n8p1,comment,LocalLLaMA,2025-05-02,small_local,,"It 100% is a solution for the average user. 
+
+I'm running a fairly middle of the road PC I built to game with, 
+Ryzen 5600x with an amd 7600 8gb vram graphics card and 32GB of ram. And I'm getting great results. 
+
+They aren't perfect, but I'm teaching myself to code with it,
+
+I use it for creative writing, having it work as an editor. 
+
+
+ I've got a RAG setup that's still a WIP but is providing good results. Letting me reference my lore documents and providing citations if I need to go explore more. 
+
+And I'm trying to set up an agentic workflow for other possible use cases as well. 
+
+Smarter and more capable models are getting smaller and smaller and more efficient. I can already run on my phone a more powerful LLM than the original Llama was. 
+
+Are there compromises? Yes. 
+I have to accept that 15t/s is my best case scenario for useful inference. With high context it can get down to 5-6 before I consider it unuseable
+
+If someone can't access a fairly middling PC with a made this decade graphics card, then they can't afford cutting edge LLM applications.
+
+LLMs are still an extremely new tech.",https://reddit.com/r/LocalLLaMA/comments/1kcmk4n/google_injecting_ads_into_chatbots/mq7n8p1/,1,creative writing,write creatively,Creation,Artifact,teaching myself to code|creative writing|work as an editor|reference my lore documents,"Multiple tasks involving learning, writing, editing, and referencing documents."
+,,mq7n8p1,comment,LocalLLaMA,2025-05-02,small_local,,"It 100% is a solution for the average user. 
+
+I'm running a fairly middle of the road PC I built to game with, 
+Ryzen 5600x with an amd 7600 8gb vram graphics card and 32GB of ram. And I'm getting great results. 
+
+They aren't perfect, but I'm teaching myself to code with it,
+
+I use it for creative writing, having it work as an editor. 
+
+
+ I've got a RAG setup that's still a WIP but is providing good results. Letting me reference my lore documents and providing citations if I need to go explore more. 
+
+And I'm trying to set up an agentic workflow for other possible use cases as well. 
+
+Smarter and more capable models are getting smaller and smaller and more efficient. I can already run on my phone a more powerful LLM than the original Llama was. 
+
+Are there compromises? Yes. 
+I have to accept that 15t/s is my best case scenario for useful inference. With high context it can get down to 5-6 before I consider it unuseable
+
+If someone can't access a fairly middling PC with a made this decade graphics card, then they can't afford cutting edge LLM applications.
+
+LLMs are still an extremely new tech.",https://reddit.com/r/LocalLLaMA/comments/1kcmk4n/google_injecting_ads_into_chatbots/mq7n8p1/,1,creative writing,edit writing,Advice,Improve,teaching myself to code|creative writing|work as an editor|reference my lore documents,"Multiple tasks involving learning, writing, editing, and referencing documents."
+,,1kdprjk,submission,selfhosted,2025-05-03,small_local,"Meetily AI Meeting Note Taker – Self-Hosted, Open Source Tool for Local Meeting Transcription &amp; Summarization","# Meetily v0.0.4 Pre-Release is Out! Local AI-Powered Meeting Copilot with Meeting History, OpenAI Support &amp; More
+
+Hey everyone 👋
+
+Thanks to the amazing feedback on our previous post - [Ai Meeting note taker and meeting minutes generator : Building a Fully Open-Source Local LLM-Based Ai for Recording and transcribing meetings](https://www.reddit.com/r/selfhosted/comments/1ink05v/ai_meeting_note_taker_and_meeting_minutes/)— we’ve been hard at work incorporating your suggestions and pushing Meetily forward. We’re still building in the open and improving with every release!
+
+Now introducing **Meetily v0.0.4 Pre-Release**, your local, privacy-first AI copilot for meetings. No subscriptions, no data sharing — just full control over how your meetings are captured and summarized.
+
+# What’s New in v0.0.4
+
+* **Meeting History**: All your meeting data is now stored locally and retrievable.
+* **Model Configuration Management**: Support for multiple AI providers, including OpenAI (Whisper + GPT).
+* **New UI Updates**: Cleaned up UI, new logo, better onboarding.
+* **Docker Support**: Works cross-platform with Docker (including ARM64).
+* **Windows Installer (MSI/.EXE)**: Simple double-click installs with better documentation.
+* **Backend Optimizations**: Faster processing, removed ChromaDB dependency, and better process management.
+* nstallers available for **Windows &amp; macOS**. Homebrew and Docker support included.
+* Built with FastAPI, Tauri, Whisper.cpp, SQLite, Ollama, and more.
+
+# Why Meetily?
+
+Built originally to solve a real pain in consulting — taking notes while on client calls — Meetily now supports:
+
+* ✅ Local audio recording &amp; transcription
+* ✅ Real-time note generation using local or external LLMs
+* ✅ SQLite + optional VectorDB for retrieval
+* ✅ Runs fully offline
+* ✅ Customizable with your own models and settings
+
+# 🛠️ How to Try
+
+Get started from the latest release here: 👉 [https://github.com/Zackriya-Solutions/meeting-minutes/releases/tag/v0.0.4](https:",https://reddit.com/r/selfhosted/comments/1kdprjk/meetily_ai_meeting_note_taker_selfhosted_open/,1,transcription,transcribe meetings,Information Search,Summarize,transcribing meetings|captured and summarized,The tool transcribes and summarizes meetings.
+,,1kdprjk,submission,selfhosted,2025-05-03,small_local,"Meetily AI Meeting Note Taker – Self-Hosted, Open Source Tool for Local Meeting Transcription &amp; Summarization","# Meetily v0.0.4 Pre-Release is Out! Local AI-Powered Meeting Copilot with Meeting History, OpenAI Support &amp; More
+
+Hey everyone 👋
+
+Thanks to the amazing feedback on our previous post - [Ai Meeting note taker and meeting minutes generator : Building a Fully Open-Source Local LLM-Based Ai for Recording and transcribing meetings](https://www.reddit.com/r/selfhosted/comments/1ink05v/ai_meeting_note_taker_and_meeting_minutes/)— we’ve been hard at work incorporating your suggestions and pushing Meetily forward. We’re still building in the open and improving with every release!
+
+Now introducing **Meetily v0.0.4 Pre-Release**, your local, privacy-first AI copilot for meetings. No subscriptions, no data sharing — just full control over how your meetings are captured and summarized.
+
+# What’s New in v0.0.4
+
+* **Meeting History**: All your meeting data is now stored locally and retrievable.
+* **Model Configuration Management**: Support for multiple AI providers, including OpenAI (Whisper + GPT).
+* **New UI Updates**: Cleaned up UI, new logo, better onboarding.
+* **Docker Support**: Works cross-platform with Docker (including ARM64).
+* **Windows Installer (MSI/.EXE)**: Simple double-click installs with better documentation.
+* **Backend Optimizations**: Faster processing, removed ChromaDB dependency, and better process management.
+* nstallers available for **Windows &amp; macOS**. Homebrew and Docker support included.
+* Built with FastAPI, Tauri, Whisper.cpp, SQLite, Ollama, and more.
+
+# Why Meetily?
+
+Built originally to solve a real pain in consulting — taking notes while on client calls — Meetily now supports:
+
+* ✅ Local audio recording &amp; transcription
+* ✅ Real-time note generation using local or external LLMs
+* ✅ SQLite + optional VectorDB for retrieval
+* ✅ Runs fully offline
+* ✅ Customizable with your own models and settings
+
+# 🛠️ How to Try
+
+Get started from the latest release here: 👉 [https://github.com/Zackriya-Solutions/meeting-minutes/releases/tag/v0.0.4](https:",https://reddit.com/r/selfhosted/comments/1kdprjk/meetily_ai_meeting_note_taker_selfhosted_open/,1,summarization,summarize meetings,Information Search,Summarize,transcribing meetings|captured and summarized,The tool transcribes and summarizes meetings.
+,,1kdpx7b,submission,selfhosted,2025-05-03,small_local,"A Self hosted alternative to Granola, Fireflies, Jamie and Otter -- Meetily AI Meeting Note Taker – Self-Hosted, Open Source (5K+ Github 🌟 Stars) Tool for Local Meeting Transcription &amp; Summarization","# Meetily v0.0.4 Pre-Release is Out! Local AI-Powered Meeting Copilot with Meeting History, OpenAI Support &amp; More
+
+Hey everyone 👋
+
+Thanks to the amazing feedback on our previous post - [Ai Meeting note taker and meeting minutes generator : Building a Fully Open-Source Local LLM-Based Ai for Recording and transcribing meetings](https://www.reddit.com/r/selfhosted/comments/1ink05v/ai_meeting_note_taker_and_meeting_minutes/)— we’ve been hard at work incorporating your suggestions and pushing Meetily forward. We’re still building in the open and improving with every release!
+
+Now introducing **Meetily v0.0.4 Pre-Release**, your local, privacy-first AI copilot for meetings. No subscriptions, no data sharing — just full control over how your meetings are captured and summarized.
+
+# What’s New in v0.0.4
+
+* **Meeting History**: All your meeting data is now stored locally and retrievable.
+* **Model Configuration Management**: Support for multiple AI providers, including OpenAI (Whisper + GPT).
+* **New UI Updates**: Cleaned up UI, new logo, better onboarding.
+* **Docker Support**: Works cross-platform with Docker (including ARM64).
+* **Windows Installer (MSI/.EXE)**: Simple double-click installs with better documentation.
+* **Backend Optimizations**: Faster processing, removed ChromaDB dependency, and better process management.
+* nstallers available for **Windows &amp; macOS**. Homebrew and Docker support included.
+* Built with FastAPI, Tauri, Whisper.cpp, SQLite, Ollama, and more.
+
+# Why Meetily?
+
+Built originally to solve a real pain in consulting — taking notes while on client calls — Meetily now supports:
+
+* ✅ Local audio recording &amp; transcription
+* ✅ Real-time note generation using local or external LLMs
+* ✅ SQLite + optional VectorDB for retrieval
+* ✅ Runs fully offline
+* ✅ Customizable with your own models and settings
+
+# 🛠️ How to Try
+
+Get started from the latest release here: 👉 [https://github.com/Zackriya-Solutions/meeting-minutes/releases/tag/v0.0.4](https:",https://reddit.com/r/selfhosted/comments/1kdpx7b/a_self_hosted_alternative_to_granola_fireflies/,1,transcription,transcribe meetings,Information Search,Summarize,transcribing meetings|summarized,The tool transcribes and summarizes meetings.
+,,1kdpx7b,submission,selfhosted,2025-05-03,small_local,"A Self hosted alternative to Granola, Fireflies, Jamie and Otter -- Meetily AI Meeting Note Taker – Self-Hosted, Open Source (5K+ Github 🌟 Stars) Tool for Local Meeting Transcription &amp; Summarization","# Meetily v0.0.4 Pre-Release is Out! Local AI-Powered Meeting Copilot with Meeting History, OpenAI Support &amp; More
+
+Hey everyone 👋
+
+Thanks to the amazing feedback on our previous post - [Ai Meeting note taker and meeting minutes generator : Building a Fully Open-Source Local LLM-Based Ai for Recording and transcribing meetings](https://www.reddit.com/r/selfhosted/comments/1ink05v/ai_meeting_note_taker_and_meeting_minutes/)— we’ve been hard at work incorporating your suggestions and pushing Meetily forward. We’re still building in the open and improving with every release!
+
+Now introducing **Meetily v0.0.4 Pre-Release**, your local, privacy-first AI copilot for meetings. No subscriptions, no data sharing — just full control over how your meetings are captured and summarized.
+
+# What’s New in v0.0.4
+
+* **Meeting History**: All your meeting data is now stored locally and retrievable.
+* **Model Configuration Management**: Support for multiple AI providers, including OpenAI (Whisper + GPT).
+* **New UI Updates**: Cleaned up UI, new logo, better onboarding.
+* **Docker Support**: Works cross-platform with Docker (including ARM64).
+* **Windows Installer (MSI/.EXE)**: Simple double-click installs with better documentation.
+* **Backend Optimizations**: Faster processing, removed ChromaDB dependency, and better process management.
+* nstallers available for **Windows &amp; macOS**. Homebrew and Docker support included.
+* Built with FastAPI, Tauri, Whisper.cpp, SQLite, Ollama, and more.
+
+# Why Meetily?
+
+Built originally to solve a real pain in consulting — taking notes while on client calls — Meetily now supports:
+
+* ✅ Local audio recording &amp; transcription
+* ✅ Real-time note generation using local or external LLMs
+* ✅ SQLite + optional VectorDB for retrieval
+* ✅ Runs fully offline
+* ✅ Customizable with your own models and settings
+
+# 🛠️ How to Try
+
+Get started from the latest release here: 👉 [https://github.com/Zackriya-Solutions/meeting-minutes/releases/tag/v0.0.4](https:",https://reddit.com/r/selfhosted/comments/1kdpx7b/a_self_hosted_alternative_to_granola_fireflies/,1,summarization,summarize meetings,Information Search,Summarize,transcribing meetings|summarized,The tool transcribes and summarizes meetings.
+,,1kdpzro,submission,selfhosted,2025-05-03,small_local,"A Self hosted alternative to Granola, Fireflies, Jamie and Otter - Meetily is an open source AI Meeting Note Taker with 5k+ Github Stars 🌟","# Meetily v0.0.4 Pre-Release is Out! Local AI-Powered Meeting Copilot with Meeting History, OpenAI Support &amp; More
+
+Hey everyone 👋
+
+Thanks to the amazing feedback on our previous post - [Ai Meeting note taker and meeting minutes generator : Building a Fully Open-Source Local LLM-Based Ai for Recording and transcribing meetings](https://www.reddit.com/r/selfhosted/comments/1ink05v/ai_meeting_note_taker_and_meeting_minutes/)— we’ve been hard at work incorporating your suggestions and pushing Meetily forward. We’re still building in the open and improving with every release!
+
+Now introducing **Meetily v0.0.4 Pre-Release**, your local, privacy-first AI copilot for meetings. No subscriptions, no data sharing — just full control over how your meetings are captured and summarized.
+
+# What’s New in v0.0.4
+
+* **Meeting History**: All your meeting data is now stored locally and retrievable.
+* **Model Configuration Management**: Support for multiple AI providers, including OpenAI (Whisper + GPT).
+* **New UI Updates**: Cleaned up UI, new logo, better onboarding.
+* **Docker Support**: Works cross-platform with Docker (including ARM64).
+* **Windows Installer (MSI/.EXE)**: Simple double-click installs with better documentation.
+* **Backend Optimizations**: Faster processing, removed ChromaDB dependency, and better process management.
+* nstallers available for **Windows &amp; macOS**. Homebrew and Docker support included.
+* Built with FastAPI, Tauri, Whisper.cpp, SQLite, Ollama, and more.
+
+# Why Meetily?
+
+Built originally to solve a real pain in consulting — taking notes while on client calls — Meetily now supports:
+
+* ✅ Local audio recording &amp; transcription
+* ✅ Real-time note generation using local or external LLMs
+* ✅ SQLite + optional VectorDB for retrieval
+* ✅ Runs fully offline
+* ✅ Customizable with your own models and settings
+
+# 🛠️ Links
+
+Get started from the latest release here: 👉 [https://github.com/Zackriya-Solutions/meeting-minutes/releases/tag/v0.0.4](https://git",https://reddit.com/r/selfhosted/comments/1kdpzro/a_self_hosted_alternative_to_granola_fireflies/,1,transcription,transcribe meetings,Automation,Automation,Recording and transcribing meetings|Recording and transcribing meetings|captured and summarized,Tasks are implied by the feature description.
+,,1kdpzro,submission,selfhosted,2025-05-03,small_local,"A Self hosted alternative to Granola, Fireflies, Jamie and Otter - Meetily is an open source AI Meeting Note Taker with 5k+ Github Stars 🌟","# Meetily v0.0.4 Pre-Release is Out! Local AI-Powered Meeting Copilot with Meeting History, OpenAI Support &amp; More
+
+Hey everyone 👋
+
+Thanks to the amazing feedback on our previous post - [Ai Meeting note taker and meeting minutes generator : Building a Fully Open-Source Local LLM-Based Ai for Recording and transcribing meetings](https://www.reddit.com/r/selfhosted/comments/1ink05v/ai_meeting_note_taker_and_meeting_minutes/)— we’ve been hard at work incorporating your suggestions and pushing Meetily forward. We’re still building in the open and improving with every release!
+
+Now introducing **Meetily v0.0.4 Pre-Release**, your local, privacy-first AI copilot for meetings. No subscriptions, no data sharing — just full control over how your meetings are captured and summarized.
+
+# What’s New in v0.0.4
+
+* **Meeting History**: All your meeting data is now stored locally and retrievable.
+* **Model Configuration Management**: Support for multiple AI providers, including OpenAI (Whisper + GPT).
+* **New UI Updates**: Cleaned up UI, new logo, better onboarding.
+* **Docker Support**: Works cross-platform with Docker (including ARM64).
+* **Windows Installer (MSI/.EXE)**: Simple double-click installs with better documentation.
+* **Backend Optimizations**: Faster processing, removed ChromaDB dependency, and better process management.
+* nstallers available for **Windows &amp; macOS**. Homebrew and Docker support included.
+* Built with FastAPI, Tauri, Whisper.cpp, SQLite, Ollama, and more.
+
+# Why Meetily?
+
+Built originally to solve a real pain in consulting — taking notes while on client calls — Meetily now supports:
+
+* ✅ Local audio recording &amp; transcription
+* ✅ Real-time note generation using local or external LLMs
+* ✅ SQLite + optional VectorDB for retrieval
+* ✅ Runs fully offline
+* ✅ Customizable with your own models and settings
+
+# 🛠️ Links
+
+Get started from the latest release here: 👉 [https://github.com/Zackriya-Solutions/meeting-minutes/releases/tag/v0.0.4](https://git",https://reddit.com/r/selfhosted/comments/1kdpzro/a_self_hosted_alternative_to_granola_fireflies/,1,summarization,summarize meetings,Information Search,Summarize,Recording and transcribing meetings|Recording and transcribing meetings|captured and summarized,Tasks are implied by the feature description.
+,,1kecuh2,submission,selfhosted,2025-05-04,small_local,Self Host n8n on Mac Min m4 Pro,"I have an m4 pro (48gb and 512 SSD) that I use for video content and online streaming of a course.
+
+I want to automate some of my workflow for social media as well as documentation via Notion/Calendar/Drive etc.
+
+I use or have used Zappier and more recently [Make.com](http://Make.com) to do this. Having seen and been watching n8n for a while the idea of self hosting and developing RAG systems to help with curriculum is appealing.
+
+My quesiton is can and/or is the Mac suitable for this?
+
+I have read many posst about it not being suitable and cheaper alternatives, however I have already purchased it and use the mini daily. I have a macbook air M2 for other stuff (usually when in the house or out and about) but this can be used for other workflows.
+
+Any advice would be greatly appreciated. I was also looking at buying external SSD due to LLM being a lot. Most if not all of my docs live in G Drive (i have 8TB storage there).",https://reddit.com/r/selfhosted/comments/1kecuh2/self_host_n8n_on_mac_min_m4_pro/,1,task automation,automate workflow,Automation,Automation,automate some of my workflow,User wants to automate social media and documentation workflows.
+,,mqhoqjd,comment,selfhosted,2025-05-04,small_local,,"It kind of sepends what you want to do. Do you have any use cases for AI at the moment? Or are you just curious to try it?
+
+I run a mixture of things. At home, I have an RTX 5080 in my PC that I use when I'm at my desk. I mainly use LM Studio for this to support coding (I am not a programmer). I am also in the process of adding an RTX 3060 12GB to my Unraid (running linux) server to provide general AI to my wife, kid and I on our phones and laptops. I will run ollama + open web-ui for this.
+
+On the go, I have my laptop with an Intel Core 155h cpu (with integrated ARC gpu). I use it for work, summarizing docs and text generation. It's not the fastest, but it works well enough using the Intel AI playground app.
+
+With all this, generally 32GB of RAM should be plenty for 14b models. If you want to run bigger models, you need a better or multiple GPUs. Dual 3060 12GB gpus are cheapest, but a single 24GB gpu such as a 3090 or 4090 will be faster.",https://reddit.com/r/selfhosted/comments/1kebxsy/how_do_you_actually_run_your_local_llms_trying_to/mqhoqjd/,1,summarization,summarize docs,Information Search,Summarize,summarizing docs|text generation,Two tasks related to work activities.
+,,1kf86st,submission,LocalLLaMA,2025-05-05,small_local,Whisper Transcription Workflow: Home Server vs. Android Phone? Seeking Advice!,"I've been doing a lot with the Whisper models lately. I find myself making voice recordings while I'm out, and then later I use something like MacWhisper at home to transcribe them using the best available Whisper model. After that, I take the content and process it using a local LLM.
+
+This workflow has been *really* helpful for me.
+
+One inconvenience is having to wait until I get home to use MacWhisper. I also prefer not to use any hosted transcription services. So, I've been considering a couple of ideas:
+
+First, seeing if I can get Whisper to run properly on my Android phone (an S25 Ultra). This...is pretty involved and I'm not much of an Android developer. I've tried to do some reading on transformers.js but I think this is a little beyond my ability right now. 
+
+Second, having Whisper running on my home server continuously. This server is a Mac Mini M4 with 16 GB of RAM. I could set up a watch directory so that any audio file placed there gets automatically transcribed. Then, I could use something like Blip to send the files over to the server and have it automatically accept them. 
+
+Does anyone have any suggestions on either of these? Or any other thoughts?",https://reddit.com/r/LocalLLaMA/comments/1kf86st/whisper_transcription_workflow_home_server_vs/,4,transcription,transcribe voice recordings,Creation,Artifact,transcribe them using the best available Whisper model|process it using a local LLM,Transcription and processing are two distinct tasks.
+,,1kf86st,submission,LocalLLaMA,2025-05-05,small_local,Whisper Transcription Workflow: Home Server vs. Android Phone? Seeking Advice!,"I've been doing a lot with the Whisper models lately. I find myself making voice recordings while I'm out, and then later I use something like MacWhisper at home to transcribe them using the best available Whisper model. After that, I take the content and process it using a local LLM.
+
+This workflow has been *really* helpful for me.
+
+One inconvenience is having to wait until I get home to use MacWhisper. I also prefer not to use any hosted transcription services. So, I've been considering a couple of ideas:
+
+First, seeing if I can get Whisper to run properly on my Android phone (an S25 Ultra). This...is pretty involved and I'm not much of an Android developer. I've tried to do some reading on transformers.js but I think this is a little beyond my ability right now. 
+
+Second, having Whisper running on my home server continuously. This server is a Mac Mini M4 with 16 GB of RAM. I could set up a watch directory so that any audio file placed there gets automatically transcribed. Then, I could use something like Blip to send the files over to the server and have it automatically accept them. 
+
+Does anyone have any suggestions on either of these? Or any other thoughts?",https://reddit.com/r/LocalLLaMA/comments/1kf86st/whisper_transcription_workflow_home_server_vs/,4,transcription,process transcribed content,Creation,Artifact,transcribe them using the best available Whisper model|process it using a local LLM,Transcription and processing are two distinct tasks.
+,,1kfm5hl,submission,LocalLLaMA,2025-05-05,small_local,AI agents: We need less hype and more reliability,"2025 is supposed to be the year of agents according to the big tech players. I was skeptical first, but better models, cheaper tokens, more powerful tools (MCP, memory, RAG, etc.) and 10X inference speed are making many agent use cases suddenly possible and economical. But what most customers struggle with isn't the capabilities, it's the reliability.
+
+# Less Hype, More Reliability
+
+Most customers don't need complex AI systems. They need simple and reliable automation workflows with clear ROI. The ""book a flight"" agent demos are very far away from this reality. Reliability, transparency, and compliance are top criteria when firms are evaluating AI solutions.
+
+Here are a few ""non-fancy"" AI agent use cases that automate tasks and execute them in a highly accurate and reliable way:
+
+1. **Web monitoring:** A leading market maker built their own in-house web monitoring tool, but realized they didn't have the expertise to operate it at scale.
+2. **Web scraping:** a hedge fund with 100s of web scrapers was struggling to keep up with maintenance and couldn’t scale. Their data engineers where overwhelmed with a long backlog of PM requests.
+3. **Company filings:** a large quant fund used manual content experts to extract commodity data from company filings with complex tables, charts, etc.
+
+These are all relatively unexciting use cases that I automated with AI agents. It comes down to such relatively unexciting use cases where AI adds the most value.
+
+Agents won't eliminate our jobs, but they will automate tedious, repetitive work such as web scraping, form filling, and data entry.
+
+# Buy vs Make
+
+Many of our customers tried to build their own AI agents, but often struggled to get them to the desire reliability. The top reasons why these in-house initiatives often fail:
+
+1. Building the agent is only 30% of the battle. Deployment, maintenance, data quality/reliability are the hardest part.
+2. The problem shifts from ""can we pull the text from this document?"" to ""how do we tea",https://reddit.com/r/LocalLLaMA/comments/1kfm5hl/ai_agents_we_need_less_hype_and_more_reliability/,1,task automation,automate web monitoring,Automation,Automation,web monitoring tool|Web scraping,Two automation tasks are implied by the use cases.
+,,1kfm5hl,submission,LocalLLaMA,2025-05-05,small_local,AI agents: We need less hype and more reliability,"2025 is supposed to be the year of agents according to the big tech players. I was skeptical first, but better models, cheaper tokens, more powerful tools (MCP, memory, RAG, etc.) and 10X inference speed are making many agent use cases suddenly possible and economical. But what most customers struggle with isn't the capabilities, it's the reliability.
+
+# Less Hype, More Reliability
+
+Most customers don't need complex AI systems. They need simple and reliable automation workflows with clear ROI. The ""book a flight"" agent demos are very far away from this reality. Reliability, transparency, and compliance are top criteria when firms are evaluating AI solutions.
+
+Here are a few ""non-fancy"" AI agent use cases that automate tasks and execute them in a highly accurate and reliable way:
+
+1. **Web monitoring:** A leading market maker built their own in-house web monitoring tool, but realized they didn't have the expertise to operate it at scale.
+2. **Web scraping:** a hedge fund with 100s of web scrapers was struggling to keep up with maintenance and couldn’t scale. Their data engineers where overwhelmed with a long backlog of PM requests.
+3. **Company filings:** a large quant fund used manual content experts to extract commodity data from company filings with complex tables, charts, etc.
+
+These are all relatively unexciting use cases that I automated with AI agents. It comes down to such relatively unexciting use cases where AI adds the most value.
+
+Agents won't eliminate our jobs, but they will automate tedious, repetitive work such as web scraping, form filling, and data entry.
+
+# Buy vs Make
+
+Many of our customers tried to build their own AI agents, but often struggled to get them to the desire reliability. The top reasons why these in-house initiatives often fail:
+
+1. Building the agent is only 30% of the battle. Deployment, maintenance, data quality/reliability are the hardest part.
+2. The problem shifts from ""can we pull the text from this document?"" to ""how do we tea",https://reddit.com/r/LocalLLaMA/comments/1kfm5hl/ai_agents_we_need_less_hype_and_more_reliability/,1,task automation,automate web scraping,Automation,Automation,web monitoring tool|Web scraping,Two automation tasks are implied by the use cases.
+,,mqriuu5,comment,LocalLLaMA,2025-05-05,small_local,,"Qwen 3 is great, Of all the model I tested, (deepseek r1, grok 3 mini, gemini 2.5 flash non thinking) , gwen 3 by far is the best.
+
+Not tested sonnet 3.7 as it was pretty costly, so was gemini 2.5 pro and 2.5 flash thinking for me.
+
+My task was writing a fiction short novel, novella. I need a lot of request and I was tinkering with these models which are very cheap but also smart.
+
+Only drawback is very small context window. But I am managing somehow with only 500-100 words per agentic Workflow (around 4-5 api request) .
+
+If context window is increased it is by far the best cheap (not free as I don't have local hardware and openrouter don't support after some no of request)",https://reddit.com/r/LocalLLaMA/comments/1kffq2u/qwen_3_235b_gets_high_score_in_livecodebench/mqriuu5/,1,creative writing,write fiction novel,Creation,Artifact,writing a fiction short novel,User is using models to write fiction.
+,,mqt7c5d,comment,LocalLLaMA,2025-05-06,small_local,,"I'm a happy Claude ($20) customer, I have decades of experience in software and tech, and I've tried many models via LM Studio in my gaming PC, yet I find it difficult to justify rolling my own 24/7 LLM server. I find that although open weights models are awesome for many tasks, they are not as good as Claude for many many things. And I often hit the cognitive limits of what Claude can do, with Open weights it'd be much worse. Plus Claude has artifacts, web search, MCP.
+
+You'd have to do a lot yourself the DIY way.
+
+So my advise is that you analyze what you'll use it for: if it's regular interactive ""work"", a Claude subscription is best. There was a recent promotion where you saved a % by prepaying the full year.
+
+The DIY homelab will be worth it for automating an unattended use case or batch process you came up with (something form which you'd need API access rather than ""Chat"" plan). Util you're there, the interactive Claude+Artifacts+Search+MCP is better for regular day to day work, at least for me.",https://reddit.com/r/LocalLLaMA/comments/1kfs61t/advice_wanting_to_create_a_claudeai_server_on_my/mqt7c5d/,1,task automation,automate unattended use case,Automation,Automation,analyze what you'll use it for|automating an unattended use case,Guidance on choosing between Claude and DIY based on needs.
+,,1khu4x0,submission,LocalLLaMA,2025-05-08,small_local,"I tested Qwen 3 235b against Deepseek r1, Qwen did better on simple tasks but r1  beats in nuance","I have been using Deepseek r1 for a while, mainly for writing, and I have tried the Qwq 32b, which was plenty impressive. But the new models are a huge upgrade, though I have yet to try the 30b model. The 235b model is really impressive for the cost and size. Definitely much better than Llama 4s. 
+
+So, I compared the top 2 open-source models on coding, reasoning, math, and writing tasks.
+
+Here's what I found out.
+
+**1. Coding**
+
+For a lot of coding tasks, you wouldn't notice much difference. Both models perform on par, sometimes Qwen taking the lead. 
+
+**2. Reasoning and Math**
+
+Deepseek leads here with more nuance in the thought process. Qwen is not bad at all, gets most of the work done, but takes longer to finish tasks. It gives off the vibe of overfit at times.
+
+**3. Writing**
+
+For creative writing, Deepseek r1 is still in the top league, right up there with closed models. For summarising and technical description, Qwen offers similar performance.
+
+For a full comparison check out this blog post: [Qwen 3 vs. Deepseek r1](https://composio.dev/blog/qwen-3-vs-deepseek-r1-complete-comparison/). 
+
+It has been a great year so far for open-weight AI models, especially from Chinese labs. It would be interesting to see the next from Deepseek. Hope the Llama Behemoth turns out to be a better model.
+
+Would love to know your experience with the new Qwens, and would love to know which local Qwen is good for local use cases, I have been using Gemma 3. ",https://reddit.com/r/LocalLLaMA/comments/1khu4x0/i_tested_qwen_3_235b_against_deepseek_r1_qwen_did/,1,creative writing,generate creative writing,Creation,Artifact,"creative writing, Deepseek r1 is still in the top league|For summarising and technical description|For summarising and technical description",Tasks involve writing and summarizing content.
+,,1khu4x0,submission,LocalLLaMA,2025-05-08,small_local,"I tested Qwen 3 235b against Deepseek r1, Qwen did better on simple tasks but r1  beats in nuance","I have been using Deepseek r1 for a while, mainly for writing, and I have tried the Qwq 32b, which was plenty impressive. But the new models are a huge upgrade, though I have yet to try the 30b model. The 235b model is really impressive for the cost and size. Definitely much better than Llama 4s. 
+
+So, I compared the top 2 open-source models on coding, reasoning, math, and writing tasks.
+
+Here's what I found out.
+
+**1. Coding**
+
+For a lot of coding tasks, you wouldn't notice much difference. Both models perform on par, sometimes Qwen taking the lead. 
+
+**2. Reasoning and Math**
+
+Deepseek leads here with more nuance in the thought process. Qwen is not bad at all, gets most of the work done, but takes longer to finish tasks. It gives off the vibe of overfit at times.
+
+**3. Writing**
+
+For creative writing, Deepseek r1 is still in the top league, right up there with closed models. For summarising and technical description, Qwen offers similar performance.
+
+For a full comparison check out this blog post: [Qwen 3 vs. Deepseek r1](https://composio.dev/blog/qwen-3-vs-deepseek-r1-complete-comparison/). 
+
+It has been a great year so far for open-weight AI models, especially from Chinese labs. It would be interesting to see the next from Deepseek. Hope the Llama Behemoth turns out to be a better model.
+
+Would love to know your experience with the new Qwens, and would love to know which local Qwen is good for local use cases, I have been using Gemma 3. ",https://reddit.com/r/LocalLLaMA/comments/1khu4x0/i_tested_qwen_3_235b_against_deepseek_r1_qwen_did/,1,summarization,summarize content,Information Search,Summarize,"creative writing, Deepseek r1 is still in the top league|For summarising and technical description|For summarising and technical description",Tasks involve writing and summarizing content.
+,,1khu4x0,submission,LocalLLaMA,2025-05-08,small_local,"I tested Qwen 3 235b against Deepseek r1, Qwen did better on simple tasks but r1  beats in nuance","I have been using Deepseek r1 for a while, mainly for writing, and I have tried the Qwq 32b, which was plenty impressive. But the new models are a huge upgrade, though I have yet to try the 30b model. The 235b model is really impressive for the cost and size. Definitely much better than Llama 4s. 
+
+So, I compared the top 2 open-source models on coding, reasoning, math, and writing tasks.
+
+Here's what I found out.
+
+**1. Coding**
+
+For a lot of coding tasks, you wouldn't notice much difference. Both models perform on par, sometimes Qwen taking the lead. 
+
+**2. Reasoning and Math**
+
+Deepseek leads here with more nuance in the thought process. Qwen is not bad at all, gets most of the work done, but takes longer to finish tasks. It gives off the vibe of overfit at times.
+
+**3. Writing**
+
+For creative writing, Deepseek r1 is still in the top league, right up there with closed models. For summarising and technical description, Qwen offers similar performance.
+
+For a full comparison check out this blog post: [Qwen 3 vs. Deepseek r1](https://composio.dev/blog/qwen-3-vs-deepseek-r1-complete-comparison/). 
+
+It has been a great year so far for open-weight AI models, especially from Chinese labs. It would be interesting to see the next from Deepseek. Hope the Llama Behemoth turns out to be a better model.
+
+Would love to know your experience with the new Qwens, and would love to know which local Qwen is good for local use cases, I have been using Gemma 3. ",https://reddit.com/r/LocalLLaMA/comments/1khu4x0/i_tested_qwen_3_235b_against_deepseek_r1_qwen_did/,1,scripting,generate technical description,Creation,Artifact,"creative writing, Deepseek r1 is still in the top league|For summarising and technical description|For summarising and technical description",Tasks involve writing and summarizing content.
+,,mr7xxl2,comment,selfhosted,2025-05-08,small_local,,"Looks very promising!
+
+I'll describe my use case just in case it happens to be something you're targeting:
+
+I use voice to text all the time now to record just about anything and run it through OpenAI Whisper (API, not local).
+
+The tool I'm really looking for (and struggling to find because it still tends to be an afterthought in the STT apps that exist): One that allows you to create custom prompts for transforming the raw capture into a more finished format.
+
+Example workflow:
+
+I use the tool to record a voice note. Voice note gets transcribed (via Whisper). I then click on a button like *make this an email* and it sends it to an LLM with a system prompt like: ""take this text and reformat it as an email; return to the user.""
+
+The voice productivity nirvana solution for me would be doing that and then sorting and routing: this is a to list, I'll send it to Todoist (etc). 
+
+But if there's text transformation support and notepad gathering, I'd love to take a look",https://reddit.com/r/selfhosted/comments/1khao2o/update_speakr_selfhosted_audio/mr7xxl2/,1,transcription,transcribe voice note,Information Search,Summarize,Voice note gets transcribed|make this an email|sorting and routing: this is a to list,"Describes a workflow involving transcription, transformation, and automation."
+,,1kiac31,submission,LocalLLM,2025-05-09,small_local,"We are building a Self hosted alternative to Granola, Fireflies, Jamie and Otter -  Meetily AI Meeting Note Taker – Self-Hosted, Open Source Tool for Local Meeting Transcription &amp; Summarization","
+
+
+Hey everyone 👋
+
+We are building Meetily - An Open source software that runs locally to transcribe your meetings and capture important details.
+
+---
+
+### Why Meetily?
+
+Built originally to solve a real pain in consulting — taking notes while on client calls — Meetily now supports:
+
+* ✅ Local audio recording &amp; transcription
+* ✅ Real-time note generation using local or external LLMs
+* ✅ SQLite + optional VectorDB for retrieval
+* ✅ Runs fully offline
+* ✅ Customizable with your own models and settings
+
+---
+
+Now introducing **Meetily v0.0.4 Pre-Release**, your local, privacy-first AI copilot for meetings. No subscriptions, no data sharing — just full control over how your meetings are captured and summarized.
+
+### What’s New in v0.0.4
+
+- **Meeting History**: All your meeting data is now stored locally and retrievable.
+- **Model Configuration Management**: Support for multiple AI providers, including Whisper + GPT
+- **New UI Updates**: Cleaned up UI, new logo, better onboarding.
+- **Windows Installer (MSI/.EXE)**: Simple double-click installs with better documentation.
+- **Backend Optimizations**: Faster processing, removed ChromaDB dependency, and better process management.
+
+- nstallers available for **Windows &amp; macOS**. Homebrew and Docker support included.
+- Built with FastAPI, Tauri, Whisper.cpp, SQLite, Ollama, and more.
+
+---
+
+
+
+
+### 🛠️ Links
+
+Get started from the latest release here:
+👉 [https://github.com/Zackriya-Solutions/meeting-minutes/releases/tag/v0.0.4](https://github.com/Zackriya-Solutions/meeting-minutes/releases/tag/v0.0.4)
+
+Or visit the website:
+🌐 [https://meetily.zackriya.com](https://meetily.zackriya.com)
+
+Discord Comminuty : https://discord.com/invite/crRymMQBFH
+
+
+---
+
+### 🧩 Next Up
+
+* **Local Summary generation - Ollama models are not performing well. so we have to fine tune a summary generation model for running everything locally.**
+* **Speaker diarization** &amp; name attribution
+* **Linux support**
+*  **Knowledge base integration** for co",https://reddit.com/r/LocalLLM/comments/1kiac31/we_are_building_a_self_hosted_alternative_to/,1,transcription,transcribe meetings,Information Search,Summarize,transcribe your meetings|Real-time note generation,Transcription and note generation are key features.
+,,msr7py3,comment,LocalLLM,2025-05-17,small_local,,"Here is a basic approach that would get you started without needing RAG.
+
+Slice your records into bite sized chunks.  Arrange by month, or perhaps by week if you have a truly large amount of records.  Convert to markdown for easy AI ingestion.  (This data preparation will probably be the part that is most specific to your situation.)
+
+Start with the first month.  Feed it to the LLM.  Hopefully it will fit in the context window.  If not try feeding in a smaller chunk, like just the first week. Prompt the LLM to summarize events from this time period and list key events along with brief descriptions of each.
+
+Repeat for each chunk. This is where scripting knowledge helps. There are tools [like LLM by Simon Willison](https://llm.datasette.io/en/stable/index.html) that let you pipe text into language models in a standard UNIX scripting workflow. If you are a system administrator this might be a natural place for you to start.
+
+This ought to work well enough, without needing RAG, if your model can be run with long enough context to fit your chronological chunks of data.  32K tokens input context window would be a good target.",https://reddit.com/r/LocalLLM/comments/1koky90/using_a_local_llm_for_life_retrospectivejournal/msr7py3/,1,summarization,summarize events,Information Search,Summarize,summarize events from this time period,The task involves summarizing events from data chunks.

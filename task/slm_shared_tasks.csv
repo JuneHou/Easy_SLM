@@ -1,0 +1,354 @@
+manual_label,manual_notes,id,kind,subreddit,date,stream,title,body,url,score,task_canonical,task_raw,theme,subtheme,evidence,annotation_notes
+,,mh5yl9c,comment,selfhosted,2025-03-11,large_general,,"Self-host : privacy, regulation, control.
+Why use it? It’s an accelerator. 
+Couple years ago, I followed a class on video filming, last work was to make a small movie with a script. 
+I took a recipe put it in ChatGPT and asked that he made a script for a 5 minutes video, with shot by shot instructions. 
+
+I could have done it myself, but it definitively did a better job than I would. 
+
+Nowadays, I use it for code in a language I haven’t learn yet. 
+I know programming enough to spot mistakes and it definitively speed up my learning of the new language.",https://reddit.com/r/selfhosted/comments/1j8iwy9/why_host_ai/mh5yl9c/,1,scripting,generate video script,Creation,Artifact,made a script for a 5 minutes video|use it for code in a language,User generates scripts and code using language models.
+,,mhfjl1n,comment,selfhosted,2025-03-12,large_general,,"The localai docker container stops itself if there where no requests to the said router in traefik so i can spin it up and down based on demand.
+
+
+Currently i use it for: advice, summarization, writing text (like a proof of concept) ehtical questions or sometimes to have someone to spar with (because i have multiple models loaded on my laptops SSD, i can just switch to another model in Nextcloud and send the last query again until it satisfies my question)
+
+
+Or asking questions in context of my files saved in nextcloud.
+
+
+Basically i have what google has with gemini and their online offerings like drive, gmail notes etc.. in one application supercharged with an AI server with different 8b models that just fit in my vram",https://reddit.com/r/selfhosted/comments/1j9qi4d/what_ai_services_are_you_selfhosting_or_have/mhfjl1n/,1,summarization,summarize text,Information Search,Summarize,"summarization, writing text|writing text (like a proof of concept)|ehtical questions|asking questions in context of my files","Multiple tasks involving summarization, creation, guidance, and search."
+,,mhfjl1n,comment,selfhosted,2025-03-12,large_general,,"The localai docker container stops itself if there where no requests to the said router in traefik so i can spin it up and down based on demand.
+
+
+Currently i use it for: advice, summarization, writing text (like a proof of concept) ehtical questions or sometimes to have someone to spar with (because i have multiple models loaded on my laptops SSD, i can just switch to another model in Nextcloud and send the last query again until it satisfies my question)
+
+
+Or asking questions in context of my files saved in nextcloud.
+
+
+Basically i have what google has with gemini and their online offerings like drive, gmail notes etc.. in one application supercharged with an AI server with different 8b models that just fit in my vram",https://reddit.com/r/selfhosted/comments/1j9qi4d/what_ai_services_are_you_selfhosting_or_have/mhfjl1n/,1,creative writing,write proof of concept,Creation,Artifact,"summarization, writing text|writing text (like a proof of concept)|ehtical questions|asking questions in context of my files","Multiple tasks involving summarization, creation, guidance, and search."
+,,mhhfczr,comment,selfhosted,2025-03-13,large_general,,"hey! ur use case is perfect for automation - its exactly the kinda repetitive clicking/downloading stuff that shouldnt need manual work anymore
+
+
+
+couple ways u could tackle this:
+
+* selenium/python scripts (needs coding knowledge tho)
+* browser recording tools (can be flaky when sites update)
+* AI powered automation (what i work on with Conviction AI)
+
+
+
+since ur dealing with diff websites + login flows, id recommend something that can handle conditional logic n error cases. traditional automation tools might work but theyre usually pretty rigid
+
+
+
+we built Conviction AI to make this super simple - u just tell it what actions u want (like ""log in here, click this, download that"") n it figures out how to do it. no coding needed. its basically like having a virtual assistant who knows how to use websites
+
+
+
+if ur interested in trying it out lmk! but whatever tool u pick, make sure it can:
+
+1. handle multiple login flows
+2. deal with dynamic page loads
+3. retry when stuff fails
+4. save/backup the downloads
+
+
+
+hope this helps! automation rly changed how i handle repetitive web tasks, bet itll save u tons of time on payroll stuff 🙌",https://reddit.com/r/selfhosted/comments/1j5u6f5/web_scrapingautomation_tool/mhhfczr/,1,task automation,automate repetitive tasks,Automation,Automation,repetitive clicking/downloading stuff that shouldnt need manual work,The comment suggests automating repetitive tasks.
+,,mhlsnun,comment,selfhosted,2025-03-13,large_general,,"hey! ur use case is perfect for automation - its exactly the kinda repetitive clicking/downloading stuff that shouldnt need manual work anymore
+
+couple ways u could tackle this:
+- selenium/python scripts (needs coding knowledge tho)
+- browser recording tools (can be flaky when sites update)
+- AI powered automation (what i work on with Conviction AI)
+
+since ur dealing with diff websites + login flows, id recommend something that can handle conditional logic n error cases. traditional automation tools might work but theyre usually pretty rigid
+
+we built Conviction AI to make this super simple - u just tell it what actions u want (like ""log in here, click this, download that"") n it figures out how to do it. no coding needed. its basically like having a virtual assistant who knows how to use websites
+
+if ur interested in trying it out lmk! but whatever tool u pick, make sure it can:
+1. handle multiple login flows
+2. deal with dynamic page loads
+3. retry when stuff fails
+4. save/backup the downloads
+
+hope this helps! automation rly changed how i handle repetitive web tasks, bet itll save u tons of time on payroll stuff 🙌",https://reddit.com/r/selfhosted/comments/1j5u6f5/web_scrapingautomation_tool/mhlsnun/,1,task automation,automate web interactions,Automation,Automation,tell it what actions u want,The task involves automating repetitive web tasks.
+,,1jb4lhd,submission,LocalLLaMA,2025-03-14,large_general,New RAG docs &amp; AI assistant make it easy for non-coders to build RAGs,"The documentation of rlama, including all available commands and detailed examples, is now live on our website! But that’s not all—we’ve also introduced Rlama Chat, an AI-powered assistant designed to help you with your RAG implementations. Whether you have questions, need guidance, or are brainstorming new RAG use cases, Rlama Chat is here to support your projects.Have an idea for a specific RAG? Let’s build it together!Check out the docs and start exploring today!
+
+You can go throught here if you have interest to make RAGs: [Website](https://rlama.dev/)
+
+You can see a demo of Rlama Chat here: [Demo](https://x.com/LeDonTizi/status/1900544052107399573)",https://reddit.com/r/LocalLLaMA/comments/1jb4lhd/new_rag_docs_ai_assistant_make_it_easy_for/,1,brainstorming,brainstorm RAG use cases,Creation,Idea,help you with your RAG implementations|brainstorming new RAG use cases,Rlama Chat assists in implementing and brainstorming RAGs.
+,,mhuxqc9,comment,selfhosted,2025-03-15,large_general,,"Absolutely! The RAG component used by Open WebUI models connects to a SQL vector database. I'm pleased to see more efforts being made to grow the open-source community. I was genuinely surprised at how easy it was to set up the two projects, which is why I wanted to share my experience.   
+  
+I am working on creating a documentation assistant using this framework for my company. It will serve as a type of ""product manager assistant"" that has access to the entire organization's documentation and is trained on domain knowledge. This tool will help employees navigate and understand the various functions of our software system and how to configure it effectively.   
+  
+I also believe that the Pipelines feature is quite powerful and can automate processes. I plan to write another article about that by next week. I'm sure there are many other use cases for a self-hosted AI that are available at no cost!",https://reddit.com/r/selfhosted/comments/1jbk06h/the_complete_guide_to_building_your_free_local_ai/mhuxqc9/,1,task automation,automate processes,Automation,Automation,creating a documentation assistant|automate processes,Creating an assistant and automating processes are distinct tasks.
+,,mim2qrt,comment,LocalLLM,2025-03-19,large_general,,"I was in the same boat. In fact I wanted to get a Mini Pro first (48GB) but when the rumors of the upgraded Studio were coming out I wanted to wait and going back and forth between 48 and 64. It’s a little disheartening to know that 48 and 64 of unified RAM will still be a bit mediocre.
+
+Our use case is:
+
+Canceling our sub to ChatGPT for help with writing professional , technical emails.
+
+Helping me learn some code or database manipulation 
+
+Play with personal financials 
+
+
+
+Maybe there’s just specific models to use for each use case that would work.",https://reddit.com/r/LocalLLM/comments/1jeqzze/are_48gb_ram_sufficient_for_70b_models/mim2qrt/,1,creative writing,write professional emails,Creation,Artifact,"help with writing professional , technical emails|Helping me learn some code|database manipulation","Three distinct tasks related to writing, learning code, and database manipulation."
+,,1jgewhk,submission,LocalLLaMA,2025-03-21,large_general,Sharing my project MyNarratorAI,"Hi!
+
+I would like to share here my project [MyNarratorAI.com](http://mynarratorai.com/), an app that transforms your ePubs into full-cast audiobooks with AI narration. As I wasn't able to find an application that did this already I decided to just build it a long time ago and to further motivate me I added free and paid tiers.
+
+As I went through I have been adding a lot of features besides just creation a full cast audio books such as:  
+\- The ability to talk with an integrated AI assistant: e.g I start again listening after a while and don't remember what happened last.  
+\- Ability to select text and have an AI draw it: This is helpful when having trouble picturing something.  
+\- Create audiobooks from a prompt: This one needs a lot more work but works for just funny ideas.  
+\- Integrated with Gutenberg and Standard books: For public domain books you can just find them in the app collection and create directly from them.  
+\- Customize an audiobook: After creating an audiobook you might notice a voice is not good for a character, or if you want to share your audiobook there might be a mistake somewhere or parts you don't want/do want narrated by a different voice actor. I added plenty of things to fix any problem I ever saw.
+
+(my site has a video and clips of the video in the features section if you want to see them in action)
+
+I also created an android app but I need some testers to have it published on the app store. If you DM me your email I can add you to the close testing and you can download it, for those who use the app for testing I will also assign for free the PRO account.
+
+I lurk here a lot so I think it might be interesting the following parts, even though its not open source I can share some learnings:
+
+1. Open source TTS using kokoro + ec2 spot instances is much cheaper than current alternatives (although I'm looking at replacing my current pro voices with gpt4o-mini-tts since it will bring the voices really to life)
+
+2. For complex tasks, Deepsee",https://reddit.com/r/LocalLLaMA/comments/1jgewhk/sharing_my_project_mynarratorai/,1,summarization,summarize audiobook content,Information Search,Summarize,transforms your ePubs into full-cast audiobooks|don't remember what happened last|select text and have an AI draw it|Create audiobooks from a prompt,Multiple tasks related to audiobook creation and content summarization.
+,,1jjst2a,submission,LocalLLaMA,2025-03-25,large_general,Zapier MCP,"I wanted to share something cool I came across: Zapier's Model Context Protocol (MCP). It's a game-changer for AI assistants, allowing them to interact with over 8,000 apps and perform real-world tasks without needing complex API integrations.
+
+**What can Zapier MCP do?**
+
+* **Automate workflows:** MCP lets AI assistants automate tasks like sending emails, managing data, scheduling events, and updating records.
+* **Expand AI capabilities:** Beyond text generation, MCP connects AI to real-world actions across Zapier's vast app ecosystem.
+* **Secure and reliable:** It handles authentication, API limits, and security, so you can focus on your code.
+
+**How does it work?**
+
+1. **Generate an MCP endpoint:** Get a unique URL to connect your AI assistant to Zapier's integration network.
+2. **Configure actions:** Easily select what actions your AI can perform, ensuring precise control.
+3. **Connect your AI:** Integrate your AI assistant to execute tasks securely.
+
+**Why is it cool?**
+
+* **Simplifies automation:** No need for custom integrations.
+* **Enhances productivity:** Automate tasks at scale across essential business tools.
+
+  
+[https://mrc.fm/mcpzapier](https://mrc.fm/mcpzapier)",https://reddit.com/r/LocalLLaMA/comments/1jjst2a/zapier_mcp/,1,task automation,automate workflows,Automation,Automation,automate tasks like sending emails,Zapier MCP enables automation of various tasks.
+,,1jjzips,submission,LocalLLaMA,2025-03-26,large_general,New to claude 3.7. Need elp please?,"Hi all,
+
+So I just created an openrouter account so I can try Claude 3.7. I like the output, but the refusals are very strong. But I don't really know how to use it yet.
+
+Questions:
+- what prompt format for claude?
+- any recommended samplers and system prompts? My use case is story writing. Like I say ""Write a story about ...""
+- should I use the chat-completions API or not?
+- how do I jailbreak exactly?
+
+Thanks all!",https://reddit.com/r/LocalLLaMA/comments/1jjzips/new_to_claude_37_need_elp_please/,1,creative writing,write a story,Creation,Artifact,My use case is story writing,User is interested in using Claude 3.7 for story writing.
+,,ml19bbr,comment,LocalLLaMA,2025-04-02,large_general,,"For document summarizations, I kind of do this with a current workflow I'm working on with my QwQ-32B.
+
+In which case QwQ-32B does a very good job of this, but you'll want to keep it to 64K contextost of the time for max comprehension. You'll want to setup the server and API, and just think about what you want. Don't chat it the info, start off by asking QwQ-32B, or like gemini 2.5 pro ""this is what I want to summarize. Help me come up with a plan to automate this process using the URL api as follows"", etc etc.",https://reddit.com/r/LocalLLaMA/comments/1jpozl7/best_bang_for_the_buck_gpu/ml19bbr/,1,summarization,summarize documents,Information Search,Summarize,document summarizations,User mentions using a model for document summarization.
+,,1jrmnoi,submission,LocalLLM,2025-04-04,large_general,"Thoughts on a local AI meeting assistant? Seeking feedback on use cases, pricing, and real-world interest","Hey everyone,
+
+I’ve been building a local AI tool aimed at professionals (like psychologists or lawyers) that records, transcribes, summarizes, and creates documents from conversations — all locally, without using the cloud.
+
+The main selling point is privacy — everything stays on the user’s machine. Also, unlike many open-source tools that are unsupported or hard to maintain, this one is actively maintained, and users can request custom features or integrations.
+
+That said, I’m struggling with a few things and would love your honest opinions:
+	•	Do people really care enough about local processing/privacy to pay for it?
+	•	How would you price something like this? Subscription? One-time license? Freemium?
+	•	What kind of professions or teams might actually adopt something like this?
+	•	Any other feature that you’d really want if you were to use something like this?
+
+Not trying to sell here — I just want to understand if it’s worth pushing forward and how to shape it. Open to tough feedback. Thanks!",https://reddit.com/r/LocalLLM/comments/1jrmnoi/thoughts_on_a_local_ai_meeting_assistant_seeking/,1,transcription,transcribe conversations,Automation,Automation,"records, transcribes, summarizes, and creates documents|records, transcribes, summarizes, and creates documents|records, transcribes, summarizes, and creates documents|records, transcribes, summarizes, and creates documents",Multiple tasks related to processing conversations locally.
+,,1jrmnoi,submission,LocalLLM,2025-04-04,large_general,"Thoughts on a local AI meeting assistant? Seeking feedback on use cases, pricing, and real-world interest","Hey everyone,
+
+I’ve been building a local AI tool aimed at professionals (like psychologists or lawyers) that records, transcribes, summarizes, and creates documents from conversations — all locally, without using the cloud.
+
+The main selling point is privacy — everything stays on the user’s machine. Also, unlike many open-source tools that are unsupported or hard to maintain, this one is actively maintained, and users can request custom features or integrations.
+
+That said, I’m struggling with a few things and would love your honest opinions:
+	•	Do people really care enough about local processing/privacy to pay for it?
+	•	How would you price something like this? Subscription? One-time license? Freemium?
+	•	What kind of professions or teams might actually adopt something like this?
+	•	Any other feature that you’d really want if you were to use something like this?
+
+Not trying to sell here — I just want to understand if it’s worth pushing forward and how to shape it. Open to tough feedback. Thanks!",https://reddit.com/r/LocalLLM/comments/1jrmnoi/thoughts_on_a_local_ai_meeting_assistant_seeking/,1,summarization,summarize conversations,Information Search,Summarize,"records, transcribes, summarizes, and creates documents|records, transcribes, summarizes, and creates documents|records, transcribes, summarizes, and creates documents|records, transcribes, summarizes, and creates documents",Multiple tasks related to processing conversations locally.
+,,mld32go,comment,selfhosted,2025-04-04,large_general,,"MCPs are a powerful way to give LLMs access to tools. You can give Claude access to any of your tools and ask it to perform tasks through the Claude chat UI or you can give access to tools to any agents that you're building and it can decide when and how to use them. 
+
+So the use cases are endless. But some of my favourites are customer support agents that can automatically reply to questions, create support tickets, resolve some issues and schedule meetings for follow ups. 
+
+Another use that I saw is people giving Claude access to Blinder and asking it to create 3D models for them",https://reddit.com/r/selfhosted/comments/1jr9adz/280_open_source_mcp_tools_to_use_with_llms/mld32go/,1,planning / scheduling,schedule meetings,Automation,Automation,automatically reply to questions|create support tickets|resolve some issues|schedule meetings for follow ups|create 3D models for them,Multiple automation tasks and one creation task.
+,,mlp7eaj,comment,LocalLLM,2025-04-06,large_general,,"Very cool use case. Have you tried giving Sonnet or Gemini these specs and have it generate an algorithm for you? If the number of parameters is fixed, then a python script would be considerably faster than an LLM. If your sonar has an API, you could automate the entire process with a Raspberry Pi. If you're ambitious, you could even do a patent search in this space...",https://reddit.com/r/LocalLLM/comments/1jgl4bb/why_run_your_local_llm/mlp7eaj/,1,task automation,automate process,Automation,Automation,generate an algorithm for you|automate the entire process|do a patent search,"Three distinct tasks: creation, automation, and search."
+,,mlx6io2,comment,LocalLLaMA,2025-04-07,large_general,,"I asked Copilot to help with that requirement and it was easy. Apparently I qualify.
+
+
+
+Write me a resume segment showing 5 years of experience with ChatGPT and Microsoft Copilot.
+
+
+Certainly! Here's a polished resume segment highlighting 5 years of experience with ChatGPT and Microsoft Copilot:
+
+---
+
+**AI Integration Specialist**  
+*Self-Employed | Remote*  
+*April 2020 – Present*
+
+- **Leveraged advanced AI tools:** Demonstrated expertise in utilizing ChatGPT and Microsoft Copilot to streamline content creation, enhance user engagement, and optimize decision-making processes.
+
+- **Content Development &amp; Analysis:** Created high-quality, tailored content across diverse industries, combining AI-driven insights with human creativity to achieve measurable results.
+
+- **Process Automation:** Integrated ChatGPT and Copilot into workflows, automating repetitive tasks and improving operational efficiency by up to 40%.
+
+- **User Experience Design:** Collaborated with teams to develop intuitive interfaces that enhance accessibility to AI systems while ensuring seamless user adoption.
+
+- **Knowledge Sharing:** Acted as an AI advocate, providing training, mentorship, and workshops on leveraging ChatGPT and Copilot to solve complex problems and drive innovation.
+
+---
+
+Feel free to adjust it to suit your specific experiences or goals! Does this align with what you had in mind?",https://reddit.com/r/LocalLLaMA/comments/1jtnryp/must_have_58_years_experience_with_chatgpt_and/mlx6io2/,1,creative writing,write resume segment,Creation,Artifact,Write me a resume segment,User requests a resume segment creation.
+,,mnl6kek,comment,LocalLLaMA,2025-04-17,large_general,,"I learned that QwQ is very sensitive to parameter values the hard way, and that reordering the samplers is very important. Once I got those right, my experience brainstorming has been 100x better. 
+
+Starting with a 2-3 paragraphs description of an initial idea and asking it to generate questions on how to elaborate it. I provide answers to all questions, and ask it to integrate those into a coherent description. Take that new description, and ask it to generate questions again.
+
+The draft model hasn't provided any speed benefits so far (10.2 vs 10.1 tk/s with 5k context and 3-4k generation). Acceptance rate has been 20% at best. The 0.5B was the only model I found that works with QwQ 32B from March. Tried both the Qwen released GGUF and Unsloth's one. Only the Qwen GGUF has worked with InfiniAILab/QwQ-0.5B and InfiniAILab/QwQ-1.5B has a different tokenizer.
+
+Where the draft model really shines for me is making QwQ expand the breadth of the questions it asks. In one case, no draft asked 12 questions, while using the draft yielded 18 questions. All of the additional 6 questions were relevant to the discussion.
+
+I'm not saying QwQ is better than Gemini 2.5 Pro in all use cases, but at least for brainstorming and elaborating ideas, it's been better for the type of brainstorming I like to do.",https://reddit.com/r/LocalLLaMA/comments/1k1av1x/medium_sized_local_models_already_beating_vanilla/mnl6kek/,1,brainstorming,brainstorm ideas,Creation,Idea,experience brainstorming has been 100x better|generate questions on how to elaborate it|integrate those into a coherent description,"The user describes a process involving brainstorming, question generation, and integration."
+,,mo41nbz,comment,LocalLLaMA,2025-04-20,large_general,,"I use Claude Sonnet for grammar, coherence, and structure improvements. This approach helps me avoid unnecessary critiques of my writing style.
+
+As I previously explained, there are significant economic disincentives for established companies like AMD or NVIDIA to undermine their existing markets. The proposal effectively asks competitors to invest approximately $20 billion without guaranteed return on investment. NVIDIA has developed and refined CUDA over approximately 20 years. Expecting a competitor to replicate this achievement within a compressed timeframe while simultaneously keeping pace with ongoing technological advancements presents an extraordinary challenge.
+
+The substantial capital requirements, extended development cycles, and uncertain market reception create formidable barriers to entry. These factors help explain the current competitive landscape and the strategic decisions made by major industry players in the AI hardware sector.​​​​​​​​​​​​​​​​",https://reddit.com/r/LocalLLaMA/comments/1k3kuqb/hopes_for_cheap_24gb_cards_in_2025/mo41nbz/,1,proofreading,improve grammar and coherence,Advice,Improve,"grammar, coherence, and structure improvements",User improves writing with Claude Sonnet.
+,,mogikzi,comment,LocalLLaMA,2025-04-22,large_general,,"If you mean MN-12B-Mag-Mell-R1, unfortunately, reasoning models cannot handle my use case with multiple AI-controlled characters when I push all the char messages under ""assistant"" role. Reasoners just cannot currently insert thinking in the middle of their existing message to continue it; they are trained to add reasoning at the beginning of the assistant message only.
+
+Also, 12B models are often not smart enough to handle the dynamic scene switching that I'm using in my own frontend.
+
+But I'll give Mag-Mell a try at least with story writing to see if it can match Gemma's dark realism in sci-fi stories.",https://reddit.com/r/LocalLLaMA/comments/1k52h4n/why_is_mythomax13b_still_in_high_demand/mogikzi/,1,creative writing,write sci-fi stories,Creation,Artifact,story writing to see if it can match,User plans to try story writing with the model.
+,,moqr1z6,comment,LocalLLaMA,2025-04-24,large_general,,"just do it. i do it myself too, i create in my view awesome tools for myself and my use cases as simple python and html scripts and idc that ppl call it vibe coding or whatever as long as it caters to my needs or fun :) i made a cool artstyle combiner for my comfy ui local picture generator recently, on which i will publish my third version of it soon, it didnt get many views with like 8-10k and only about 20 upvotes and 2-3 comments, but im happy with it and i did something cool and productive with my time hehe. btw i used deepseek r1 2.12 from unsloth and gemini 2.5 pro for creating my tools. 
+
+two years ago i wrote a script for my club which to this day runs as a tournament software as a simple local website in the browser. back then i used gpt 3.5 🤦‍♂️🤭 you just gotta start and dont care for others. they always have an opinion, they dont do a thing themselves though. so why should you care for their validation. do it for yourself, or dont, up to you! :)",https://reddit.com/r/LocalLLaMA/comments/1k6jslj/llm_content_on_yt_becoming_repetitive/moqr1z6/,10,creative writing,write tournament software,Creation,Artifact,create in my view awesome tools|wrote a script for my club,User describes creating tools and software as personal projects.
+,,mpp92iy,comment,LocalLLaMA,2025-04-29,large_general,,"vLLM and Gemma gas still limited tooling available. Chat template for tool use is broken, recent GitHub workaround is only workaround without bulletproof solution.
+
+
+For browser use gemma3 27B AWQ was much better than qwen3 8B FP16 (I'm limited to 48GB VRAM). While gemma3 12b awq is worse than qwen3 4B as fails at agent system prompt processing.
+
+
+What I need to learn is to disable thinking in most cases. Multi turn agentic workflow I use already have planner/architect steps which are sufficient to run only once per few steps. Thinking tokens for each step is overkill that will cost more than smarter non reasoning models.
+
+
+I'm surprised how good qwen models are with structured output generation. It feels much better than qwen2.5 and llama 3 models.
+
+
+Today I'll run bigger test and use qwen3 for classification, chain of density summarization, rephrasing and translations.
+
+
+I hope to achieve the same performance qwen 2.5 32B with 8B or 30B MoE variant.
+
+
+I'll still use gemma3 in my workflows as integrated vision makes them superior for most of my workflows and I have capabilities to host only one ~30B parameters.
+
+
+---
+I'm considering only batch processing with high concurrency. For long context and complex tasks I prefer Gemini 2.5 flash, for hard problems Gemini pro 2.5 and for UI/web dev Sonnet 3.7.
+
+
+Tasks I can split into lots of smaller requests that are usually instinct fast for humans are my research subject",https://reddit.com/r/LocalLLaMA/comments/1kau30f/qwen3_vs_gemma_3/mpp92iy/,1,summarization,summarize chain of density,Information Search,Summarize,use qwen3 for classification|chain of density summarization|rephrasing|translations,Multiple tasks using qwen3 model.
+,,mpp92iy,comment,LocalLLaMA,2025-04-29,large_general,,"vLLM and Gemma gas still limited tooling available. Chat template for tool use is broken, recent GitHub workaround is only workaround without bulletproof solution.
+
+
+For browser use gemma3 27B AWQ was much better than qwen3 8B FP16 (I'm limited to 48GB VRAM). While gemma3 12b awq is worse than qwen3 4B as fails at agent system prompt processing.
+
+
+What I need to learn is to disable thinking in most cases. Multi turn agentic workflow I use already have planner/architect steps which are sufficient to run only once per few steps. Thinking tokens for each step is overkill that will cost more than smarter non reasoning models.
+
+
+I'm surprised how good qwen models are with structured output generation. It feels much better than qwen2.5 and llama 3 models.
+
+
+Today I'll run bigger test and use qwen3 for classification, chain of density summarization, rephrasing and translations.
+
+
+I hope to achieve the same performance qwen 2.5 32B with 8B or 30B MoE variant.
+
+
+I'll still use gemma3 in my workflows as integrated vision makes them superior for most of my workflows and I have capabilities to host only one ~30B parameters.
+
+
+---
+I'm considering only batch processing with high concurrency. For long context and complex tasks I prefer Gemini 2.5 flash, for hard problems Gemini pro 2.5 and for UI/web dev Sonnet 3.7.
+
+
+Tasks I can split into lots of smaller requests that are usually instinct fast for humans are my research subject",https://reddit.com/r/LocalLLaMA/comments/1kau30f/qwen3_vs_gemma_3/mpp92iy/,1,translation,translate text,Creation,Artifact,use qwen3 for classification|chain of density summarization|rephrasing|translations,Multiple tasks using qwen3 model.
+,,mq8s4so,comment,LocalLLaMA,2025-05-02,large_general,,"More shovel makers than people digging is how i see the whole ai boom. There is obviously legit use cases for ai but im not seeing them be properly implimented yet and they are trying to use ai for stuff that is isnt very useful eg ai calendars, ai file sorting systems(done badly) ai personal assistants, ai ads(lots of bad ones), and ai social media bots(thanks fb, as if there werent enough bot accounts).
+
+
+What I want is a google search on steroids that can bring up and highlight relevant info from 8 different sites in a second. Or summarize and search through online texbooks using context so i can instantly find the info even if i dont use the right keyword.
+
+
+Basically i want an ai that is really good at sifting through all the bs info and ads so i dont have to.",https://reddit.com/r/LocalLLaMA/comments/1kb5bjh/why_are_people_rushing_to_programming_frameworks/mq8s4so/,1,summarization,summarize online textbooks,Information Search,Summarize,highlight relevant info from 8 different sites|summarize and search through online texbooks,User desires enhanced search and summarization capabilities.
+,,mqp8ji3,comment,LocalLLaMA,2025-05-05,large_general,,"Lots of people are roleplaying with AI.
+
+Most of it is just free form chat. Character ai style interactions. They set up a scene and “play” the scene by talking with the character. Often when you hear “roleplaying” what they’re talking about is ERP (ero roleplay - sexting with a bot). Some of the new models are quite effective at sexy talk and romance/erotica writing, making them entertaining in this task. Anything can be made “real” in there. Go sit down in an old west saloon and seduce the bartender. Roll with the punches and try to talk your way through. It’s fun.
+
+Some go further and add image gen (emotions, faces, scene) that change every message, or even whole videos that play, along with the ability for the ai to send selfies etc.
+
+The “other” roleplay is literally making the AI run game systems like kids on bikes or d&amp;d. The AI understands instructions well, and high end AI like Gemini 2.5 pro can actually track stats and drive an entire roleplay adventure with minimal scaffolding. It’ll take on the role of the DM and can even simulate your other party members along with all of their quirks.
+
+There are ways to go further than that, too. Add tool calling and now your ai can interact with the real world. The ghost you’re chatting with can flicker your lights above you, or speak aloud with a realistic voice, or play music, or run my foot massager. I’ve hooked one up to some hue lights and it was neat seeing them adjust the lights in the room to suit the mood of the interaction.
+
+It’s definitely a use case. Right now it’s early days, but the people using ai like this are basically building the future interaction systems for all of us. When you interact with an AI agent a few years from now, it’s going to have its roots firmly in these personas and roleplay scenarios and systems people are building. Sure, it’ll be realistically portraying a booking agent for a hotel chain or something, but you get my drift. It’ll feel human.",https://reddit.com/r/LocalLLaMA/comments/1kewkno/qwen_30b_a3b_performance_degradation_with_kv/mqp8ji3/,2,creative writing,generate erotica writing,Creation,Artifact,"roleplaying with AI|romance/erotica writing|add image gen (emotions, faces, scene)|making the AI run game systems",Multiple tasks related to roleplaying and content generation.
+,,mqug58b,comment,LocalLLaMA,2025-05-06,large_general,,"Absolutely this. I have been a software engineering for many years and now building my product (not AI).
+
+While I do use different models to help with development — and they are super helpful — none of them is able to implement a full-stack feature exactly the way I intend them to even after extensive chatting/planning. The most success I have in my workflow so far is through using aider while keeping scope small, very localized refactoring, and high-level system design.
+
+As of a few weeks ago, Gemini and Claude would still make stuff up (used API methods that don't exist) when asked it to write a query using Drizzle ORM with very specific requirements, and a real engineer would not get wrong even if they don't have photographic memory of all the docs. I have also consistently seen them making things up if you start drilling into well-documented things and adding specifics.
+
+OP: if you're not trolling, as many have already pointed out, they are going to get better at certain things than we are but I think that's the wrong focus that leads to the fear of replacement that many people have (which is probably what those big techs want to happen because that way we all get turned into consumption zombies that makes them more money). Treat AI as tools so that they can free up your time to focus on yourself and build better connections with people.",https://reddit.com/r/LocalLLaMA/comments/1kft5yu/qwen_14b_is_better_than_me/mqug58b/,1,creative writing,write query,Creation,Artifact,very localized refactoring|high-level system design|write a query using Drizzle ORM,"Tasks involve improving code, designing systems, and writing queries."
+,,mr59h3l,comment,LocalLLaMA,2025-05-07,large_general,,"I've lately used Gemini with quite success.
+
+I could automate quite a lot with a custom ComfyUI workflow and adding a sleep helped to stay within the free use rate limit so it's free up to a medium data set.",https://reddit.com/r/LocalLLaMA/comments/1kgxpww/whats_the_best_model_for_image_captioning_right/mr59h3l/,1,task automation,automate tasks,Automation,Automation,automate quite a lot,User automates tasks using a custom workflow.
+,,1khsqjh,submission,LocalLLaMA,2025-05-08,large_general,"Best ways to classify massive amounts of content into multiple categories? (Products, NLP, cost-efficiency)","I'm looking for the best solution for classifying thousands of items (e.g., e-commerce products) into potentially hundreds of categories. The main challenge here is cost-efficiency and accuracy.
+
+Currently, I face these issues:
+
+1. **Cost issue**: If each product-category pairing requires an individual AI/API call with advanced models (like claude sonnet / Gemini 2.5 pro), costs quickly become unmanageable when dealing with thousands of items and hundreds of categories.
+2. **Accuracy issue**: When prompting AI to classify products into multiple categories simultaneously, accuracy drops quickly. It frequently misses relevant categories or incorrectly assigns irrelevant ones—even with a relatively small number of categories.
+
+What I do now is:
+
+* Create an automated short summary of each product, leveraging existing product descriptions and images.
+* Run each summarized product through individual category checks one-by-one. Slow and expensive, but accurate.
+
+I'm looking for better, more efficient approaches.
+
+* Are there effective methods or workflows for doing this more affordably without sacrificing too much accuracy?
+* Is there a particular model or technique better suited for handling mass classification across numerous categories?
+
+Appreciate any insights or experience you can share!",https://reddit.com/r/LocalLLaMA/comments/1khsqjh/best_ways_to_classify_massive_amounts_of_content/,1,scripting,summarize product descriptions,Information Search,Summarize,automated short summary of each product,The task involves summarizing product descriptions for classification.
+,,mr7x2f0,comment,LocalLLaMA,2025-05-08,large_general,,"The use case is definitely not a family PC situation, haha. Think more along the lines of an AI server, but with a twist. We're aiming for a setup where the family can run and fine-tune large language models, specifically for novel writing. family will run some sales and marketing and  accounting works there.  That's the primary goal.
+
+Because of that goal, I need to be able to handle models like Qwen 2.5 32B or the large Qwen model. The 256GB of RAM is crucial. The plan is that if I can fit the models in RAM and get decent performance, it'll significantly speed up my workflow.
+
+As for virtual desktops, that's not the main focus for now because the priority is on AI tasks. However, if the system has enough resources left over after running the LLMs, I might explore setting up a few virtual desktops for other tasks, but that's secondary.
+
+Regarding offloading attention heads to GPUs and FF layers to the CPU, that's interesting….I've heard of similar techniques.. I'll definitely look into it because faster prompt processing is always a win. But I'm not sure how common that practice is yet, so I'll need to do some research.
+
+Basically, the whole system is built around enabling to work with large language models for writing.",https://reddit.com/r/LocalLLaMA/comments/1khki8f/epyc_7313p_good_enough/mr7x2f0/,1,fine-tuning models,fine-tune language models,Creation,Artifact,fine-tune large language models|specifically for novel writing,Focus on AI tasks for novel writing.
+,,mr7x2f0,comment,LocalLLaMA,2025-05-08,large_general,,"The use case is definitely not a family PC situation, haha. Think more along the lines of an AI server, but with a twist. We're aiming for a setup where the family can run and fine-tune large language models, specifically for novel writing. family will run some sales and marketing and  accounting works there.  That's the primary goal.
+
+Because of that goal, I need to be able to handle models like Qwen 2.5 32B or the large Qwen model. The 256GB of RAM is crucial. The plan is that if I can fit the models in RAM and get decent performance, it'll significantly speed up my workflow.
+
+As for virtual desktops, that's not the main focus for now because the priority is on AI tasks. However, if the system has enough resources left over after running the LLMs, I might explore setting up a few virtual desktops for other tasks, but that's secondary.
+
+Regarding offloading attention heads to GPUs and FF layers to the CPU, that's interesting….I've heard of similar techniques.. I'll definitely look into it because faster prompt processing is always a win. But I'm not sure how common that practice is yet, so I'll need to do some research.
+
+Basically, the whole system is built around enabling to work with large language models for writing.",https://reddit.com/r/LocalLLaMA/comments/1khki8f/epyc_7313p_good_enough/mr7x2f0/,1,creative writing,write novels,Creation,Artifact,fine-tune large language models|specifically for novel writing,Focus on AI tasks for novel writing.
