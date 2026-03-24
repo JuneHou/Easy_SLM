@@ -1,0 +1,28 @@
+flowchart TD
+    A[Start: run reddit_pipeline.py] --> B[Load config.py<br/>GROUP_A, GROUP_B, GROUP_C<br/>date range, subreddits]
+    B --> C{Select stream}
+    C -->|Stream 1| D[Build anchor queries from GROUP_A]
+    C -->|Stream 2| E[Build anchor queries from GROUP_B]
+    C -->|Both| F[Build anchor queries from GROUP_A + GROUP_B]
+    D --> G[For each subreddit and anchor query]
+    E --> G
+    F --> G
+
+    G --> H[PullPush search: submissions]
+    G --> I[PullPush search: comments]
+
+    H --> J[Apply GROUP_C filter on title + body]
+    I --> K[Apply GROUP_C filter on comment body]
+    J --> L[Map fields and assign stream label]
+    K --> L
+
+    L --> M[Deduplicate new rows by Reddit ID]
+    M --> N[Load existing CSV outputs]
+    N --> O[Merge existing + new by ID<br/>no overwrite]
+    O --> P[Sort by date]
+
+    P --> Q[Write reddit_submissions.csv]
+    P --> R[Write reddit_comments.csv]
+    P --> S[Write reddit_combined.csv]
+    P --> T[Build/write stats.json<br/>by month, stream, label]
+    T --> U[Done]

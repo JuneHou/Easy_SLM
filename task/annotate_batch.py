@@ -103,6 +103,10 @@ log = logging.getLogger(__name__)
 TASK_DIR     = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_IN   = os.path.join(TASK_DIR, "reddit_combined.csv")
 DEFAULT_OUT  = os.path.join(TASK_DIR, "reddit_annotated.csv")
+DEFAULT_IN_S1  = os.path.join(TASK_DIR, "reddit_combined_stream1.csv")
+DEFAULT_IN_S2  = os.path.join(TASK_DIR, "reddit_combined_stream2.csv")
+DEFAULT_OUT_S1 = os.path.join(TASK_DIR, "reddit_annotated_stream1.csv")
+DEFAULT_OUT_S2 = os.path.join(TASK_DIR, "reddit_annotated_stream2.csv")
 BATCH_JSONL  = os.path.join(TASK_DIR, "batch_input.jsonl")
 RESULT_JSONL = os.path.join(TASK_DIR, "batch_output.jsonl")
 STATE_FILE   = os.path.join(TASK_DIR, "batch_state.json")
@@ -309,14 +313,19 @@ def cost_table(input_csv: str, annotated_csv: str = DEFAULT_OUT) -> None:
 
 # ── Step 1: prepare ───────────────────────────────────────────────────────────
 
-def prepare(input_csv: str, incremental: bool, model: str = DEFAULT_MODEL) -> list[dict]:
+def prepare(
+    input_csv: str,
+    incremental: bool,
+    model: str = DEFAULT_MODEL,
+    annotated_csv: str = DEFAULT_OUT,
+) -> list[dict]:
     """
     Read input CSV, optionally skip already-annotated rows, build batch requests.
     Returns list of request dicts ready to write as JSONL.
     """
     annotated_ids: set[str] = set()
-    if incremental and os.path.exists(DEFAULT_OUT):
-        with open(DEFAULT_OUT, newline="", encoding="utf-8") as f:
+    if incremental and os.path.exists(annotated_csv):
+        with open(annotated_csv, newline="", encoding="utf-8") as f:
             for row in csv.DictReader(f):
                 annotated_ids.add(row["id"])
         log.info("Incremental mode: %d already-annotated IDs loaded", len(annotated_ids))
@@ -748,6 +757,8 @@ def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         description="Batch annotation pipeline (Step 2) — annotates reddit_combined.csv"
     )
+    p.add_argument("--stream", choices=["1", "2"], default=None,
+                   help="Use stream-specific defaults: 1=>*_stream1.csv, 2=>*_stream2.csv")
     p.add_argument("--model",       default=DEFAULT_MODEL,
                    choices=list(BATCH_PRICING),
                    help=f"OpenAI model to use (default: {DEFAULT_MODEL})")
@@ -772,8 +783,24 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
+def _resolve_stream_paths(stream: str | None, input_csv: str, out_csv: str) -> tuple[str, str]:
+    """Resolve stream-specific default CSV paths when --stream is provided."""
+    if stream == "1":
+        if input_csv == DEFAULT_IN:
+            input_csv = DEFAULT_IN_S1
+        if out_csv == DEFAULT_OUT:
+            out_csv = DEFAULT_OUT_S1
+    elif stream == "2":
+        if input_csv == DEFAULT_IN:
+            input_csv = DEFAULT_IN_S2
+        if out_csv == DEFAULT_OUT:
+            out_csv = DEFAULT_OUT_S2
+    return input_csv, out_csv
+
+
 def main() -> None:
     args = build_parser().parse_args()
+    args.input, args.out = _resolve_stream_paths(args.stream, args.input, args.out)
 
     # ── cost-only shortcut ────────────────────────────────────────────────────
     if args.cost_only:
@@ -790,7 +817,7 @@ def main() -> None:
 
     # ── prepare ───────────────────────────────────────────────────────────────
     if not (args.resume or args.poll_only):
-        requests = prepare(args.input, args.incremental, args.model)
+        requests = prepare(args.input, args.incremental, args.model, args.out)
         if not requests:
             log.info("Nothing to annotate — all records already done.")
             return

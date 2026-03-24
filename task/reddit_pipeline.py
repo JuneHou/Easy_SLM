@@ -27,7 +27,9 @@ Usage
     python reddit_pipeline.py --stream 1               # stream 1 only (A×C)
     python reddit_pipeline.py --stream 2               # stream 2 only (B×C)
     python reddit_pipeline.py --start 2024-01-01 --end 2024-12-31
-    python reddit_pipeline.py --subreddits LocalLLaMA LocalLLM
+    python reddit_pipeline.py --subreddits-s1 LocalLLaMA LocalLLM SelfHosted
+    python reddit_pipeline.py --subreddits-s2 ChatGPT OpenAI ClaudeAI
+    python reddit_pipeline.py --subreddits LocalLLaMA LocalLLM   # global override
 
 Output
 ------
@@ -211,7 +213,7 @@ def _pullpush_search(
 
 
 def collect_pullpush(
-    subreddits: list[str],
+    subreddit_map: dict[str, list[str]],
     queries: list[dict],
     start: str,
     end: str,
@@ -221,10 +223,11 @@ def collect_pullpush(
     new_submissions: dict[str, dict] = {}
     new_comments:    dict[str, dict] = {}
 
-    for sub in subreddits:
-        for entry in queries:
-            q      = entry["query"]
-            stream = entry["stream"]
+    for entry in queries:
+        q      = entry["query"]
+        stream = entry["stream"]
+        subreddits = subreddit_map.get(stream, [])
+        for sub in subreddits:
             log.info("PullPush submissions | r/%s | stream=%s | '%s'", sub, stream, q)
             raw_subs = _pullpush_search("submission", sub, q, after, before)
             kept_subs = 0
@@ -304,8 +307,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
                    help=f"Start date YYYY-MM-DD (default: {config.START_DATE})")
     p.add_argument("--end",    default=config.END_DATE,
                    help=f"End date YYYY-MM-DD (default: {config.END_DATE})")
-    p.add_argument("--subreddits", nargs="+", default=config.SUBREDDITS,
-                   help="Subreddits to search (default: per config.py)")
+    p.add_argument("--subreddits", nargs="+", default=None,
+                   help="Global subreddit override for all selected streams")
+    p.add_argument("--subreddits-s1", nargs="+", default=None,
+                   help="Stream 1 subreddit override (small/local)")
+    p.add_argument("--subreddits-s2", nargs="+", default=None,
+                   help="Stream 2 subreddit override (large/general)")
     p.add_argument("--out", default=config.OUTPUT_DIR,
                    help="Output directory (default: same folder as this script)")
     return p
@@ -327,6 +334,22 @@ def main() -> None:
     n_s1 = sum(1 for q in queries if q["stream"] == config.STREAM_SMALL_LOCAL)
     n_s2 = sum(1 for q in queries if q["stream"] == config.STREAM_LARGE_GENERAL)
 
+    # Resolve per-stream subreddit scopes.
+    subreddit_map: dict[str, list[str]] = {
+        config.STREAM_SMALL_LOCAL: list(config.SUBREDDITS_SMALL_LOCAL),
+        config.STREAM_LARGE_GENERAL: list(config.SUBREDDITS_LARGE_GENERAL),
+    }
+    if args.subreddits:
+        subreddit_map[config.STREAM_SMALL_LOCAL] = list(args.subreddits)
+        subreddit_map[config.STREAM_LARGE_GENERAL] = list(args.subreddits)
+    if args.subreddits_s1:
+        subreddit_map[config.STREAM_SMALL_LOCAL] = list(args.subreddits_s1)
+    if args.subreddits_s2:
+        subreddit_map[config.STREAM_LARGE_GENERAL] = list(args.subreddits_s2)
+
+    # Keep only selected streams.
+    subreddit_map = {k: v for k, v in subreddit_map.items() if k in stream_filter}
+
     sub_path  = os.path.join(args.out, config.CSV_SUBMISSIONS)
     com_path  = os.path.join(args.out, config.CSV_COMMENTS)
     comb_path = os.path.join(args.out, config.CSV_COMBINED)
@@ -341,7 +364,9 @@ def main() -> None:
     log.info("Stream     : %s  (stream1=%d queries, stream2=%d queries)",
              args.stream, n_s1, n_s2)
     log.info("Date range : %s → %s", args.start, args.end)
-    log.info("Subreddits : %s", args.subreddits)
+    log.info("Subreddits by stream:")
+    for stream_key, subs in subreddit_map.items():
+        log.info("  %s: %s", stream_key, subs)
     log.info("Total queries selected: %d", len(queries))
     log.info("Output dir : %s", args.out)
     log.info("Existing   : %d submissions, %d comments (will merge)", before_subs, before_coms)
@@ -349,7 +374,7 @@ def main() -> None:
     # ── Step 2: fetch new records ─────────────────────────────────────────────
     log.info("── PullPush pass ──────────────────────────────────")
     new_subs, new_coms = collect_pullpush(
-        args.subreddits, queries, args.start, args.end
+        subreddit_map, queries, args.start, args.end
     )
     for rid, row in new_subs.items():
         all_submissions.setdefault(rid, row)

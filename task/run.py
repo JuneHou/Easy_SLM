@@ -31,13 +31,15 @@ Usage
   # Step 1 only (collect data, then check cost later)
   python run.py --step search
   python run.py --step search --stream 1 --start 2024-01-01 --end 2024-12-31
-  python run.py --step search --subreddits LocalLLaMA LocalLLM
+  python run.py --step search --subreddits-s1 LocalLLaMA LocalLLM SelfHosted
+  python run.py --step search --subreddits-s2 ChatGPT OpenAI ClaudeAI
 
   # Cost estimate only (reads existing reddit_combined.csv, no API calls)
   python run.py --step estimate
 
-  # Step 2 only (annotate existing reddit_combined.csv)
-  python run.py --step annotate --model gpt-4.1
+  # Step 2 only (annotate stream-specific CSV)
+  python run.py --step annotate --stream 1 --model gpt-4.1
+  python run.py --step annotate --stream 2 --model gpt-4.1
   python run.py --step annotate --model gpt-4.1-mini   # cheap pilot run
   python run.py --step annotate --incremental           # skip already-done rows
   python run.py --step annotate --resume                # resume in-progress batch
@@ -63,6 +65,33 @@ sys.path.insert(0, TASK_DIR)
 import reddit_pipeline   # noqa: E402
 import annotate_batch    # noqa: E402
 import config            # noqa: E402
+
+
+# ── filename helpers ───────────────────────────────────────────────────────────
+def _stream_suffix(stream: str) -> str:
+    return {"1": "_stream1", "2": "_stream2"}.get(stream, "")
+
+
+def _with_suffix(filename: str, suffix: str) -> str:
+    if not suffix:
+        return filename
+    root, ext = os.path.splitext(filename)
+    return f"{root}{suffix}{ext}"
+
+
+def _resolve_annotation_paths(stream: str, input_csv: str, out_csv: str) -> tuple[str, str]:
+    """Resolve stream-specific annotation defaults from --stream."""
+    if stream == "1":
+        if input_csv == annotate_batch.DEFAULT_IN:
+            input_csv = annotate_batch.DEFAULT_IN_S1
+        if out_csv == annotate_batch.DEFAULT_OUT:
+            out_csv = annotate_batch.DEFAULT_OUT_S1
+    elif stream == "2":
+        if input_csv == annotate_batch.DEFAULT_IN:
+            input_csv = annotate_batch.DEFAULT_IN_S2
+        if out_csv == annotate_batch.DEFAULT_OUT:
+            out_csv = annotate_batch.DEFAULT_OUT_S2
+    return input_csv, out_csv
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
@@ -94,8 +123,12 @@ def build_parser() -> argparse.ArgumentParser:
                     help=f"Start date YYYY-MM-DD (default: {config.START_DATE})")
     s1.add_argument("--end",    default=config.END_DATE,
                     help=f"End date YYYY-MM-DD (default: {config.END_DATE})")
-    s1.add_argument("--subreddits", nargs="+", default=config.SUBREDDITS,
-                    help="Subreddits to search (default: per config.py)")
+    s1.add_argument("--subreddits", nargs="+", default=None,
+                    help="Global subreddit override for all selected streams")
+    s1.add_argument("--subreddits-s1", nargs="+", default=None,
+                    help="Stream 1 subreddit override (small/local)")
+    s1.add_argument("--subreddits-s2", nargs="+", default=None,
+                    help="Stream 2 subreddit override (large/general)")
     s1.add_argument("--out-dir", default=config.OUTPUT_DIR,
                     help="Output directory for CSVs (default: task/ folder)")
 
@@ -142,9 +175,23 @@ def run_search(args: argparse.Namespace) -> None:
     import json, csv
     os.makedirs(args.out_dir, exist_ok=True)
 
-    sub_path  = os.path.join(args.out_dir, config.CSV_SUBMISSIONS)
-    com_path  = os.path.join(args.out_dir, config.CSV_COMMENTS)
-    comb_path = os.path.join(args.out_dir, config.CSV_COMBINED)
+    subreddit_map: dict[str, list[str]] = {
+        config.STREAM_SMALL_LOCAL: list(config.SUBREDDITS_SMALL_LOCAL),
+        config.STREAM_LARGE_GENERAL: list(config.SUBREDDITS_LARGE_GENERAL),
+    }
+    if args.subreddits:
+        subreddit_map[config.STREAM_SMALL_LOCAL] = list(args.subreddits)
+        subreddit_map[config.STREAM_LARGE_GENERAL] = list(args.subreddits)
+    if args.subreddits_s1:
+        subreddit_map[config.STREAM_SMALL_LOCAL] = list(args.subreddits_s1)
+    if args.subreddits_s2:
+        subreddit_map[config.STREAM_LARGE_GENERAL] = list(args.subreddits_s2)
+    subreddit_map = {k: v for k, v in subreddit_map.items() if k in stream_filter}
+
+    suffix = _stream_suffix(args.stream)
+    sub_path  = os.path.join(args.out_dir, _with_suffix(config.CSV_SUBMISSIONS, suffix))
+    com_path  = os.path.join(args.out_dir, _with_suffix(config.CSV_COMMENTS, suffix))
+    comb_path = os.path.join(args.out_dir, _with_suffix(config.CSV_COMBINED, suffix))
 
     all_submissions = reddit_pipeline._load_csv(sub_path)
     all_comments    = reddit_pipeline._load_csv(com_path)
@@ -156,11 +203,13 @@ def run_search(args: argparse.Namespace) -> None:
     log.info("Stream     : %s  (stream1=%d queries, stream2=%d queries)",
              args.stream, n_s1, n_s2)
     log.info("Date range : %s → %s", args.start, args.end)
-    log.info("Subreddits : %s", args.subreddits)
+    log.info("Subreddits by stream:")
+    for stream_key, subs in subreddit_map.items():
+        log.info("  %s: %s", stream_key, subs)
     log.info("Total queries: %d", len(queries))
 
     new_subs, new_coms = reddit_pipeline.collect_pullpush(
-        args.subreddits, queries, args.start, args.end
+        subreddit_map, queries, args.start, args.end
     )
     for rid, row in new_subs.items():
         all_submissions.setdefault(rid, row)
@@ -180,7 +229,7 @@ def run_search(args: argparse.Namespace) -> None:
     reddit_pipeline._write_csv(combined_rows,   comb_path)
 
     stats = reddit_pipeline._build_stats(combined_rows)
-    stats_path = os.path.join(args.out_dir, config.STATS_JSON)
+    stats_path = os.path.join(args.out_dir, _with_suffix(config.STATS_JSON, suffix))
     with open(stats_path, "w", encoding="utf-8") as fh:
         json.dump(stats, fh, indent=2)
 
@@ -205,19 +254,24 @@ def run_annotate(args: argparse.Namespace) -> None:
     print("═" * 60)
     print()
 
+    # Resolve stream-specific default IO paths for annotation.
+    input_csv, out_csv = _resolve_annotation_paths(args.stream, args.input, args.annotated_out)
+
     # ── merge-only shortcut ───────────────────────────────────────────────────
     if args.merge_only:
         if not os.path.exists(annotate_batch.RESULT_JSONL):
             print(f"[error] No result file found: {annotate_batch.RESULT_JSONL}")
             sys.exit(1)
         annotate_batch.merge_annotations(
-            args.input, annotate_batch.RESULT_JSONL, args.annotated_out
+            input_csv, annotate_batch.RESULT_JSONL, out_csv
         )
         return
 
     # ── prepare ───────────────────────────────────────────────────────────────
     if not args.resume:
-        requests = annotate_batch.prepare(args.input, args.incremental, args.model)
+        requests = annotate_batch.prepare(
+            input_csv, args.incremental, args.model, out_csv
+        )
         if not requests:
             print("Nothing to annotate — all records already done.")
             return
@@ -274,11 +328,12 @@ def run_annotate(args: argparse.Namespace) -> None:
 
     output_file_id = annotate_batch.poll_batch(client, batch_id, args.poll_interval)
     annotate_batch.download_results(client, output_file_id, annotate_batch.RESULT_JSONL)
-    annotate_batch.merge_annotations(args.input, annotate_batch.RESULT_JSONL, args.annotated_out)
+    annotate_batch.merge_annotations(input_csv, annotate_batch.RESULT_JSONL, out_csv)
 
     print()
     print("  Annotation complete.")
-    print(f"  Output: {args.annotated_out}")
+    print(f"  Input : {input_csv}")
+    print(f"  Output: {out_csv}")
 
 
 # ── main ──────────────────────────────────────────────────────────────────────
@@ -292,7 +347,8 @@ def main() -> None:
         run_search(args)
 
     if step in ("estimate", "all"):
-        run_estimate(args.input, args.annotated_out)
+        est_in, est_out = _resolve_annotation_paths(args.stream, args.input, args.annotated_out)
+        run_estimate(est_in, est_out)
 
     if step == "all":
         # After seeing the cost table, let the user pick the model interactively

@@ -29,9 +29,16 @@ import os
 START_DATE = "2023-01-01"
 END_DATE   = "2025-12-31"
 
-# ── Target subreddits ─────────────────────────────────────────────────────────
-# Ollama removed — it is a specific tool subreddit, not a use-case community.
-SUBREDDITS = ["LocalLLaMA", "LocalLLM", "SelfHosted"]
+# ── Target subreddits (separated by stream) ──────────────────────────────────
+# Stream 1 is intentionally local/self-hosted focused.
+SUBREDDITS_SMALL_LOCAL = ["LocalLLaMA", "LocalLLM", "SelfHosted"]
+#
+# Stream 2 should NOT search inside local-model communities by default.
+# It targets general/cloud LLM discussion spaces.
+SUBREDDITS_LARGE_GENERAL = ["ChatGPT", "OpenAI", "ClaudeAI", "LLM", "Gemini"]
+
+# Backward-compatible combined list (used only for global override/default CLI).
+SUBREDDITS = sorted(set(SUBREDDITS_SMALL_LOCAL + SUBREDDITS_LARGE_GENERAL))
 
 # ── Output directory (absolute) ───────────────────────────────────────────────
 OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))

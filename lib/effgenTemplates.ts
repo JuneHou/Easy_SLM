@@ -1,0 +1,576 @@
+/**
+ * Prompt templates derived from effGen (https://github.com/ctrl-gaurav/effGen)
+ * Source: effgen/prompts/templates/{analysis,coding,general,reasoning}.yaml
+ */
+
+export type EffGenCategory = "analysis" | "coding" | "general" | "reasoning";
+
+export interface EffGenTemplate {
+  id: string;
+  title: string;
+  description: string;
+  steps: string[];
+  schemaHint: string;
+  category: EffGenCategory;
+  tags?: string[];
+}
+
+const ANALYSIS: EffGenTemplate[] = [
+  {
+    id: "data_analysis",
+    title: "Data analysis",
+    description: "Analyze data and extract insights",
+    category: "analysis",
+    tags: ["analysis", "data", "insights"],
+    steps: [
+      "Provide summary statistics",
+      "Identify key patterns",
+      "Note notable findings",
+      "Deliver insights",
+    ],
+    schemaHint: "Sections: 1. Summary statistics 2. Key patterns 3. Notable findings 4. Insights",
+  },
+  {
+    id: "text_analysis",
+    title: "Text analysis",
+    description: "Analyze text for themes, sentiment, etc.",
+    category: "analysis",
+    tags: ["analysis", "text", "nlp"],
+    steps: [
+      "Analyze the text for each requested aspect",
+      "Synthesize themes and sentiment",
+    ],
+    schemaHint: "Structured analysis per aspect.",
+  },
+  {
+    id: "comparative_analysis",
+    title: "Comparative analysis",
+    description: "Compare multiple items or options",
+    category: "analysis",
+    tags: ["analysis", "comparison", "decision"],
+    steps: [
+      "Compare each option on each criterion",
+      "Summarize analysis",
+      "Give recommendation with reasoning",
+    ],
+    schemaHint: "Analysis section then Recommendation: [Best option and why]",
+  },
+  {
+    id: "trend_analysis",
+    title: "Trend analysis",
+    description: "Identify and analyze trends",
+    category: "analysis",
+    tags: ["analysis", "trends", "forecasting"],
+    steps: [
+      "Identify trend direction",
+      "Calculate rate of change",
+      "Find anomalies",
+      "Make prediction",
+    ],
+    schemaHint: "Results: trend, rate, anomalies, prediction.",
+  },
+  {
+    id: "root_cause_analysis",
+    title: "Root cause analysis",
+    description: "Find root causes of problems",
+    category: "analysis",
+    tags: ["analysis", "problem-solving", "diagnosis"],
+    steps: [
+      "List immediate causes",
+      "Dig deeper — why did each cause occur?",
+      "Identify root cause(s)",
+      "Suggest solutions",
+    ],
+    schemaHint: "Sections: Immediate causes, Deeper analysis, Root causes, Solutions",
+  },
+  {
+    id: "risk_analysis",
+    title: "Risk analysis",
+    description: "Analyze and assess risks",
+    category: "analysis",
+    tags: ["analysis", "risk", "assessment"],
+    steps: [
+      "Identify risks",
+      "Assess each (Probability, Impact, Risk level)",
+      "Propose mitigation strategies",
+      "List priority actions",
+    ],
+    schemaHint: "Risks list; Assessment; Mitigation; Priority actions.",
+  },
+  {
+    id: "gap_analysis",
+    title: "Gap analysis",
+    description: "Identify gaps between current and desired state",
+    category: "analysis",
+    tags: ["analysis", "planning", "strategy"],
+    steps: [
+      "List key differences",
+      "Assess impact of gaps",
+      "Outline steps to bridge the gap",
+      "Timeline and priorities",
+    ],
+    schemaHint: "Key differences; Impact; Bridge steps; Timeline.",
+  },
+  {
+    id: "swot_analysis",
+    title: "SWOT analysis",
+    description: "SWOT analysis framework",
+    category: "analysis",
+    tags: ["analysis", "strategy", "business"],
+    steps: [
+      "List Strengths (internal positive)",
+      "List Weaknesses (internal negative)",
+      "List Opportunities (external positive)",
+      "List Threats (external negative)",
+      "Strategic insights",
+    ],
+    schemaHint: "Strengths / Weaknesses / Opportunities / Threats then Strategic insights.",
+  },
+  {
+    id: "cost_benefit_analysis",
+    title: "Cost–benefit analysis",
+    description: "Analyze costs vs benefits",
+    category: "analysis",
+    tags: ["analysis", "decision", "financial"],
+    steps: [
+      "Summarize costs and total",
+      "Summarize benefits and total",
+      "Compute net benefit and ROI",
+      "State recommendation",
+    ],
+    schemaHint: "Costs; Benefits; Net benefit; ROI; Recommendation.",
+  },
+  {
+    id: "performance_analysis",
+    title: "Performance analysis",
+    description: "Analyze performance metrics",
+    category: "analysis",
+    tags: ["analysis", "performance", "metrics"],
+    steps: [
+      "Describe current performance",
+      "Identify bottlenecks",
+      "List optimization opportunities",
+      "Expected gains",
+    ],
+    schemaHint: "Current performance; Bottlenecks; Opportunities; Expected gains.",
+  },
+];
+
+const CODING: EffGenTemplate[] = [
+  {
+    id: "code_generation",
+    title: "Code generation",
+    description: "Generate code with clear structure",
+    category: "coding",
+    tags: ["coding", "generation", "slm-optimized"],
+    steps: [
+      "Use clear function/variable names",
+      "Add comments for complex logic",
+      "Include error handling",
+      "Provide example usage",
+    ],
+    schemaHint: "Clean, working code with comments and example.",
+  },
+  {
+    id: "code_explanation",
+    title: "Code explanation",
+    description: "Explain code step by step",
+    category: "coding",
+    tags: ["coding", "explanation", "documentation"],
+    steps: [
+      "What does this code do?",
+      "How does it work?",
+      "Key points to note",
+    ],
+    schemaHint: "Explanation section with 1–3 subsections.",
+  },
+  {
+    id: "code_debugging",
+    title: "Code debugging",
+    description: "Debug code and fix issues",
+    category: "coding",
+    tags: ["coding", "debugging", "fixing"],
+    steps: [
+      "Identify the problem",
+      "Explain why it's wrong",
+      "Provide fixed code",
+      "Explain the fix",
+    ],
+    schemaHint: "Solution: problem, explanation, fixed code, fix summary.",
+  },
+  {
+    id: "code_refactoring",
+    title: "Code refactoring",
+    description: "Refactor code for better quality",
+    category: "coding",
+    tags: ["coding", "refactoring", "optimization"],
+    steps: [
+      "Produce refactored code",
+      "List changes made",
+      "Explain why it's better",
+    ],
+    schemaHint: "Refactored code; Changes made; Why it's better.",
+  },
+  {
+    id: "algorithm_design",
+    title: "Algorithm design",
+    description: "Design algorithm with pseudocode",
+    category: "coding",
+    tags: ["coding", "algorithm", "design"],
+    steps: [
+      "Understand the problem",
+      "Design solution (pseudocode)",
+      "Analyze complexity",
+      "Implement in target language",
+    ],
+    schemaHint: "Problem; Approach/pseudocode; Complexity; Implementation.",
+  },
+  {
+    id: "test_generation",
+    title: "Test generation",
+    description: "Generate test cases for code",
+    category: "coding",
+    tags: ["coding", "testing", "quality"],
+    steps: [
+      "Normal cases",
+      "Edge cases",
+      "Error cases",
+    ],
+    schemaHint: "Tests: normal, edge, error cases.",
+  },
+  {
+    id: "code_review",
+    title: "Code review",
+    description: "Review code and suggest improvements",
+    category: "coding",
+    tags: ["coding", "review", "quality"],
+    steps: [
+      "Check correctness",
+      "Check readability",
+      "Check efficiency",
+      "Check best practices",
+      "Note potential bugs",
+    ],
+    schemaHint: "Review: checklist plus suggestions.",
+  },
+  {
+    id: "api_usage",
+    title: "API usage",
+    description: "Show how to use an API or library",
+    category: "coding",
+    tags: ["coding", "api", "documentation"],
+    steps: [
+      "Import/setup",
+      "Basic usage",
+      "Complete example",
+      "Notes",
+    ],
+    schemaHint: "Code example with import, usage, and notes.",
+  },
+  {
+    id: "code_translation",
+    title: "Code translation",
+    description: "Translate code between languages",
+    category: "coding",
+    tags: ["coding", "translation", "conversion"],
+    steps: [
+      "Preserve equivalent syntax",
+      "Apply language-specific features",
+      "Follow best practices for target language",
+    ],
+    schemaHint: "Translated code plus brief translation notes.",
+  },
+  {
+    id: "function_chaining",
+    title: "Function chaining",
+    description: "Create pipeline of function calls",
+    category: "coding",
+    tags: ["coding", "functional", "composition"],
+    steps: [
+      "Plan the chain",
+      "Write the code",
+      "Show example",
+    ],
+    schemaHint: "Solution: plan, code, example.",
+  },
+];
+
+const GENERAL: EffGenTemplate[] = [
+  {
+    id: "basic_task",
+    title: "Basic task",
+    description: "General-purpose task template",
+    category: "general",
+    tags: ["general", "basic", "slm-optimized"],
+    steps: ["Follow the task and requirements", "Produce the requested response"],
+    schemaHint: "Response matching requirements.",
+  },
+  {
+    id: "question_answer",
+    title: "Question & answer",
+    description: "Simple Q&A template",
+    category: "general",
+    tags: ["general", "qa", "simple"],
+    steps: ["Answer clearly and concisely"],
+    schemaHint: "Direct answer.",
+  },
+  {
+    id: "summarization",
+    title: "Summarization",
+    description: "Summarize text concisely",
+    category: "general",
+    tags: ["general", "summarization", "text"],
+    steps: [
+      "Focus on main points",
+      "Include key facts",
+      "Include important conclusions",
+    ],
+    schemaHint: "Summary within requested length.",
+  },
+  {
+    id: "explanation",
+    title: "Explanation",
+    description: "Explain concepts clearly",
+    category: "general",
+    tags: ["general", "explanation", "teaching"],
+    steps: [
+      "Simple definition",
+      "Why it matters",
+      "How it works",
+      "Example",
+    ],
+    schemaHint: "Structure: definition, why, how, example.",
+  },
+  {
+    id: "instruction_following",
+    title: "Instruction following",
+    description: "Follow multi-step instructions",
+    category: "general",
+    tags: ["general", "instructions", "task-execution"],
+    steps: ["Execute each step in order", "Report results"],
+    schemaHint: "Results for each step.",
+  },
+  {
+    id: "creative_writing",
+    title: "Creative writing",
+    description: "Generate creative text",
+    category: "general",
+    tags: ["general", "creative", "writing"],
+    steps: ["Match the requested style", "Respect constraints"],
+    schemaHint: "Output in requested style.",
+  },
+  {
+    id: "translation",
+    title: "Translation",
+    description: "Translate between languages",
+    category: "general",
+    tags: ["general", "translation", "language"],
+    steps: ["Translate accurately", "Preserve meaning and tone"],
+    schemaHint: "Translation only.",
+  },
+  {
+    id: "brainstorming",
+    title: "Brainstorming",
+    description: "Generate ideas and suggestions",
+    category: "general",
+    tags: ["general", "brainstorming", "creative"],
+    steps: [
+      "Generate requested number of ideas",
+      "Align with goal",
+      "Consider constraints",
+    ],
+    schemaHint: "List of ideas.",
+  },
+  {
+    id: "classification",
+    title: "Classification",
+    description: "Classify or categorize items",
+    category: "general",
+    tags: ["general", "classification", "categorization"],
+    steps: [
+      "Choose best category",
+      "Explain reasoning",
+      "State confidence level",
+    ],
+    schemaHint: "Category; Reasoning; Confidence.",
+  },
+  {
+    id: "extraction",
+    title: "Extraction",
+    description: "Extract specific information",
+    category: "general",
+    tags: ["general", "extraction", "information"],
+    steps: ["Extract each requested field", "Format as structured data"],
+    schemaHint: "Structured data (e.g. JSON) with requested fields.",
+  },
+  {
+    id: "recommendation",
+    title: "Recommendation",
+    description: "Provide recommendations",
+    category: "general",
+    tags: ["general", "recommendation", "advice"],
+    steps: [
+      "What to recommend",
+      "Why it fits",
+      "Potential drawbacks",
+    ],
+    schemaHint: "Top N recommendations with what, why, drawbacks.",
+  },
+  {
+    id: "formatting",
+    title: "Formatting",
+    description: "Format text in specific style",
+    category: "general",
+    tags: ["general", "formatting", "conversion"],
+    steps: ["Convert to requested format", "Meet all requirements"],
+    schemaHint: "Formatted output per requirements.",
+  },
+  {
+    id: "verification",
+    title: "Verification",
+    description: "Verify or fact-check information",
+    category: "general",
+    tags: ["general", "verification", "fact-checking"],
+    steps: [
+      "Is this accurate?",
+      "What evidence supports or refutes it?",
+      "Confidence level",
+      "Caveats or context",
+    ],
+    schemaHint: "Verification: accuracy, evidence, confidence, caveats.",
+  },
+  {
+    id: "planning",
+    title: "Planning",
+    description: "Create plans or roadmaps",
+    category: "general",
+    tags: ["general", "planning", "organization"],
+    steps: [
+      "Break into phases",
+      "List key milestones",
+      "Identify dependencies",
+      "Estimate timeline",
+    ],
+    schemaHint: "Plan with phases, milestones, dependencies, timeline.",
+  },
+  {
+    id: "error_correction",
+    title: "Error correction",
+    description: "Find and correct errors",
+    category: "general",
+    tags: ["general", "correction", "editing"],
+    steps: [
+      "List errors found",
+      "Provide corrected version",
+      "Explain changes",
+    ],
+    schemaHint: "List of errors; Corrected version; Explanation.",
+  },
+];
+
+const REASONING: EffGenTemplate[] = [
+  {
+    id: "step_by_step_reasoning",
+    title: "Step-by-step reasoning",
+    description: "Step-by-step reasoning tasks optimized for SLMs",
+    category: "reasoning",
+    tags: ["reasoning", "step-by-step", "slm-optimized"],
+    steps: [
+      "Break down the problem into steps",
+      "Show reasoning for each step",
+      "State final answer clearly",
+    ],
+    schemaHint: "Format: Step 1: ... Step 2: ... Answer: [Final answer]",
+  },
+  {
+    id: "chain_of_thought",
+    title: "Chain-of-thought",
+    description: "Chain-of-thought prompting for complex reasoning",
+    category: "reasoning",
+    tags: ["reasoning", "chain-of-thought", "complex"],
+    steps: [
+      "What information do we have?",
+      "What do we need to find?",
+      "What's our approach?",
+      "Execute the solution",
+      "Verify the answer",
+    ],
+    schemaHint: "Numbered reasoning then answer.",
+  },
+  {
+    id: "problem_decomposition",
+    title: "Problem decomposition",
+    description: "Break complex problems into manageable parts",
+    category: "reasoning",
+    tags: ["reasoning", "decomposition", "planning"],
+    steps: [
+      "State main goal",
+      "List sub-problems",
+      "Solve each part",
+    ],
+    schemaHint: "Main goal; Sub-problems; Solution per part.",
+  },
+  {
+    id: "logical_reasoning",
+    title: "Logical reasoning",
+    description: "Logical deduction and inference",
+    category: "reasoning",
+    tags: ["reasoning", "logic", "deduction"],
+    steps: [
+      "List the facts",
+      "Apply logical rules",
+      "Draw conclusions",
+      "State the answer",
+    ],
+    schemaHint: "Facts; Reasoning; Conclusions; Answer.",
+  },
+  {
+    id: "compare_and_contrast",
+    title: "Compare and contrast",
+    description: "Compare and contrast two or more items",
+    category: "reasoning",
+    tags: ["reasoning", "comparison", "analysis"],
+    steps: [
+      "List similarities",
+      "List differences per item",
+      "Summarize key differences",
+    ],
+    schemaHint: "Similarities; Differences; Conclusion.",
+  },
+  {
+    id: "cause_and_effect",
+    title: "Cause and effect",
+    description: "Analyze cause and effect relationships",
+    category: "reasoning",
+    tags: ["reasoning", "causality", "analysis"],
+    steps: [
+      "Identify root causes",
+      "List direct and indirect effects",
+      "Summarize relationship",
+    ],
+    schemaHint: "Cause(s); Effect(s); Conclusion.",
+  },
+];
+
+export const EFFGEN_CATEGORIES: { id: EffGenCategory; label: string }[] = [
+  { id: "analysis", label: "Analysis" },
+  { id: "coding", label: "Coding" },
+  { id: "general", label: "General" },
+  { id: "reasoning", label: "Reasoning" },
+];
+
+export const EFFGEN_TEMPLATES: EffGenTemplate[] = [
+  ...ANALYSIS,
+  ...CODING,
+  ...GENERAL,
+  ...REASONING,
+];
+
+export function getTemplatesByCategory(): Record<EffGenCategory, EffGenTemplate[]> {
+  return {
+    analysis: ANALYSIS,
+    coding: CODING,
+    general: GENERAL,
+    reasoning: REASONING,
+  };
+}
