@@ -1,0 +1,541 @@
+rank,task,theme,subtheme,mentions,cum_pct
+1,transcribe audio,Creation,Artifact,5,0.9
+2,summarize documents,Information Search,Summarize,5,1.7
+3,transcribe meetings,Information Search,Summarize,5,2.6
+4,generate code,Creation,Artifact,4,3.3
+5,summarize meetings,Information Search,Summarize,3,3.8
+6,refactor code,Advice,Improve,3,4.3
+7,summarize content,Information Search,Summarize,2,4.7
+8,summarize text,Information Search,Summarize,2,5.0
+9,auto-fill web forms,Automation,Automation,2,5.3
+10,write creatively,Creation,Artifact,2,5.7
+11,generate sphinx format output,Creation,Artifact,2,6.0
+12,generate development plans,Creation,Artifact,2,6.4
+13,organize document,Creation,Artifact,2,6.7
+14,translate text,Creation,Artifact,2,7.1
+15,manage calendar,Automation,Automation,2,7.4
+16,write code,Creation,Artifact,2,7.8
+17,extract data from pdfs,Information Search,Analyze,2,8.1
+18,generate images,Creation,Artifact,2,8.4
+19,create task lists,Creation,Artifact,2,8.8
+20,display project wallet,Automation,Automation,2,9.1
+21,automate tasks,Automation,Automation,2,9.5
+22,review code,Advice,Improve,2,9.8
+23,break goal into phases,Creation,Idea,2,10.2
+24,validate mvp feasibility,Advice,Validation,2,10.5
+25,break phases into tasks,Creation,Idea,2,10.9
+26,break tasks into steps,Creation,Idea,2,11.2
+27,summarize each phase,Information Search,Summarize,2,11.6
+28,build dev-doc,Creation,Artifact,1,11.7
+29,generate domain name list,Creation,Artifact,1,11.9
+30,check domain availability,Automation,Automation,1,12.1
+31,process webhooks,Automation,Automation,1,12.2
+32,run scheduled tasks,Automation,Automation,1,12.4
+33,call apis,Automation,Automation,1,12.6
+34,choose computer,Advice,Guidance,1,12.8
+35,check emails,Automation,Automation,1,12.9
+36,integrate answers,Creation,Artifact,1,13.1
+37,analyze legal documents,Information Search,Analyze,1,13.3
+38,generate questions,Creation,Artifact,1,13.4
+39,brainstorm ideas,Creation,Idea,1,13.6
+40,debug python issues,Information Search,Analyze,1,13.8
+41,configure ai model integration,Automation,Automation,1,14.0
+42,research a library,Information Search,Search,1,14.1
+43,connect to databases,Automation,Automation,1,14.3
+44,rephrase email drafts,Advice,Improve,1,14.5
+45,build spec-doc,Creation,Artifact,1,14.7
+46,extract important information,Information Search,Summarize,1,14.8
+47,read emails,Automation,Automation,1,15.0
+48,create spicy prompts,Creation,Artifact,1,15.2
+49,generate action items,Information Search,Summarize,1,15.3
+50,transcribe teams meeting,Creation,Artifact,1,15.5
+51,translate text to mandarin,Creation,Artifact,1,15.7
+52,improve email tone,Advice,Improve,1,15.9
+53,fix grammar,Advice,Improve,1,16.0
+54,improve articulation,Advice,Improve,1,16.2
+55,improve emails,Advice,Improve,1,16.4
+56,ask questions about pdfs,Information Search,Search,1,16.6
+57,create detailed treatment,Creation,Artifact,1,16.7
+58,summarize results,Information Search,Summarize,1,16.9
+59,improve grammar and coherence,Advice,Improve,1,17.1
+60,generate json script,Creation,Artifact,1,17.2
+61,search necessary apis,Information Search,Search,1,17.4
+62,generate scripts,Creation,Artifact,1,17.6
+63,decide between mac models,Advice,Guidance,1,17.8
+64,flag emails,Automation,Automation,1,17.9
+65,generate documentation and examples,Creation,Artifact,1,18.1
+66,suggest implementation alternatives,Advice,Guidance,1,18.3
+67,analyze crash stacktrace,Information Search,Analyze,1,18.4
+68,verify calculation,Advice,Validation,1,18.6
+69,autocomplete code,Automation,Automation,1,18.8
+70,create image prompts,Creation,Artifact,1,19.0
+71,validate information sufficiency,Advice,Validation,1,19.1
+72,perform deep research,Information Search,Learn,1,19.3
+73,aggregate news,Information Search,Summarize,1,19.5
+74,find potential gaps,Information Search,Analyze,1,19.7
+75,reformat technical documents,Advice,Improve,1,19.8
+76,generate potential todos,Creation,Artifact,1,20.0
+77,generate triage cards,Creation,Artifact,1,20.2
+78,read slack messages,Automation,Automation,1,20.3
+79,interact with apps,Automation,Automation,1,20.5
+80,read files,Automation,Automation,1,20.7
+81,trigger simulations,Automation,Automation,1,20.9
+82,build good system prompt,Creation,Artifact,1,21.0
+83,recommend floor covering,Advice,Guidance,1,21.2
+84,advise on boss message,Advice,Guidance,1,21.4
+85,recommend for child,Advice,Guidance,1,21.6
+86,scan receipts,Automation,Automation,1,21.7
+87,extract receipt details,Information Search,Analyze,1,21.9
+88,build good prompt,Creation,Artifact,1,22.1
+89,recommend reverse proxy service,Advice,Guidance,1,22.2
+90,manage media,Automation,Automation,1,22.4
+91,fix code automatically,Automation,Automation,1,22.6
+92,search official documentation,Information Search,Search,1,22.8
+93,generate filenames,Creation,Artifact,1,22.9
+94,generate filename,Creation,Artifact,1,23.1
+95,generate content,Creation,Artifact,1,23.3
+96,summarize document sections,Information Search,Summarize,1,23.4
+97,recommend switch,Advice,Guidance,1,23.6
+98,create markdown content,Creation,Artifact,1,23.8
+99,transform spoken input,Creation,Artifact,1,24.0
+100,migrate junit tests,Creation,Artifact,1,24.1
+101,generate diagrams,Creation,Artifact,1,24.3
+102,reason with search,Information Search,Analyze,1,24.5
+103,manage tasks,Automation,Automation,1,24.7
+104,trace bug cause,Information Search,Analyze,1,24.8
+105,investigate bugs,Information Search,Analyze,1,25.0
+106,reformat pdf content,Creation,Artifact,1,25.2
+107,read spreadsheet entry,Information Search,Search,1,25.3
+108,retrieve spreadsheet data,Automation,Automation,1,25.5
+109,bulk delete conversations,Automation,Automation,1,25.7
+110,manage system prompts,Automation,Automation,1,25.9
+111,configure local model urls,Automation,Automation,1,26.0
+112,schedule social media posts,Automation,Automation,1,26.2
+113,generate video,Creation,Artifact,1,26.4
+114,advise on first build,Advice,Guidance,1,26.6
+115,analyze images,Information Search,Analyze,1,26.7
+116,automate llm interfacing,Automation,Automation,1,26.9
+117,organize data,Automation,Automation,1,27.1
+118,generate game content,Creation,Artifact,1,27.2
+119,launch apps,Automation,Automation,1,27.4
+120,set reminders,Automation,Automation,1,27.6
+121,record notes while driving,Creation,Artifact,1,27.8
+122,administer erp system,Automation,Automation,1,27.9
+123,manage taxes,Automation,Automation,1,28.1
+124,produce documents,Creation,Artifact,1,28.3
+125,manipulate spreadsheets,Creation,Artifact,1,28.4
+126,answer emails,Creation,Artifact,1,28.6
+127,add subtitles,Creation,Artifact,1,28.8
+128,generate ai voiceover,Creation,Artifact,1,29.0
+129,create viral videos,Creation,Artifact,1,29.1
+130,answer questions,Information Search,Search,1,29.3
+131,generate insights from photos,Information Search,Analyze,1,29.5
+132,reword text,Advice,Improve,1,29.7
+133,search niche work,Information Search,Search,1,29.8
+134,generate research reports,Creation,Artifact,1,30.0
+135,generate code documentation,Creation,Artifact,1,30.2
+136,generate code tests,Creation,Artifact,1,30.3
+137,provide sentence structure opinions,Advice,Guidance,1,30.5
+138,judge lexical choice,Advice,Validation,1,30.7
+139,rewrite content,Advice,Improve,1,30.9
+140,draft creativity tasks,Creation,Artifact,1,31.0
+141,search archeology research,Information Search,Search,1,31.2
+142,rewrite function,Advice,Improve,1,31.4
+143,make architecture decisions,Advice,Guidance,1,31.6
+144,learn with examples,Information Search,Learn,1,31.7
+145,use llm as knowledge base,Automation,Automation,1,31.9
+146,evaluate model quality,Advice,Validation,1,32.1
+147,render chat,Creation,Artifact,1,32.2
+148,transcribe live meeting,Creation,Artifact,1,32.4
+149,combine transcripts,Information Search,Summarize,1,32.6
+150,research topics,Information Search,Search,1,32.8
+151,generate images or videos,Creation,Artifact,1,32.9
+152,roleplay with ai,Creation,Artifact,1,33.1
+153,write fiction novel,Creation,Artifact,1,33.3
+154,create ai chatbot,Creation,Artifact,1,33.4
+155,automate web scraping,Automation,Automation,1,33.6
+156,automate web monitoring,Automation,Automation,1,33.8
+157,process transcribed content,Creation,Artifact,1,34.0
+158,transcribe voice recordings,Creation,Artifact,1,34.1
+159,generate text,Creation,Artifact,1,34.3
+160,summarize docs,Information Search,Summarize,1,34.5
+161,generate code snippets,Creation,Artifact,1,34.7
+162,rename files intelligently,Automation,Automation,1,34.8
+163,automate workflow,Automation,Automation,1,35.0
+164,create stablediffusion prompts,Creation,Artifact,1,35.2
+165,generate c++ program,Creation,Artifact,1,35.3
+166,record meetings,Automation,Automation,1,35.5
+167,reconcile spreadsheets,Automation,Automation,1,35.7
+168,edit slides,Automation,Automation,1,35.9
+169,book flights,Automation,Automation,1,36.0
+170,plan weekend trip,Automation,Automation,1,36.2
+171,summarize online textbooks,Information Search,Summarize,1,36.4
+172,highlight relevant info,Information Search,Search,1,36.6
+173,build functions,Creation,Artifact,1,36.7
+174,debug build errors,Advice,Guidance,1,36.9
+175,reference lore documents,Information Search,Search,1,37.1
+176,edit writing,Advice,Improve,1,37.2
+177,learn coding,Information Search,Learn,1,37.4
+178,answer unaskable question,Creation,Artifact,1,37.6
+179,generate unaskable question,Creation,Idea,1,37.8
+180,learn programming improvements,Information Search,Learn,1,37.9
+181,generate erotica writing,Creation,Artifact,1,38.1
+182,run game systems,Automation,Automation,1,38.3
+183,analyze files,Information Search,Analyze,1,38.4
+184,improve text,Advice,Improve,1,38.6
+185,query previous bookmarks,Information Search,Search,1,38.8
+186,check disk space,Automation,Automation,1,39.0
+187,restart nginx,Automation,Automation,1,39.1
+188,install docker,Automation,Automation,1,39.3
+189,seek nas guidance,Advice,Guidance,1,39.5
+190,generate meeting notes,Information Search,Summarize,1,39.7
+191,detect bom existence,Information Search,Analyze,1,39.8
+192,extract bom tables,Information Search,Analyze,1,40.0
+193,sort and route tasks,Automation,Automation,1,40.2
+194,transform text to email,Creation,Artifact,1,40.3
+195,transcribe voice note,Information Search,Summarize,1,40.5
+196,write novels,Creation,Artifact,1,40.7
+197,fine-tune language models,Creation,Artifact,1,40.9
+198,calculate confidence score,Information Search,Analyze,1,41.0
+199,detect color values,Information Search,Analyze,1,41.2
+200,summarize product descriptions,Information Search,Summarize,1,41.4
+201,generate technical description,Creation,Artifact,1,41.6
+202,generate creative writing,Creation,Artifact,1,41.7
+203,design solar energy system,Creation,Artifact,1,41.9
+204,enrich scraped data,Information Search,Analyze,1,42.1
+205,search the web,Information Search,Search,1,42.2
+206,upload pdfs,Information Search,Search,1,42.4
+207,write query,Creation,Artifact,1,42.6
+208,design system,Creation,Idea,1,42.8
+209,automate unattended use case,Automation,Automation,1,42.9
+210,analyze usage needs,Advice,Guidance,1,43.1
+211,create step-by-step dev plan,Creation,Artifact,1,43.3
+212,answer how-to questions,Information Search,Search,1,43.4
+213,add examples to docs,Creation,Artifact,1,43.6
+214,optimize code,Advice,Improve,1,43.8
+215,build weekly report,Creation,Artifact,1,44.0
+216,generate podcast,Creation,Artifact,1,44.1
+217,find patterns in agent failure modes,Information Search,Analyze,1,44.3
+218,verify citations,Advice,Validation,1,44.5
+219,export transcription,Creation,Artifact,1,44.7
+220,translate google meet,Creation,Artifact,1,44.8
+221,transcribe google meet,Creation,Artifact,1,45.0
+222,save poem to file,Automation,Automation,1,45.2
+223,write poem,Creation,Artifact,1,45.3
+224,track web page changes,Automation,Automation,1,45.5
+225,automate pdf generation,Automation,Automation,1,45.7
+226,estimate sunrise time,Information Search,Search,1,45.9
+227,comprehend code,Information Search,Learn,1,46.0
+228,make a report,Creation,Artifact,1,46.2
+229,analyze data,Information Search,Analyze,1,46.4
+230,debug code,Advice,Guidance,1,46.6
+231,generate html code,Creation,Artifact,1,46.7
+232,create web app,Creation,Artifact,1,46.9
+233,explain generated code,Information Search,Learn,1,47.1
+234,analyze error,Information Search,Analyze,1,47.2
+235,rate interview answers,Advice,Validation,1,47.4
+236,provide legal and medical advice,Advice,Guidance,1,47.6
+237,perform basic accounting,Automation,Automation,1,47.8
+238,assist with business tasks,Automation,Automation,1,47.9
+239,tutor stem subjects,Creation,Artifact,1,48.1
+240,retrieve document information,Information Search,Search,1,48.3
+241,create tools,Creation,Artifact,1,48.4
+242,run commands after reboot,Automation,Automation,1,48.6
+243,analyze business data,Information Search,Analyze,1,48.8
+244,write sci-fi stories,Creation,Artifact,1,49.0
+245,generate json outputs,Creation,Artifact,1,49.1
+246,extract structured data,Information Search,Analyze,1,49.3
+247,generate bibliography,Creation,Artifact,1,49.5
+248,diagnose failures,Information Search,Analyze,1,49.7
+249,create workflow,Automation,Automation,1,49.8
+250,implement improvements,Advice,Improve,1,50.0
+251,review and guide changes,Advice,Improve,1,50.2
+252,generate pr,Creation,Artifact,1,50.3
+253,plan and action prompts,Automation,Automation,1,50.5
+254,synthesize responses,Information Search,Summarize,1,50.7
+255,generate search queries,Creation,Artifact,1,50.9
+256,refine code,Advice,Improve,1,51.0
+257,review implementation,Advice,Validation,1,51.2
+258,transcribe code,Creation,Artifact,1,51.4
+259,scour codebase,Information Search,Search,1,51.6
+260,break down requirements,Information Search,Analyze,1,51.7
+261,complete coding tasks,Automation,Automation,1,51.9
+262,prototype prompts,Creation,Artifact,1,52.1
+263,prototype local flows,Creation,Artifact,1,52.2
+264,upload data to backblaze b2,Automation,Automation,1,52.4
+265,backup devices to nas,Automation,Automation,1,52.6
+266,recommend hardware specifications,Advice,Guidance,1,52.8
+267,generate email replies,Creation,Artifact,1,52.9
+268,integrate technician feedback,Advice,Improve,1,53.1
+269,provide troubleshooting suggestions,Advice,Guidance,1,53.3
+270,access documentation,Information Search,Search,1,53.4
+271,pull blog titles,Automation,Automation,1,53.6
+272,set due dates,Automation,Automation,1,53.8
+273,assign tasks to myself,Automation,Automation,1,54.0
+274,send blog list to asana,Automation,Automation,1,54.1
+275,perform bookings,Automation,Automation,1,54.3
+276,rephrase text,Advice,Improve,1,54.5
+277,summarize chain of density,Information Search,Summarize,1,54.7
+278,classify data,Information Search,Analyze,1,54.8
+279,locate features in affinity,Information Search,Search,1,55.0
+280,write tournament software,Creation,Artifact,1,55.2
+281,train small llm,Creation,Artifact,1,55.3
+282,perform bulk operations,Automation,Automation,1,55.5
+283,search warranty information,Information Search,Search,1,55.7
+284,recommend apple laptop,Advice,Guidance,1,55.9
+285,recommend tts model,Advice,Guidance,1,56.0
+286,brainstorm rag use cases,Creation,Idea,1,56.2
+287,implement rag,Creation,Artifact,1,56.4
+288,create podcast,Creation,Artifact,1,56.6
+289,generate audio,Creation,Artifact,1,56.7
+290,automate web interactions,Automation,Automation,1,56.9
+291,automate repetitive tasks,Automation,Automation,1,57.1
+292,write stories,Creation,Artifact,1,57.2
+293,compare ai models,Information Search,Analyze,1,57.4
+294,read tables and charts,Information Search,Analyze,1,57.6
+295,generate sql query,Creation,Artifact,1,57.8
+296,extract structured json,Creation,Artifact,1,57.9
+297,detect harmful content,Advice,Validation,1,58.1
+298,ask questions in context,Information Search,Search,1,58.3
+299,ask ethical questions,Advice,Guidance,1,58.4
+300,write proof of concept,Creation,Artifact,1,58.6
+301,automate project planning,Automation,Automation,1,58.8
+302,categorize bank statements,Automation,Automation,1,59.0
+303,write python script,Creation,Artifact,1,59.1
+304,fetch markdown page,Information Search,Search,1,59.3
+305,convert prompt to query,Creation,Artifact,1,59.5
+306,save validated workflow,Automation,Automation,1,59.7
+307,validate workflow,Advice,Validation,1,59.8
+308,summarize webpages,Information Search,Summarize,1,60.0
+309,scrape webpages,Information Search,Search,1,60.2
+310,program llm api call function,Creation,Artifact,1,60.3
+311,choose nas solution,Advice,Guidance,1,60.5
+312,brainstorm story ideas,Creation,Idea,1,60.7
+313,optimize deepseek r1 models,Advice,Guidance,1,60.9
+314,maximize tokens per second,Advice,Guidance,1,61.0
+315,create documentation assistant,Creation,Artifact,1,61.2
+316,create flowcharts,Creation,Artifact,1,61.4
+317,write professional emails,Creation,Artifact,1,61.6
+318,summarize video transcript,Information Search,Summarize,1,61.7
+319,generate emoji,Creation,Artifact,1,61.9
+320,automate routines,Automation,Automation,1,62.1
+321,translate full sentences,Creation,Artifact,1,62.2
+322,lookup kanji definitions,Information Search,Search,1,62.4
+323,launch operations,Automation,Automation,1,62.6
+324,organize work,Creation,Artifact,1,62.8
+325,launch operation,Automation,Automation,1,62.9
+326,interface with databases,Creation,Artifact,1,63.1
+327,build apps,Creation,Artifact,1,63.3
+328,"load images, code, or text",Creation,Artifact,1,63.4
+329,run programs,Automation,Automation,1,63.6
+330,perform grading,Advice,Validation,1,63.8
+331,automate processes,Automation,Automation,1,64.0
+332,perform fact checking,Information Search,Validation,1,64.1
+333,perform sentiment analysis,Information Search,Analyze,1,64.3
+334,refine search query,Advice,Improve,1,64.5
+335,parse documents,Information Search,Analyze,1,64.7
+336,refine story ideas,Advice,Improve,1,64.8
+337,generate story ideas,Creation,Idea,1,65.0
+338,conduct deep research,Information Search,Search,1,65.2
+339,enhance readability,Advice,Improve,1,65.3
+340,identify discrepancies,Advice,Validation,1,65.5
+341,describe reddit avatar,Information Search,Search,1,65.7
+342,identify spice in image,Information Search,Search,1,65.9
+343,create practice questions,Creation,Artifact,1,66.0
+344,highlight key points,Information Search,Summarize,1,66.2
+345,search appliance setup instructions,Information Search,Search,1,66.4
+346,create prompts,Creation,Artifact,1,66.6
+347,manipulate database,Information Search,Learn,1,66.7
+348,generate video script,Creation,Artifact,1,66.9
+349,generate pseudo code,Creation,Artifact,1,67.1
+350,generate insights,Information Search,Analyze,1,67.2
+351,search information,Information Search,Search,1,67.4
+352,track action items,Information Search,Search,1,67.6
+353,take better notes,Creation,Artifact,1,67.8
+354,sanitize web data,Advice,Guidance,1,67.9
+355,gather data,Information Search,Search,1,68.1
+356,generate escape game,Creation,Artifact,1,68.3
+357,implement ai youtube summarizer,Creation,Artifact,1,68.4
+358,build ai agents,Automation,Automation,1,68.6
+359,analyze apple health data,Information Search,Analyze,1,68.8
+360,translate long documents,Creation,Artifact,1,69.0
+361,generate translation,Creation,Artifact,1,69.1
+362,summarize document chunks,Information Search,Summarize,1,69.3
+363,create custom fine-tunes,Creation,Artifact,1,69.5
+364,find best evaluation method,Information Search,Analyze,1,69.7
+365,evaluate ai models,Information Search,Analyze,1,69.8
+366,generate synthetic data,Creation,Artifact,1,70.0
+367,write response draft,Creation,Artifact,1,70.2
+368,sort incoming emails,Automation,Automation,1,70.3
+369,send telegram alert,Automation,Automation,1,70.5
+370,create trello card,Automation,Automation,1,70.7
+371,update documentation,Creation,Artifact,1,70.9
+372,make a story,Creation,Artifact,1,71.0
+373,generate ai testing questions,Creation,Idea,1,71.2
+374,improve prompts,Advice,Improve,1,71.4
+375,generate syntax summaries,Creation,Artifact,1,71.6
+376,generate organized checklist,Creation,Artifact,1,71.7
+377,extract transcripts,Information Search,Search,1,71.9
+378,plan project structure,Creation,Idea,1,72.1
+379,improve academic writing,Advice,Improve,1,72.2
+380,polish emails,Advice,Improve,1,72.4
+381,rewrite text,Advice,Improve,1,72.6
+382,convert codebase,Creation,Artifact,1,72.8
+383,generate descriptive text,Creation,Artifact,1,72.9
+384,refine docstrings,Advice,Improve,1,73.1
+385,update docstrings,Advice,Improve,1,73.3
+386,send emails,Automation,Automation,1,73.4
+387,take notes,Automation,Automation,1,73.6
+388,manage todos,Automation,Automation,1,73.8
+389,generate keywords,Creation,Artifact,1,74.0
+390,caption images,Creation,Artifact,1,74.1
+391,train a model,Information Search,Learn,1,74.3
+392,refine prompts,Advice,Improve,1,74.5
+393,generate ffmpeg command line,Creation,Artifact,1,74.7
+394,format text,Advice,Improve,1,74.8
+395,continue story,Creation,Artifact,1,75.0
+396,rephrase drafts,Advice,Improve,1,75.2
+397,summarize pages,Information Search,Summarize,1,75.3
+398,add topic sentences,Creation,Artifact,1,75.5
+399,rewrite in bulk,Advice,Improve,1,75.7
+400,summarize pdfs,Information Search,Summarize,1,75.9
+401,draft emails,Creation,Artifact,1,76.0
+402,test prompts with llms,Automation,Automation,1,76.2
+403,save prompt templates,Creation,Artifact,1,76.4
+404,browse prompt templates,Information Search,Search,1,76.6
+405,learn new concepts,Information Search,Learn,1,76.7
+406,generate marketing ideas,Creation,Idea,1,76.9
+407,write business documents,Creation,Artifact,1,77.1
+408,summarize toc and documents,Information Search,Summarize,1,77.2
+409,troubleshoot programming problems,Advice,Guidance,1,77.4
+410,learn code,Information Search,Learn,1,77.6
+411,extract information from text,Information Search,Analyze,1,77.8
+412,conduct web-based research,Information Search,Search,1,77.9
+413,categorize documents,Information Search,Analyze,1,78.1
+414,insert inline reference,Creation,Artifact,1,78.3
+415,extract image,Information Search,Search,1,78.4
+416,detect image location,Information Search,Search,1,78.6
+417,generate image description,Creation,Artifact,1,78.8
+418,interpret image,Creation,Artifact,1,79.0
+419,extract data from bank statements,Information Search,Analyze,1,79.1
+420,extract data from invoices,Information Search,Analyze,1,79.3
+421,inject memories into prompts,Automation,Automation,1,79.5
+422,generate json-structured memories,Creation,Artifact,1,79.7
+423,parse conversations,Information Search,Analyze,1,79.8
+424,create wikipedia-stylize,Creation,Artifact,1,80.0
+425,build flappy bird,Creation,Artifact,1,80.2
+426,search/replace in file,Information Search,Search,1,80.3
+427,list files,Information Search,Search,1,80.5
+428,create file,Creation,Artifact,1,80.7
+429,create mindmap,Creation,Artifact,1,80.9
+430,analyze documents,Information Search,Analyze,1,81.0
+431,search documents,Information Search,Search,1,81.2
+432,build ai automations,Automation,Automation,1,81.4
+433,ensure privacy of interactions,Advice,Guidance,1,81.6
+434,swap out logic modules,Automation,Automation,1,81.7
+435,orchestrate behaviors,Automation,Automation,1,81.9
+436,handle sensor polling,Automation,Automation,1,82.1
+437,post weather alerts,Automation,Automation,1,82.2
+438,cross-post on social media,Automation,Automation,1,82.4
+439,index scanned pdfs,Automation,Automation,1,82.6
+440,translate scanned pdfs,Creation,Artifact,1,82.8
+441,ocr scanned pdfs,Automation,Automation,1,82.9
+442,write job applications,Creation,Artifact,1,83.1
+443,learn linux tasks,Information Search,Learn,1,83.3
+444,automate coding workflow,Automation,Automation,1,83.4
+445,record conversations,Automation,Automation,1,83.6
+446,summarize meeting recordings,Information Search,Summarize,1,83.8
+447,create documents,Creation,Artifact,1,84.0
+448,write resume segment,Creation,Artifact,1,84.1
+449,learn reinforcement learning applications,Information Search,Learn,1,84.3
+450,add vision capabilities,Creation,Artifact,1,84.5
+451,learn post-training optimization,Information Search,Learn,1,84.7
+452,learn model quantization,Information Search,Learn,1,84.8
+453,learn knowledge distillation,Information Search,Learn,1,85.0
+454,learn fine-tuning techniques,Information Search,Learn,1,85.2
+455,generate book chapters,Creation,Artifact,1,85.3
+456,search patents,Information Search,Search,1,85.5
+457,automate process,Automation,Automation,1,85.7
+458,generate algorithm,Creation,Artifact,1,85.9
+459,analyze workflow,Information Search,Analyze,1,86.0
+460,update os and packages,Automation,Automation,1,86.2
+461,transcribe conversations,Automation,Automation,1,86.4
+462,track hardware components,Automation,Automation,1,86.6
+463,configure machines,Automation,Automation,1,86.7
+464,deploy machines,Automation,Automation,1,86.9
+465,search github projects,Information Search,Search,1,87.1
+466,analyze logs,Information Search,Analyze,1,87.2
+467,create 3d models,Creation,Artifact,1,87.4
+468,schedule meetings,Automation,Automation,1,87.6
+469,resolve issues,Automation,Automation,1,87.8
+470,create support tickets,Automation,Automation,1,87.9
+471,reply to questions,Automation,Automation,1,88.1
+472,automate legal drafting,Automation,Automation,1,88.3
+473,create documents from conversations,Creation,Artifact,1,88.4
+474,summarize conversations,Information Search,Summarize,1,88.6
+475,perform data crunching,Information Search,Analyze,1,88.8
+476,generate web application,Creation,Artifact,1,89.0
+477,scan response for harm,Advice,Validation,1,89.1
+478,create final answer,Creation,Artifact,1,89.3
+479,create pre-read material,Creation,Artifact,1,89.5
+480,summarize meeting documents,Information Search,Summarize,1,89.7
+481,generate financial news articles,Creation,Artifact,1,89.8
+482,generate meeting minutes,Creation,Artifact,1,90.0
+483,automate problem-solving method,Automation,Automation,1,90.2
+484,analyze terms of service,Information Search,Analyze,1,90.3
+485,grade images of writing,Automation,Automation,1,90.5
+486,analyze articles,Information Search,Analyze,1,90.7
+487,query transcribed text,Information Search,Search,1,90.9
+488,ask questions about filings,Information Search,Search,1,91.0
+489,solve unique math problems,Creation,Artifact,1,91.2
+490,seek survival advice,Advice,Guidance,1,91.4
+491,learn japanese words,Information Search,Learn,1,91.6
+492,extract document information,Information Search,Analyze,1,91.7
+493,paraphrase research chunks,Creation,Artifact,1,91.9
+494,automate academic writing,Automation,Automation,1,92.1
+495,assist with writing,Advice,Improve,1,92.2
+496,summarize documentation,Information Search,Summarize,1,92.4
+497,structure unstructured data,Automation,Automation,1,92.6
+498,validate final output,Advice,Validation,1,92.8
+499,generate solution guide,Creation,Artifact,1,92.9
+500,describe data processing needs,Creation,Artifact,1,93.1
+501,generate command explanations,Information Search,Learn,1,93.3
+502,create audiobooks from prompt,Creation,Artifact,1,93.4
+503,generate drawing from text,Creation,Artifact,1,93.6
+504,summarize audiobook content,Information Search,Summarize,1,93.8
+505,transform epubs into audiobooks,Creation,Artifact,1,94.0
+506,check response applicability,Advice,Validation,1,94.1
+507,detect hallucination,Advice,Validation,1,94.3
+508,generate questions and gaps,Advice,Guidance,1,94.5
+509,create ai agents,Creation,Artifact,1,94.7
+510,execute python code,Automation,Automation,1,94.8
+511,summarize urls,Information Search,Summarize,1,95.0
+512,check relevance,Advice,Validation,1,95.2
+513,rewrite queries,Advice,Improve,1,95.3
+514,improve code logic,Advice,Improve,1,95.5
+515,code,Creation,Artifact,1,95.7
+516,generate rhyming bedtime stories,Creation,Artifact,1,95.9
+517,convert images to ghibli style,Creation,Artifact,1,96.0
+518,generate simple prompt,Creation,Artifact,1,96.2
+519,analyze digital journal,Information Search,Analyze,1,96.4
+520,convert images,Creation,Artifact,1,96.6
+521,compress images,Creation,Artifact,1,96.7
+522,organize media and documents,Automation,Automation,1,96.9
+523,analyze opnsense logs,Information Search,Analyze,1,97.1
+524,process security camera feeds,Automation,Automation,1,97.2
+525,scrape urls,Information Search,Search,1,97.4
+526,automate workflows,Automation,Automation,1,97.6
+527,categorize e-mails,Information Search,Analyze,1,97.8
+528,compile research report,Creation,Artifact,1,97.9
+529,execute web searches,Information Search,Search,1,98.1
+530,create research plan,Creation,Artifact,1,98.3
+531,write a story,Creation,Artifact,1,98.4
+532,create custom interface,Creation,Artifact,1,98.6
+533,analyze vision data,Information Search,Analyze,1,98.8
+534,translate language,Creation,Artifact,1,99.0
+535,identify language,Information Search,Analyze,1,99.1
+536,suggest improvements,Advice,Guidance,1,99.3
+537,categorize github issues,Information Search,Analyze,1,99.5
+538,categorize github repositories,Automation,Automation,1,99.7
+539,organize files into folders,Automation,Automation,1,99.8
+540,summarize events,Information Search,Summarize,1,100.0

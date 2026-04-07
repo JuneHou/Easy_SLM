@@ -170,3 +170,179 @@ Edit `GROUP_A`, `GROUP_B`, and `GROUP_C` in `config.py`.
 - Existing CSV rows are loaded and merged; records are not overwritten.
 - `stream` records which experimental arm retrieved each row.
 - `stats.json` captures per-stream totals and query counts for comparison.
+
+---
+
+## Annotation processing — step-by-step
+
+This section describes how the raw Reddit records are transformed into
+**canonical task categories** and how tasks are judged to be **shared** between
+the SLM and LLM streams.
+
+### Step 1 — GPT-4o batch annotation (`annotate_batch.py`)
+
+**Input:** `reddit_combined_stream1.csv` and `reddit_combined_stream2.csv`  
+**Script:** `annotate_batch.py` using the OpenAI Batch API (50 % cheaper than
+synchronous calls; `batch_state.json` lets interrupted jobs resume).
+
+Each Reddit post or comment is sent to `gpt-4o` with a structured prompt that
+asks the model to identify every concrete daily task mentioned in the text.
+The model returns a JSON object per record:
+
+```json
+{
+  "no_task_found": false,
+  "tasks":       ["summarization", "translate document"],
+  "task_themes": ["Information", "Information"],
+  "task_subthemes": ["Summarize", "Search"],
+  "evidence":    ["feeds it to my local LLM", "translate the PDF"],
+  "notes":       "User describes two distinct use-cases."
+}
+```
+
+Multiple tasks per record are stored pipe-separated (`|`) in the output CSV
+columns `tasks`, `task_themes`, `task_subthemes`, and `evidence`.
+
+**Output:** `reddit_annotated_stream1.csv` and `reddit_annotated_stream2.csv`
+
+---
+
+### Step 2 — Regex normalisation into canonical task labels (`task_analysis.ipynb`)
+
+Because GPT-4o generates free-text task descriptions (e.g. "combine transcripts",
+"extract transcripts from YouTube", "transcribe meeting audio"), similar labels
+must be merged before any cross-stream comparison is possible.
+
+**2a. Explode multi-task records**  
+Each row in the annotated CSV can carry several pipe-separated tasks.
+The notebook explodes these into one row per *(record × task)* pair.
+
+**2b. Apply the `NORM_MAP` regex table**  
+A hand-crafted mapping applies regular expressions to the lower-cased raw task
+string and maps it to a canonical group name:
+
+| Pattern | Canonical label |
+|---|---|
+| `transcri(be\|ption)` | `transcription` |
+| `summar(iz\|is)(e\|ing\|ation)` | `summarization` |
+| `cod(e\|ing)` | `coding / code generation` |
+| `automat(ion\|e\|ing\|ed)` | `task automation` |
+| `translat(e\|ion\|ing)` | `translation` |
+| `writ(ing\|e\|ten)` | `creative writing` |
+| `(planning\|schedul)` | `planning / scheduling` |
+| … (35 patterns total) | … |
+
+If no pattern matches, the raw label is kept as-is (long-tail tasks).
+
+**Output column:** `_task_norm` (normalised canonical label per exploded row)
+
+---
+
+### Step 3 — Identify shared-task candidates (`task_analysis.ipynb`)
+
+After normalisation the notebook computes the **set of unique canonical labels**
+for each stream independently, then takes their **intersection**:
+
+```python
+tasks_slm = set(task_rows[task_rows['stream'] == 'small_local']['_task_norm'].dropna())
+tasks_llm = set(task_rows[task_rows['stream'] == 'large_general']['_task_norm'].dropna())
+shared    = tasks_slm & tasks_llm          # Python set intersection
+```
+
+A task label is considered **shared** if and only if it appears in at least one
+manually annotated record in **both** streams. This is a label-level, not
+mention-level, criterion — even a single mention in each stream qualifies.
+
+One catch-all label (`coding / code generation`) is explicitly excluded from the
+shared set because it is too broad to be informative for cross-stream comparison.
+
+Every original record whose normalised task falls in `shared` is then exported to:
+
+- `slm_shared_tasks.csv` — shared-task records from Stream 1 (SLM)
+- `llm_shared_tasks.csv` — shared-task records from Stream 2 (LLM)
+
+> **Important:** the export uses explicit stream-value constants
+> (`SLM_STREAM = 'small_local'`, `LLM_STREAM = 'large_general'`) rather than
+> alphabetically sorted indices, to prevent a silent stream-swap bug (alphabetical
+> sort makes `'large_general'` rank before `'small_local'`).
+
+---
+
+### Step 4 — Post-review normalisation and analysis (`tasks_overlap.ipynb`)
+
+**4a. Convert and clean**  
+The checked xlsx files are loaded into `tasks_overlap.ipynb`. A second-pass
+normalisation corrects residual inconsistencies introduced during manual editing
+(mixed casing, legacy labels):
+
+| Raw value | Normalised to |
+|---|---|
+| `advice` | `Advice` |
+| `Information Search` | `Information` |
+| `Inforamation` (typo) | `Information` |
+| `automation` (lower) | `Automation` |
+| `analyze` (lower) | `Analyze` |
+| `guidance` (lower) | `Guidance` |
+
+**4b. Re-derive the shared set**  
+After manual review the task labels may have changed. The notebook recomputes
+the shared-task set using the same Python set-intersection logic as Step 3,
+now applied to the cleaned `task_canonical` column:
+
+```python
+tasks_slm_set = set(slm['task_canonical'].dropna().unique())
+tasks_llm_set = set(llm['task_canonical'].dropna().unique())
+shared_tasks  = sorted(tasks_slm_set & tasks_llm_set)
+```
+
+**Result after manual review:** 20 shared task labels across both streams.
+
+| Shared task | SLM mentions | LLM mentions |
+|---|---|---|
+| creative writing | 17 | 21 |
+| summarization | 18 | 11 |
+| scripting | 8 | 12 |
+| task automation | 7 | 11 |
+| transcription | 11 | 2 |
+| brainstorming | 1 | 8 |
+| translation | 5 | 3 |
+| planning / scheduling | 2 | 4 |
+| agent workflow | 2 | 3 |
+| analyze data | 1 | 4 |
+| generate images | 1 | 4 |
+| debugging | 2 | 2 |
+| … (8 more) | … | … |
+
+**4c. Export summary**  
+The notebook writes `overlap_task_summary.csv` — one row per unique task label
+with its overlap status (`shared` / `SLM only` / `LLM only`), per-stream mention
+counts, and dominant theme for each stream.
+
+---
+
+### File lineage summary
+
+```
+reddit_combined_stream1.csv  ──┐
+                               ├─► annotate_batch.py ──► reddit_annotated_stream1.csv ──┐
+reddit_combined_stream2.csv  ──┘                                                         │
+                                                                                          │
+reddit_annotated_stream2.csv ────────────────────────────────────────────────────────────┤
+                                                                                          │
+                               task_analysis.ipynb                                        │
+                               ├─ explode tasks                                           │
+                               ├─ regex normalise (NORM_MAP)           ◄──────────────────┘
+                               ├─ set intersection → shared labels
+                               └─► slm_shared_tasks.csv
+                                   llm_shared_tasks.csv
+                                          │
+                               Manual review (human)
+                                          │
+                               slm_shared_tasks_checked.xlsx
+                               llm_shared_tasks_checked.xlsx
+                                          │
+                               tasks_overlap.ipynb
+                               ├─ load + normalise themes/subthemes
+                               ├─ re-derive shared set
+                               └─► overlap_task_summary.csv
+```

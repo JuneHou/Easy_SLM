@@ -1,0 +1,30 @@
+canonical,overlap,slm_mentions,llm_mentions,total,avg_sim,n_members,members
+creative writing,shared,18,21,39,0.5590000152587891,2,creative writing|generate story ideas
+summarization,shared,18,11,29,1.0,1,summarization
+scripting,shared,8,12,20,1.0,1,scripting
+task automation,shared,8,11,19,0.6039999723434448,2,manage tasks|task automation
+brainstorming,shared,4,11,15,0.5130000114440918,2,brainstorming|suggestion
+transcription,shared,11,2,13,1.0,1,transcription
+translation,shared,5,3,8,1.0,1,translation
+analyze data,shared,2,6,8,0.6520000100135803,2,analyze data|business data analysis
+agent workflow,shared,3,3,6,0.5789999961853027,2,agent workflow|workflow analysis
+generate images,shared,2,4,6,0.5580000281333923,2,generate content|generate images
+planning / scheduling,shared,2,4,6,1.0,1,planning / scheduling
+email management,SLM only,5,0,5,0.6050000190734863,2,drafting emails|email management
+search the web,shared,2,2,4,0.5519999861717224,2,search the database|search the web
+debugging,shared,2,2,4,1.0,1,debugging
+format text,shared,2,1,3,0.578000009059906,2,format text|improve text
+take notes,shared,1,1,2,1.0,1,take notes
+create web app,shared,1,1,2,0.5099999904632568,2,build apps|create web app
+generate diagrams,shared,1,1,2,1.0,1,generate diagrams
+generate audio,shared,1,1,2,1.0,1,generate audio
+conduct deep research,shared,1,1,2,1.0,1,conduct deep research
+set reminders,SLM only,1,0,1,1.0,1,set reminders
+conversational chat,SLM only,1,0,1,1.0,1,conversational chat
+create documents,SLM only,1,0,1,1.0,1,create documents
+RAG,SLM only,1,0,1,1.0,1,RAG
+fine-tuning,LLM only,0,1,1,1.0,1,fine-tuning
+video analysis,LLM only,0,1,1,1.0,1,video analysis
+proofreading,SLM only,1,0,1,1.0,1,proofreading
+question answering,SLM only,1,0,1,1.0,1,question answering
+knowledge base,SLM only,1,0,1,1.0,1,knowledge base

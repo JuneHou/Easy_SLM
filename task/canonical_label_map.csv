@@ -1,0 +1,40 @@
+raw_label,canonical_group,similarity_to_group
+RAG,RAG,1.0
+agent workflow,agent workflow,1.0
+workflow analysis,agent workflow,0.5789999961853027
+analyze data,analyze data,1.0
+business data analysis,analyze data,0.6520000100135803
+brainstorming,brainstorming,1.0
+suggestion,brainstorming,0.5130000114440918
+conduct deep research,conduct deep research,1.0
+conversational chat,conversational chat,1.0
+create documents,create documents,1.0
+build apps,create web app,0.5099999904632568
+create web app,create web app,1.0
+creative writing,creative writing,1.0
+generate story ideas,creative writing,0.5590000152587891
+debugging,debugging,1.0
+drafting emails,email management,0.6050000190734863
+email management,email management,1.0
+fine-tuning,fine-tuning,1.0
+format text,format text,1.0
+improve text,format text,0.578000009059906
+generate audio,generate audio,1.0
+generate diagrams,generate diagrams,1.0
+generate content,generate images,0.5580000281333923
+generate images,generate images,1.0
+knowledge base,knowledge base,1.0
+planning / scheduling,planning / scheduling,1.0
+proofreading,proofreading,1.0
+question answering,question answering,1.0
+scripting,scripting,1.0
+search the database,search the web,0.5519999861717224
+search the web,search the web,1.0
+set reminders,set reminders,1.0
+summarization,summarization,1.0
+take notes,take notes,1.0
+manage tasks,task automation,0.6039999723434448
+task automation,task automation,1.0
+transcription,transcription,1.0
+translation,translation,1.0
+video analysis,video analysis,1.0
