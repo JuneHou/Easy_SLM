@@ -4,16 +4,30 @@ import { useChatStore } from "@/stores/chatStore";
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
 
-export function ChatPanel() {
+interface ChatPanelProps {
+  taskTitle?: string;
+}
+
+export function ChatPanel({ taskTitle }: ChatPanelProps) {
   const { messages, streamingContent } = useChatStore();
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto space-y-4 p-4">
         {messages.length === 0 && !streamingContent && (
-          <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground text-sm">
-            <p>No messages yet.</p>
-            <p>Set your goal and prompt plan, then send a message from the composer below.</p>
+          <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground text-sm space-y-1">
+            {taskTitle ? (
+              <>
+                <p className="font-medium text-foreground">{taskTitle}</p>
+                <p>Describe what you need in your own words and press Send.</p>
+                <p className="text-xs">You can ask follow-up questions or request revisions at any time.</p>
+              </>
+            ) : (
+              <>
+                <p>No messages yet.</p>
+                <p>Set your goal and prompt plan, then send a message from the composer below.</p>
+              </>
+            )}
           </div>
         )}
         {messages.map((m) => (

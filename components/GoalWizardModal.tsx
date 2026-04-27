@@ -1,25 +1,13 @@
 "use client";
 
 import { useIntentStore } from "@/stores/intentStore";
-import type { IntentSpec, Audience, OutputFormat } from "@/types/intent.types";
+import { usePromptPlanStore } from "@/stores/promptPlanStore";
+import type { IntentSpec, OutputFormat } from "@/types/intent.types";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { useToast } from "./ToastProvider";
 import { X } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
-
-const FRAMING_OPTIONS = [
-  "Turn my idea into a clear, step-by-step task for the model.",
-  "Refine my goal so the model knows exactly what to produce.",
-  "Make my intention specific enough to get consistent results.",
-];
-
-const AUDIENCE_OPTIONS: { value: Audience; label: string }[] = [
-  { value: "self", label: "Just for me" },
-  { value: "team", label: "For my team" },
-  { value: "public", label: "For a general audience" },
-];
 
 const FORMAT_OPTIONS: { value: OutputFormat; label: string }[] = [
   { value: "paragraph", label: "Paragraph" },
@@ -34,7 +22,8 @@ interface GoalWizardModalProps {
 }
 
 export function GoalWizardModal({ open, onClose }: GoalWizardModalProps) {
-  const { spec, setGoalText, setGoalFraming, setAudience, setOutputFormat, setConstraints, setSuccessCriteria, commit } = useIntentStore();
+  const { spec, setGoalText, setOutputFormat, setConstraints, setSuccessCriteria, commit } = useIntentStore();
+  const { recompile } = usePromptPlanStore();
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [constraintInput, setConstraintInput] = useState("");
@@ -43,7 +32,9 @@ export function GoalWizardModal({ open, onClose }: GoalWizardModalProps) {
   if (!open) return null;
 
   const handleCommit = () => {
-    commit();
+    const next = commit();
+    // Recompile so the compiled system prompt immediately reflects the new intent.
+    recompile(next);
     toast?.("Intent updated", "success");
     onClose();
     setStep(1);
@@ -87,24 +78,6 @@ export function GoalWizardModal({ open, onClose }: GoalWizardModalProps) {
                   rows={3}
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Reframe your goal (optional)</label>
-                <div className="space-y-2">
-                  {FRAMING_OPTIONS.map((opt) => (
-                    <button
-                      key={opt}
-                      type="button"
-                      onClick={() => setGoalFraming(opt)}
-                      className={cn(
-                        "w-full rounded-lg border p-3 text-left text-sm transition-colors",
-                        spec.goalFraming === opt ? "border-primary bg-primary/10" : "border-border hover:bg-surface"
-                      )}
-                    >
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
               <div className="flex justify-end">
                 <Button onClick={() => setStep(2)}>Next</Button>
               </div>
@@ -113,21 +86,6 @@ export function GoalWizardModal({ open, onClose }: GoalWizardModalProps) {
 
           {step === 2 && (
             <>
-              <div>
-                <label className="block text-sm font-medium mb-2">Audience</label>
-                <div className="flex flex-wrap gap-2">
-                  {AUDIENCE_OPTIONS.map(({ value, label }) => (
-                    <Button
-                      key={value}
-                      variant={spec.audience === value ? "primary" : "outline"}
-                      size="sm"
-                      onClick={() => setAudience(value)}
-                    >
-                      {label}
-                    </Button>
-                  ))}
-                </div>
-              </div>
               <div>
                 <label className="block text-sm font-medium mb-2">Output format</label>
                 <div className="flex flex-wrap gap-2">

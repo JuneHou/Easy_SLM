@@ -1,8 +1,8 @@
 flowchart TD
-    A[Start: run reddit_pipeline.py] --> B[Load config.py<br/>GROUP_A, GROUP_B, GROUP_C<br/>date range, subreddits]
+    A[Start: run reddit_pipeline.py] --> B[Load config.py<br/>GROUP_A: 12 terms · GROUP_B: 12 terms<br/>GROUP_C: 9 terms · date range · subreddits]
     B --> C{Select stream}
-    C -->|Stream 1| D[Build anchor queries from GROUP_A]
-    C -->|Stream 2| E[Build anchor queries from GROUP_B]
+    C -->|Stream 1| D[Build anchor queries from GROUP_A<br/>12 queries × 3 subreddits<br/>LocalLLaMA · LocalLLM · SelfHosted]
+    C -->|Stream 2| E[Build anchor queries from GROUP_B<br/>12 queries × 5 subreddits<br/>ChatGPT · OpenAI · ClaudeAI · LLM · Gemini]
     C -->|Both| F[Build anchor queries from GROUP_A + GROUP_B]
     D --> G[For each subreddit and anchor query]
     E --> G
@@ -11,12 +11,19 @@ flowchart TD
     G --> H[PullPush search: submissions]
     G --> I[PullPush search: comments]
 
-    H --> J[Apply GROUP_C filter on title + body]
-    I --> K[Apply GROUP_C filter on comment body]
-    J --> L[Map fields and assign stream label]
-    K --> L
+    H --> H1[Raw PullPush hits<br/>⚠ count not saved — logged only]
+    I --> I1[Raw PullPush hits<br/>⚠ count not saved — logged only]
 
-    L --> M[Deduplicate new rows by Reddit ID]
+    H1 --> J[Apply GROUP_C filter on title + body]
+    I1 --> K[Apply GROUP_C filter on comment body]
+
+    J --> J1[Passed GROUP_C filter<br/>Stream 1: 321 submissions<br/>Stream 2: 839 submissions]
+    K --> K1[Passed GROUP_C filter<br/>Stream 1: 594 comments<br/>Stream 2: 1 304 comments]
+
+    J1 --> L[Map fields and assign stream label]
+    K1 --> L
+
+    L --> M[Deduplicate new rows by Reddit ID<br/>Stream 1: 915 unique records<br/>Stream 2: 2 143 unique records]
     M --> N[Load existing CSV outputs]
     N --> O[Merge existing + new by ID<br/>no overwrite]
     O --> P[Sort by date]
@@ -25,4 +32,9 @@ flowchart TD
     P --> R[Write reddit_comments.csv]
     P --> S[Write reddit_combined.csv]
     P --> T[Build/write stats.json<br/>by month, stream, label]
-    T --> U[Done]
+    T --> U[Step 2: run annotate_batch.py<br/>LLM annotation via OpenAI Batch API]
+
+    U --> V{no_task_found?}
+    V -->|False — tasks extracted| X[Annotated records with ≥1 task<br/>Stream 1: 207 records<br/>Stream 2: 773 records]
+    V -->|True — excluded| Y[Excluded: no clear task found<br/>Stream 1: 708 records<br/>Stream 2: 1 370 records]
+    X --> Z[Write reddit_annotated.csv<br/>Final annotated task dataset]

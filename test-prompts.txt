@@ -1,33 +1,528 @@
-# Test prompts for SLM Prompting Tool
+# Demo Examples — Complete Set
+# SLM Prompting Tool Study Interface
+#
+# Each task section covers both paths:
+#   SLM path: Goal Wizard fields → Prompt Plan → Chat message(s)
+#   LLM path: Chat message(s) only (no wizard, no scaffolding)
+#
+# For summarization tasks, passages to paste are included inline.
+# Follow-up messages show how to refine or extend the first reply.
+# A 5-minute quick demo script is at the bottom.
 
-Use these in the app to try Decompose with effGen and Send (effGen chat).
+================================================================================
+TASK 1 — WRITING / CREATION
+"Write Something Useful"
+================================================================================
 
-effGen decomposition does not require a long prompt. For multiple steps, the prompt should be structured so the engine can split it: use "and" to list parts, use numbered items (1. 2. 3.), or include both research/gather and summarize/synthesis wording. Very short single sentences often become one step.
+────────────────────────────────────────────────────────────────────────────────
+Example A  |  Polite Email (professional writing)
+────────────────────────────────────────────────────────────────────────────────
 
----
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    Write a short, polite email to my professor asking for a 2-day extension on
+    an upcoming homework assignment. Keep it professional and brief.
 
-## 1. Decomposition (paste into Prompt Plan instructions, then click "Decompose with effGen")
+  Reframe (optional, pick one):
+    "Refine my goal so the model knows exactly what to produce."
 
-Longer example (explain + compare + list → multiple subtasks, no web search):
+  Audience:   For a general audience
+  Output format: Paragraph
 
-Summarize the key concepts of object-oriented programming and compare classes with interfaces. Then list three best practices for writing clean code and suggest when to use inheritance vs composition.
+  Constraints (add each one):
+    - polite and professional tone
+    - no more than 4 sentences
+    - do not mention personal reasons
 
-Shorter structured example (uses "and" so it splits into steps, no web search):
+  Success criteria (add each one):
+    - Sounds like a real student wrote it
+    - Ends with a clear request
 
-Define recursion and give a simple example. Then explain when to use it and when to avoid it and suggest an alternative for deep nesting.
+  → Click "Save intent"
+  → Review the compiled prompt preview (accordion opens automatically)
+  → Optionally click "Generate variants" to compare strict / shorter / explicit versions
 
-Long example with websearch
+SLM PATH — Chat message (type in composer, click Send):
+  Please write the email.
 
-Research the latest Python release and summarize the new features. Then compare it with the previous version and list breaking changes. Finally suggest whether our team should upgrade.
+  Follow-up options:
+    Make it slightly more formal.
+    Add a brief mention that I will submit by Friday.
+    Shorten it to two sentences.
 
----
+LLM PATH — Chat message (paste directly, click Send):
+  Write a short, polite email to my professor asking for a 2-day extension on a
+  homework assignment. Keep it professional, no more than 4 sentences, and do
+  not mention personal reasons. End with a clear request.
 
-## 2. Chat (type in the composer and click Send)
+  Follow-up options:
+    Make it slightly more formal.
+    Add a line saying I will submit by Friday evening.
+    Give me two alternative versions — one formal, one casual.
 
-What is 15% tip on a $42.50 bill? Reply in one short sentence.
+────────────────────────────────────────────────────────────────────────────────
+Example B  |  Social Media Post (short creative writing)
+────────────────────────────────────────────────────────────────────────────────
 
----
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    Write a short, friendly social media post about picking up photography
+    as a new hobby for the first time.
 
-## 3. Optional: multi-step goal for Goal Wizard
+  Audience:   For a general audience
+  Output format: Paragraph
 
-Explain a lab procedure as a checklist for a rural clinic assistant. Use simple language and avoid jargon.
+  Constraints:
+    - casual, warm tone
+    - max 3 sentences
+    - end with a question to encourage comments
+
+  Success criteria:
+    - Feels personal and enthusiastic
+    - Easy to share as-is
+
+SLM PATH — Chat message:
+  Write the post.
+
+  Follow-up options:
+    Make it a bit more playful.
+    Give me two more versions with a slightly different angle.
+    Add a relevant hashtag or two at the end.
+
+LLM PATH — Chat message:
+  Write a short, friendly social media post (max 3 sentences) about picking up
+  photography as a new hobby for the first time. Casual and warm tone. End with
+  a question to get people to comment.
+
+  Follow-up options:
+    Give me two alternative versions — one more playful, one more reflective.
+    Add two relevant hashtags at the end.
+
+────────────────────────────────────────────────────────────────────────────────
+Example C  |  Short Story (creative writing)
+────────────────────────────────────────────────────────────────────────────────
+
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    Write a very short story about a person who misses a train and ends up
+    striking up an unexpected conversation with a stranger on the platform.
+
+  Audience:   For a general audience
+  Output format: Paragraph
+
+  Constraints:
+    - around 120–150 words
+    - focus on the emotional shift from frustration to connection
+    - no dramatic twist ending
+
+  Success criteria:
+    - Feels complete and satisfying in its short length
+    - The mood change is clear
+
+SLM PATH — Chat message:
+  Write the story.
+
+  Follow-up options:
+    Make the ending slightly warmer.
+    Cut it to under 100 words.
+    Write a second version where the stranger is the one who misses the train.
+
+LLM PATH — Chat message:
+  Write a very short story (120–150 words) about a person who misses a train
+  and unexpectedly starts talking with a stranger on the platform. Focus on the
+  emotional shift from frustration to connection. No dramatic twist ending.
+
+================================================================================
+TASK 2 — INFORMATION SEARCH / SUMMARIZATION
+"Summarize Information"
+================================================================================
+
+Three passages are provided below. Copy the passage, paste it after your
+chat message, and ask for the kind of summary you want.
+
+────────────────────────────────────────────────────────────────────────────────
+Passage 1  |  Solar Energy (science / current events)
+────────────────────────────────────────────────────────────────────────────────
+
+--- PASSAGE START ---
+Solar power installations worldwide surpassed 1 terawatt of total capacity in
+2022, a milestone that analysts say marks the beginning of solar energy's
+transition from niche technology to mainstream power source. The rapid growth
+has been driven by falling manufacturing costs, which have dropped by roughly
+90 percent over the past decade, making solar panels increasingly competitive
+with fossil fuels even without government subsidies. In many regions of the
+world, building new solar capacity is now cheaper than operating existing coal
+or natural gas plants. Despite this progress, grid integration remains a
+significant challenge: because solar panels only generate electricity when the
+sun is shining, large-scale deployment requires investment in energy storage
+systems and updated transmission infrastructure. Several countries are
+addressing this by pairing solar farms with lithium-ion battery storage, though
+critics note that scaling battery production brings its own resource and
+environmental challenges.
+--- PASSAGE END ---
+
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    Summarize a piece of text I provide and pull out the key points so I can
+    understand it quickly without reading the whole thing. Give the result as
+    bullet points.
+
+  Audience:   Just for me
+  Output format: Checklist
+
+  Constraints:
+    - 4–6 bullet points maximum
+    - plain language, no jargon
+    - include one bullet on the main challenge mentioned
+
+  Success criteria:
+    - I could explain the article to someone else using only the bullets
+    - No bullet is longer than 20 words
+
+SLM PATH — Chat message (paste passage after the instruction):
+  Please summarize the following passage:
+
+  [paste Passage 1 here]
+
+  Follow-up options:
+    Now give me one sentence I could use as a headline for this article.
+    What is the single most important fact from this passage?
+    Rewrite bullet 3 in even simpler language.
+
+LLM PATH — Chat message (paste passage inline):
+  Summarize the following passage in 4–6 bullet points. Use plain language.
+  Include one bullet specifically about the main challenge described.
+
+  [paste Passage 1 here]
+
+  Follow-up options:
+    Now give me a one-sentence headline for this passage.
+    Explain the battery challenge in one simple sentence a non-expert would understand.
+
+────────────────────────────────────────────────────────────────────────────────
+Passage 2  |  Home Network Setup (instructions / how-to)
+────────────────────────────────────────────────────────────────────────────────
+
+--- PASSAGE START ---
+Setting up a home network begins with choosing a router that matches the size
+of your space and the number of devices you expect to connect. For most homes,
+a dual-band router operating on both 2.4 GHz and 5 GHz frequencies provides a
+good balance of range and speed. Once you have the router, connect it to your
+modem using an Ethernet cable, then power on both devices. Use a laptop or
+smartphone to connect to the router's default Wi-Fi network, whose name and
+password are usually printed on a sticker on the router itself. Open a browser
+and navigate to the router's administration page — commonly at 192.168.1.1 or
+192.168.0.1 — to change the default Wi-Fi name and password to something more
+secure. For larger homes or areas with weak signal, consider adding a mesh
+network node or a Wi-Fi extender in a central location to eliminate dead spots.
+--- PASSAGE END ---
+
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    Turn a set of technical instructions into a simple numbered checklist I
+    can follow step by step without any background knowledge.
+
+  Audience:   For a general audience
+  Output format: Checklist
+
+  Constraints:
+    - numbered steps, not bullet points
+    - no technical jargon — explain any terms in plain words
+    - each step is one action only
+
+  Success criteria:
+    - Someone with no tech background could follow this
+    - Steps are in the right order
+
+SLM PATH — Chat message:
+  Please convert the following instructions into a simple numbered checklist:
+
+  [paste Passage 2 here]
+
+  Follow-up options:
+    Add a short note after step 4 explaining why changing the default password matters.
+    Can you combine any steps that naturally go together?
+    Give me a version with 5 steps max.
+
+LLM PATH — Chat message:
+  Convert the following instructions into a simple numbered checklist. Use plain
+  language — no technical jargon. Each step should be one action only. Someone
+  with no tech background should be able to follow it.
+
+  [paste Passage 2 here]
+
+────────────────────────────────────────────────────────────────────────────────
+Passage 3  |  Urban Farm (news-style / community interest)
+────────────────────────────────────────────────────────────────────────────────
+
+--- PASSAGE START ---
+A community garden in Detroit has transformed a formerly vacant lot into a
+thriving urban farm that supplies fresh vegetables to roughly 150 local
+households each week. The project, started four years ago by a group of
+neighbors frustrated by the lack of affordable produce nearby, now employs
+six part-time workers and has expanded from a quarter-acre plot to nearly two
+full acres. Volunteers tend the garden on weekends, and the organizers have
+partnered with a local school to run an after-school program teaching children
+basic horticulture and nutrition. The farm primarily grows leafy greens,
+tomatoes, peppers, and herbs suited to Michigan's climate, and distributes its
+harvest through a sliding-scale membership that allows low-income families to
+pay less. The initiative has drawn interest from city planners looking to
+replicate the model in other underserved neighborhoods, though funding remains
+an ongoing challenge.
+--- PASSAGE END ---
+
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    Summarize a news article and give me the key facts, who is involved,
+    and what the main challenge is.
+
+  Audience:   Just for me
+  Output format: Checklist
+
+  Constraints:
+    - lead with the single most important fact
+    - include who started it and why
+    - flag the main challenge in its own bullet
+
+  Success criteria:
+    - I understand the full story from the bullets alone
+    - Each bullet adds new information
+
+SLM PATH — Chat message:
+  Summarize the following article:
+
+  [paste Passage 3 here]
+
+  Follow-up options:
+    Write a two-sentence summary I could share with a friend.
+    What would need to happen for this project to succeed long-term?
+
+LLM PATH — Chat message:
+  Summarize the following article. Lead with the most important fact. Include
+  who started it and why, and flag the main challenge in a separate line.
+
+  [paste Passage 3 here]
+
+================================================================================
+TASK 3 — ADVICE / PLANNING
+"Make a Plan"
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+Example A  |  Study Schedule (deadline-driven)
+────────────────────────────────────────────────────────────────────────────────
+
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    Help me make a study schedule for a midterm exam in 5 days. I have about
+    2 hours free each day and need to cover 4 chapters. Give me a day-by-day plan.
+
+  Audience:   Just for me
+  Output format: Checklist
+
+  Constraints:
+    - 2 hours maximum per day
+    - leave Day 5 for review only, no new material
+    - include one short break per session
+
+  Success criteria:
+    - Covers all 4 chapters before Day 5
+    - Feels realistic, not overwhelming
+
+SLM PATH — Chat message:
+  Please make the study plan.
+
+  Follow-up options:
+    I only have 90 minutes on Day 2. Can you adjust?
+    Add a note about what to do if I fall behind.
+    Give me a version where I start with the hardest chapter first.
+
+LLM PATH — Chat message:
+  Help me make a 5-day study schedule for a midterm exam. I have 2 hours free
+  each day and need to cover 4 chapters. Keep Day 5 for review only. Include a
+  short break in each session. Make it feel realistic, not overwhelming.
+
+  Follow-up options:
+    Adjust Day 2 to 90 minutes because I have a commitment.
+    What should I do if I fall behind on Day 3?
+
+────────────────────────────────────────────────────────────────────────────────
+Example B  |  Daily Task Schedule (time-boxing)
+────────────────────────────────────────────────────────────────────────────────
+
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    I have three work tasks, grocery shopping, and a gym session to fit into
+    today. Help me schedule them so I finish everything before 8 PM.
+
+  Audience:   Just for me
+  Output format: Checklist
+
+  Constraints:
+    - gym session is 1 hour and works best in the morning
+    - grocery shopping takes 45 minutes and must happen after 3 PM
+      (store is not crowded before then)
+    - leave a 30-minute buffer before 8 PM
+
+  Success criteria:
+    - Everything fits with realistic time gaps
+    - Shows start and end time for each item
+
+SLM PATH — Chat message:
+  The three work tasks are: write a project report (2 hours), reply to emails
+  (30 minutes), and attend a video call at 2 PM (1 hour). Please make the schedule.
+
+  Follow-up options:
+    Move grocery shopping to 4 PM instead.
+    I also need to cook dinner (45 minutes). Where does it fit?
+    Show the same schedule as a simple table with start time, task, duration.
+
+LLM PATH — Chat message:
+  Help me schedule my day. I need to:
+    - Gym: 1 hour (best in the morning)
+    - Write a project report: 2 hours
+    - Replies to emails: 30 minutes
+    - Video call at 2 PM: 1 hour
+    - Grocery shopping: 45 minutes (must be after 3 PM)
+
+  Everything must be done by 8 PM. Leave a 30-minute buffer. Show start and
+  end times for each item.
+
+  Follow-up options:
+    I also need to cook dinner (45 minutes). Fit it in.
+    Show this as a simple table.
+
+────────────────────────────────────────────────────────────────────────────────
+Example C  |  Morning Routine (habit / structure)
+────────────────────────────────────────────────────────────────────────────────
+
+SLM PATH — Goal Wizard inputs:
+  One-sentence goal:
+    Plan a calm, efficient morning routine for someone who needs to leave home
+    by 8:00 AM and wants to feel prepared for the day, not rushed.
+
+  Audience:   Just for me
+  Output format: Checklist
+
+  Constraints:
+    - wake up no earlier than 6:30 AM
+    - must include: shower, breakfast, 10 minutes of reading
+    - no phone for the first 30 minutes after waking
+
+  Success criteria:
+    - Leaves 5 minutes of buffer before leaving
+    - Feels relaxed, not packed
+
+SLM PATH — Chat message:
+  Please create the morning routine.
+
+  Follow-up options:
+    Add a 10-minute walk outside before breakfast.
+    I need to pack a lunch — where does that fit?
+    Give me a shorter version that works if I wake up at 7:00 AM instead.
+
+LLM PATH — Chat message:
+  Plan a calm morning routine for someone who needs to leave by 8:00 AM. Wake
+  up no earlier than 6:30 AM. Must include: shower, breakfast, and 10 minutes
+  of reading. No phone for the first 30 minutes after waking. Leave a 5-minute
+  buffer before leaving. It should feel relaxed, not rushed.
+
+  Follow-up options:
+    Add a 10-minute outdoor walk before breakfast.
+    Give me a backup version for days I wake up at 7:00 AM.
+
+================================================================================
+QUICK DEMO SCRIPT  (≈ 5 minutes)
+================================================================================
+
+This sequence shows the SLM vs LLM comparison in a single demo run.
+
+--- Minute 1: Home page ---
+Open http://localhost:3000
+  → Study home page appears with 3 task cards
+  → Point out the two buttons per card: "Begin with SLM" / "Begin with LLM"
+  → Explain: SLM guides the user step by step; LLM goes straight to chat
+
+--- Minute 2–3: Task 1 SLM path (Writing) ---
+Click "Begin with SLM" on Task 1 (Write Something Useful)
+  → Goal Wizard opens automatically
+  → Goal text is pre-filled: "Write a short, polite email to my professor..."
+  → Show the audience (For a general audience) and format (Paragraph) defaults
+
+Add constraint: "no more than 4 sentences"
+Add success criterion: "Sounds like a real student wrote it"
+Click "Save intent"
+  → IntentSpecRibbon updates at top of left panel
+  → Compiled Prompt Preview accordion opens automatically
+
+In the composer, type and send:
+  Please write the email.
+  → Response streams in
+
+Follow-up:
+  Make it slightly more formal.
+
+Click "Submit Task"
+  → Returns to home; Task 1 shows "✓ Completed"
+
+--- Minute 4: Task 2 LLM path (Summarization) ---
+Click "Begin with LLM" on Task 2 (Summarize Information)
+  → No wizard; goes straight to chat
+  → Task bar shows LLM badge
+
+In the composer, paste and send:
+  Summarize the following passage in 4–6 bullet points. Use plain language.
+
+  [paste Passage 1 — Solar Energy — from this file]
+
+Follow-up:
+  Give me a one-sentence headline for this article.
+
+--- Minute 5: Task 3 LLM path (Planning) ---
+Click "Begin with LLM" on Task 3 (Make a Plan)
+
+In the composer, paste and send:
+  Help me make a 5-day study schedule for a midterm exam. I have 2 hours free
+  each day and need to cover 4 chapters. Keep Day 5 for review only.
+
+Follow-up:
+  Show this as a simple table with day, topic, and hours.
+
+Click "Submit Task" on Tasks 2 and 3
+  → All three tasks show "✓ Completed"
+  → Green "All tasks completed — thank you!" banner appears
+
+================================================================================
+TECHNICAL TESTS (effGen backend)
+================================================================================
+
+These are for testing the effGen decomposition engine directly, not for the
+study demo.
+
+--- Decomposition (paste into Prompt Plan → click "Decompose with effGen") ---
+
+Multi-step (explain + compare + list):
+  Summarize the key concepts of object-oriented programming and compare classes
+  with interfaces. Then list three best practices for writing clean code and
+  suggest when to use inheritance vs composition.
+
+Short structured (splits on "and"):
+  Define recursion and give a simple example. Then explain when to use it and
+  when to avoid it and suggest an alternative for deep nesting.
+
+--- Quick chat test (type in composer → click Send) ---
+
+  What is 15% tip on a $42.50 bill? Reply in one short sentence.
+
+--- SLM end-to-end (Goal Wizard → Prompt Plan → Chat) ---
+
+Goal Wizard:
+  Goal: "Explain a hand-washing procedure as a numbered checklist for a rural
+        clinic assistant"
+  Audience: For a general audience
+  Output format: Checklist
+  Constraints: "no medical jargon", "keep each step under 15 words"
+  Success criteria: "Every step is actionable"
+
+After saving intent, in the composer:
+  Please list the hand-washing steps.

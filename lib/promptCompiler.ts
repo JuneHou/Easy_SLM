@@ -1,32 +1,57 @@
-import type { IntentSpec } from "@/types/intent.types";
+import type { IntentSpec, OutputFormat } from "@/types/intent.types";
 import type { PromptPlan } from "@/types/prompt.types";
 
+function getTaskLabel(outputFormat: OutputFormat): string {
+  switch (outputFormat) {
+    case "checklist": return "organizing and planning";
+    case "table": return "organizing information";
+    case "json": return "structured data extraction";
+    case "paragraph":
+    default: return "writing";
+  }
+}
+
+function getOutputFormatLabel(outputFormat: OutputFormat): string {
+  switch (outputFormat) {
+    case "checklist": return "bullet-point checklist";
+    case "table": return "table";
+    case "json": return "JSON";
+    case "paragraph":
+    default: return "paragraph";
+  }
+}
+
 export function compilePrompt(intent: IntentSpec, plan: PromptPlan): string {
-  const header = [
-    `You are a helpful assistant running on a small local model.`,
-    `Goal: ${intent.goalFraming ?? intent.goalText}`,
-    `Audience: ${intent.audience}`,
-    `Output format: ${intent.outputFormat}`,
-    intent.constraints.length
-      ? `Constraints: ${intent.constraints.join("; ")}`
-      : "",
-    intent.successCriteria.length
-      ? `Success criteria: ${intent.successCriteria.join("; ")}`
-      : "",
-  ]
-    .filter(Boolean)
-    .join("\n");
+  const parts: string[] = [
+    `You are an AI assistant, who will help with ${getTaskLabel(intent.outputFormat)}.`,
+  ];
 
-  const steps =
-    plan.steps.length
-      ? `\n\nInstructions:\n- ${plan.steps.join("\n- ")}`
-      : "";
+  if (intent.goalText) {
+    parts.push("");
+    parts.push(intent.goalText);
+  }
 
-  const schema = plan.schemaHint
-    ? `\n\nOutput schema:\n${plan.schemaHint}`
-    : "";
+  parts.push("");
+  parts.push(`Output: ${getOutputFormatLabel(intent.outputFormat)}`);
 
-  return `${header}${steps}${schema}`;
+  if (intent.constraints.length) {
+    parts.push(`Constraints: ${intent.constraints.join("; ")}`);
+  }
+  if (intent.successCriteria.length) {
+    parts.push(`Success criteria: ${intent.successCriteria.join("; ")}`);
+  }
+
+  if (plan.steps.length) {
+    parts.push("");
+    parts.push(`Instructions:\n- ${plan.steps.join("\n- ")}`);
+  }
+
+  if (plan.schemaHint) {
+    parts.push("");
+    parts.push(`Output schema:\n${plan.schemaHint}`);
+  }
+
+  return parts.join("\n");
 }
 
 export function decomposeIntoSteps(instruction: string): string[] {
@@ -46,20 +71,30 @@ export function generateVariants(
   plan: PromptPlan,
   compile: (i: IntentSpec, p: PromptPlan) => string
 ): { A: PromptPlan; B: PromptPlan; C: PromptPlan } {
-  const steps = plan.steps.length ? plan.steps : ["Follow the goal above."];
+  // Fall back to the goal text as the base step when the plan has no custom steps.
+  const baseSteps = plan.steps.length
+    ? plan.steps
+    : intent.goalText
+    ? [intent.goalText]
+    : ["Complete the task."];
+
+  // A — More strict: appends a literalness constraint.
   const stricter = {
     ...plan,
-    steps: [...steps, "Be strict and literal; do not add extra information."],
+    steps: [...baseSteps, "Be strict and literal; do not add extra information."],
     variantId: "A" as const,
   };
+  // B — Shorter: same steps but instructs a concise reply (does not cut steps,
+  //   which loses context on short plans).
   const shorter = {
     ...plan,
-    steps: steps.slice(0, Math.max(1, Math.ceil(steps.length / 2))),
+    steps: [...baseSteps, "Keep your reply as concise as possible."],
     variantId: "B" as const,
   };
+  // C — More explicit: numbers every step for clarity.
   const explicit = {
     ...plan,
-    steps: steps.map((s, i) => `Step ${i + 1}: ${s}`),
+    steps: baseSteps.map((s, i) => `Step ${i + 1}: ${s}`),
     variantId: "C" as const,
   };
   return {

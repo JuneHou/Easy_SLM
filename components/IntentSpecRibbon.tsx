@@ -14,8 +14,6 @@ export function IntentSpecRibbon() {
         {goal.length > 60 ? `${goal.slice(0, 60)}…` : goal}
       </span>
       <span className="text-muted-foreground">|</span>
-      <span className="text-muted-foreground">Audience: {spec.audience}</span>
-      <span className="text-muted-foreground">|</span>
       <span className="text-muted-foreground">Output: {spec.outputFormat}</span>
       {spec.constraints.length > 0 && (
         <>
