@@ -15,10 +15,7 @@ export function PromptPlanEditor({ onOpenGoalWizard }: PromptPlanEditorProps) {
   const { spec } = useIntentStore();
   const {
     plan,
-    variants,
     setPlan,
-    setSteps,
-    recompile,
     generateVariantsForCompare,
     decompositionDetails,
     setDecompositionDetails,
@@ -52,12 +49,13 @@ export function PromptPlanEditor({ onOpenGoalWizard }: PromptPlanEditorProps) {
         subtasks: DecompositionDetails["subtasks"];
         routing_meta: DecompositionDetails["routing_meta"];
       };
-      setSteps(data.wrapped_prompts ?? []);
+      // Only populate the accordion visualization — do not overwrite plan.steps
+      // or recompile, since wrapped_prompts embed the full system prompt and
+      // would nest it inside the Instructions section.
       setDecompositionDetails({
         subtasks: data.subtasks ?? [],
         routing_meta: data.routing_meta ?? {},
       });
-      recompile(spec);
     } catch (e) {
       setDecomposeError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -85,11 +83,11 @@ export function PromptPlanEditor({ onOpenGoalWizard }: PromptPlanEditorProps) {
       </div>
 
       <div className="space-y-2">
-        <label className="text-xs text-muted-foreground">System prompt</label>
+        <label className="text-xs text-muted-foreground">Prompt</label>
         <textarea
           value={plan.compiledPrompt}
           onChange={(e) => setPlan({ compiledPrompt: e.target.value })}
-          placeholder="Open the Goal Wizard to generate a system prompt…"
+          placeholder="Open the Goal Wizard to generate a prompt…"
           className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-mono min-h-[120px]"
           rows={6}
         />

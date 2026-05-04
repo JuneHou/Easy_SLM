@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { SidebarNav, type SidebarSection } from "@/components/SidebarNav";
 import { GoalWizardModal } from "@/components/GoalWizardModal";
 import { TemplateGallery } from "@/components/TemplateGallery";
@@ -10,6 +10,7 @@ import { ChatPanel } from "@/components/ChatPanel";
 import { ComposerBar } from "@/components/ComposerBar";
 import { RightInspector } from "@/components/RightInspector";
 import { CompareDrawer } from "@/components/CompareDrawer";
+import { ComparisonPage } from "@/components/ComparisonPage";
 import { StudyHomePage, TASKS, type TaskId, type TaskMode } from "@/components/StudyHomePage";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,12 +19,14 @@ import { useModelStore } from "@/stores/modelStore";
 import { useSettingsStore } from "@/stores/settingsStore";
 import { useIntentStore } from "@/stores/intentStore";
 import { usePromptPlanStore } from "@/stores/promptPlanStore";
+import { useTaskRunStore } from "@/stores/taskRunStore";
+import type { SubmitComparisonPayload } from "@/stores/taskRunStore";
+import { downloadStudyData } from "@/lib/exportStudyData";
 import { defaultIntentSpec } from "@/types/intent.types";
 import type { Audience, OutputFormat } from "@/types/intent.types";
+import type { StudyTaskId, StudyTaskMode } from "@/types/taskRun.types";
 import { ArrowLeft, CheckSquare, Cpu, Cloud } from "lucide-react";
 
-// Default intent settings per task — audience and output format pre-set to
-// sensible values so the Goal Wizard opens with a head start.
 const TASK_INTENT_DEFAULTS: Record<
   TaskId,
   { audience: Audience; outputFormat: OutputFormat }
@@ -66,7 +69,9 @@ export default function Home() {
   // ── Task flow state ──────────────────────────────────────────────────────
   const [selectedTask, setSelectedTask] = useState<TaskId | null>(null);
   const [selectedMode, setSelectedMode] = useState<TaskMode | null>(null);
-  const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
+  const [comparisonTask, setComparisonTask] = useState<TaskId | null>(null);
+  const [activeRunId, setActiveRunId] = useState<string | null>(null);
+  const [taskStartTime, setTaskStartTime] = useState<number | null>(null);
 
   // ── Chat / tool pane state ───────────────────────────────────────────────
   const [sidebarSection, setSidebarSection] = useState<SidebarSection | null>(null);
@@ -74,16 +79,41 @@ export default function Home() {
 
   // ── Stores ───────────────────────────────────────────────────────────────
   const { chatProvider, setChatProvider } = useSettingsStore();
-  const { profile } = useModelStore();
-  const { clearMessages } = useChatStore();
-  const { load: loadIntent, commit: commitIntent } = useIntentStore();
+  const { profile, selectModel } = useModelStore();
+  const { messages, clearMessages } = useChatStore();
+  const { spec, load: loadIntent, commit: commitIntent } = useIntentStore();
   const {
+    plan,
     setSteps,
     setPlan,
     setDecompositionDetails,
     clearVariants,
     recompile,
   } = usePromptPlanStore();
+  const {
+    runs,
+    comparisons,
+    participantId,
+    startRun,
+    finalizeRun,
+    createComparison,
+    submitComparison,
+    getComparisonForTask,
+    resetTask,
+    resetStudy,
+  } = useTaskRunStore();
+
+  // Derive completed tasks from the persisted store (survives refresh)
+  const completedTasks = useMemo(
+    () => new Set(runs.filter((r) => r.submittedAt).map((r) => `${r.taskId}-${r.condition}`)),
+    [runs]
+  );
+
+  // Tasks where the comparison has been submitted
+  const comparedTasks = useMemo(
+    () => new Set(comparisons.filter((c) => c.submittedAt).map((c) => c.taskId as TaskId)),
+    [comparisons]
+  );
 
   const isSlm = chatProvider === "effgen";
   const showLeftColumn =
@@ -91,7 +121,6 @@ export default function Home() {
 
   // ── Helpers ──────────────────────────────────────────────────────────────
 
-  /** Clear chat + effGen memory + prompt plan so each task starts fresh. */
   const resetSession = () => {
     clearMessages();
     if (chatProvider === "effgen") {
@@ -107,21 +136,6 @@ export default function Home() {
     clearVariants();
   };
 
-  /**
-   * Start a task in a given mode.
-   *
-   * SLM path:
-   *   - Switches provider to effGen.
-   *   - Pre-loads intent with task defaults + the task's example goal text.
-   *   - Opens the Goal Wizard so the participant sees the example and can
-   *     adapt it before sending their first message.
-   *
-   * LLM path:
-   *   - Switches to openai if currently on effGen, otherwise keeps the
-   *     current LLM provider so the experimenter can pre-select Anthropic.
-   *   - Resets intent to task defaults (no pre-filled goal text).
-   *   - Goes straight to chat — no wizard, no scaffolding.
-   */
   const handleStartTask = (task: TaskId, mode: TaskMode) => {
     resetSession();
 
@@ -130,8 +144,7 @@ export default function Home() {
 
     if (mode === "slm") {
       setChatProvider("effgen");
-      // Pre-load intent with the task's example goal so the wizard opens
-      // with a concrete, editable starting point.
+      selectModel("hf-qwen-3b");
       loadIntent({
         ...defaultIntentSpec,
         goalText: taskDef.exampleGoal,
@@ -140,9 +153,7 @@ export default function Home() {
         version: 0,
       });
     } else {
-      // Keep current LLM provider; fall back to openai if coming from SLM.
       if (chatProvider === "effgen") setChatProvider("openai");
-      // Minimal intent — no goal text pre-filled for LLM (no scaffolding).
       loadIntent({
         ...defaultIntentSpec,
         audience: defaults.audience,
@@ -154,6 +165,10 @@ export default function Home() {
     const next = commitIntent();
     recompile(next);
 
+    const runId = startRun(task as StudyTaskId, mode as StudyTaskMode);
+    setActiveRunId(runId);
+    setTaskStartTime(Date.now());
+
     setSelectedTask(task);
     setSelectedMode(mode);
     setSidebarSection(null);
@@ -164,16 +179,69 @@ export default function Home() {
   };
 
   const handleSubmitTask = () => {
-    if (!selectedTask || !selectedMode) return;
-    setCompletedTasks((prev) => {
-      const next = new Set(prev);
-      next.add(`${selectedTask}-${selectedMode}`);
-      return next;
+    if (!selectedTask || !selectedMode || !activeRunId) return;
+
+    const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
+    const firstUser = messages.find((m) => m.role === "user");
+    const lastUser = [...messages].reverse().find((m) => m.role === "user");
+
+    finalizeRun(activeRunId, {
+      messages,
+      finalModelOutput: lastAssistant?.content ?? "",
+      finalUserSubmission: lastUser?.content ?? "",
+      originalUserPrompt: firstUser?.content ?? "",
+      compiledPrompt: plan.compiledPrompt || undefined,
+      userGoal: spec.goalText || undefined,
+      modelProvider: chatProvider === "effgen" ? "local" : chatProvider,
+      modelName: profile.modelName,
+      latencyMs: taskStartTime ? Date.now() - taskStartTime : undefined,
+      generationCompleted: !!lastAssistant,
     });
+
+    setActiveRunId(null);
+    setTaskStartTime(null);
     setSelectedTask(null);
     setSelectedMode(null);
     setSidebarSection(null);
   };
+
+  const handleExport = () => {
+    downloadStudyData(participantId, runs, comparisons);
+  };
+
+  const handleReset = () => {
+    downloadStudyData(participantId, runs, comparisons);
+    resetStudy();
+    clearMessages();
+  };
+
+  const handleStartComparison = (taskId: TaskId) => {
+    const comparisonId = createComparison(taskId as StudyTaskId);
+    if (comparisonId) setComparisonTask(taskId);
+  };
+
+  const handleSubmitComparison = (
+    comparisonId: string,
+    payload: SubmitComparisonPayload
+  ) => {
+    submitComparison(comparisonId, payload);
+    setComparisonTask(null);
+  };
+
+  // ── Comparison view ───────────────────────────────────────────────────────
+  if (comparisonTask) {
+    const comparison = getComparisonForTask(comparisonTask as StudyTaskId);
+    if (comparison) {
+      return (
+        <ComparisonPage
+          taskId={comparisonTask}
+          comparison={comparison}
+          onSubmit={handleSubmitComparison}
+          onBack={() => setComparisonTask(null)}
+        />
+      );
+    }
+  }
 
   // ── Home page ────────────────────────────────────────────────────────────
   if (!selectedTask || !selectedMode) {
@@ -181,6 +249,11 @@ export default function Home() {
       <StudyHomePage
         onStartTask={handleStartTask}
         completedTasks={completedTasks}
+        onCompare={handleStartComparison}
+        comparedTasks={comparedTasks}
+        onExport={handleExport}
+        onReset={handleReset}
+        onResetTask={(taskId) => resetTask(taskId as StudyTaskId)}
       />
     );
   }
@@ -209,10 +282,8 @@ export default function Home() {
               Back to Tasks
             </button>
 
-            {/* Divider */}
             <span className="text-border shrink-0">|</span>
 
-            {/* Task label + title */}
             <div className="flex items-center gap-2 min-w-0">
               <span className="text-xs font-semibold uppercase tracking-wider text-primary shrink-0">
                 {taskDef.number}
@@ -222,7 +293,6 @@ export default function Home() {
               </span>
             </div>
 
-            {/* Mode badge */}
             {selectedMode === "slm" ? (
               <span className="flex items-center gap-1 rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary shrink-0">
                 <Cpu className="h-3 w-3" /> SLM

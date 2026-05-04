@@ -68,9 +68,13 @@ export function ComposerBar() {
         },
         onError: (err) => {
           clearStreaming();
+          const isEffgenError = chatProvider === "effgen";
+          const hint = isEffgenError
+            ? " — restart the effGen server (effgen serve --port 8002) and try again."
+            : "";
           addMessage({
             role: "assistant",
-            content: `Error: ${err.message}. (Demo: ensure /api/chat is available or use mock.)`,
+            content: `Error: ${err.message}${hint}`,
             meta: { intentVersion: spec.version, modelSnapshot: profile, warnings: ["Request failed."] },
           });
           setStreaming(false);

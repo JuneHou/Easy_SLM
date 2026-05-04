@@ -71,12 +71,8 @@ export function generateVariants(
   plan: PromptPlan,
   compile: (i: IntentSpec, p: PromptPlan) => string
 ): { A: PromptPlan; B: PromptPlan; C: PromptPlan } {
-  // Fall back to the goal text as the base step when the plan has no custom steps.
-  const baseSteps = plan.steps.length
-    ? plan.steps
-    : intent.goalText
-    ? [intent.goalText]
-    : ["Complete the task."];
+  // goalText is already in the compiled header; don't repeat it as a step.
+  const baseSteps = plan.steps.length ? plan.steps : [];
 
   // A — More strict: appends a literalness constraint.
   const stricter = {
@@ -92,9 +88,12 @@ export function generateVariants(
     variantId: "B" as const,
   };
   // C — More explicit: numbers every step for clarity.
+  const explicitSteps = baseSteps.length
+    ? baseSteps.map((s, i) => `Step ${i + 1}: ${s}`)
+    : ["Follow the goal exactly as stated."];
   const explicit = {
     ...plan,
-    steps: baseSteps.map((s, i) => `Step ${i + 1}: ${s}`),
+    steps: explicitSteps,
     variantId: "C" as const,
   };
   return {

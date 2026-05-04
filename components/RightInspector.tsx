@@ -2,7 +2,6 @@
 
 import { ModelRecommendationPanel } from "./ModelRecommendationPanel";
 import { LLMModelSelector } from "./LLMModelSelector";
-import { SimpleControls } from "./SimpleControls";
 import { AdvancedControlsAccordion } from "./AdvancedControlsAccordion";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
@@ -37,8 +36,7 @@ export function RightInspector() {
           </CardContent>
         </Card>
       )}
-      <SimpleControls />
-      <AdvancedControlsAccordion />
+<AdvancedControlsAccordion />
       <Card>
         <CardContent className="pt-4">
           <Button variant="outline" size="sm" className="w-full" disabled>

@@ -2,6 +2,7 @@
 
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
+import { useState } from "react";
 import {
   PenLine,
   FileSearch,
@@ -10,6 +11,8 @@ import {
   ChevronRight,
   Cpu,
   Cloud,
+  RotateCcw,
+  Download,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -74,7 +77,7 @@ export const TASKS: TaskDef[] = [
       "Rewrite this message to sound more professional.",
     ],
     exampleGoal:
-      "Write a short, polite email to my professor asking for a 2-day extension on an upcoming homework assignment. Keep it professional and brief.",
+      "Write a short, polite email to my professor asking for a 2-day extension on an upcoming homework assignment.",
     complete:
       "Submit when you have a version that you would realistically use, send, or keep.",
   },
@@ -161,11 +164,29 @@ export const TASKS: TaskDef[] = [
 interface StudyHomePageProps {
   onStartTask: (task: TaskId, mode: TaskMode) => void;
   completedTasks: Set<string>;
+  onCompare: (taskId: TaskId) => void;
+  comparedTasks: Set<TaskId>;
+  onExport: () => void;
+  onReset: () => void;
+  onResetTask: (taskId: TaskId) => void;
 }
 
-export function StudyHomePage({ onStartTask, completedTasks }: StudyHomePageProps) {
+export function StudyHomePage({
+  onStartTask,
+  completedTasks,
+  onCompare,
+  comparedTasks,
+  onExport,
+  onReset,
+  onResetTask,
+}: StudyHomePageProps) {
+  const [confirmReset, setConfirmReset] = useState(false);
+  const [confirmResetTask, setConfirmResetTask] = useState<TaskId | null>(null);
   const allDone = TASKS.every(
-    (t) => completedTasks.has(`${t.id}-slm`) && completedTasks.has(`${t.id}-llm`)
+    (t) =>
+      completedTasks.has(`${t.id}-slm`) &&
+      completedTasks.has(`${t.id}-llm`) &&
+      comparedTasks.has(t.id)
   );
 
   return (
@@ -257,10 +278,21 @@ export function StudyHomePage({ onStartTask, completedTasks }: StudyHomePageProp
               const slmDone = completedTasks.has(`${task.id}-slm`);
               const llmDone = completedTasks.has(`${task.id}-llm`);
               const bothDone = slmDone && llmDone;
+              const comparisonDone = comparedTasks.has(task.id);
+
+              type CompareState = "neither" | "one" | "ready" | "submitted";
+              const compareState: CompareState = comparisonDone
+                ? "submitted"
+                : bothDone
+                ? "ready"
+                : slmDone || llmDone
+                ? "one"
+                : "neither";
+
               return (
                 <Card
                   key={task.id}
-                  className={cn("flex flex-col", bothDone && "opacity-70")}
+                  className={cn("flex flex-col", comparisonDone && "opacity-70")}
                 >
                   {/* Card header */}
                   <CardHeader className="pb-3">
@@ -268,7 +300,7 @@ export function StudyHomePage({ onStartTask, completedTasks }: StudyHomePageProp
                       <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                         {task.number}
                       </span>
-                      {bothDone && (
+                      {comparisonDone && (
                         <span className="flex items-center gap-1 text-xs text-green-600 font-medium">
                           <CheckCircle2 className="h-3.5 w-3.5" /> Completed
                         </span>
@@ -384,6 +416,97 @@ export function StudyHomePage({ onStartTask, completedTasks }: StudyHomePageProp
                         SLM guides you step-by-step · LLM goes straight to chat
                       </p>
                     )}
+
+                    {/* Per-task reset */}
+                    {(slmDone || llmDone) && (
+                      <div className="flex justify-end">
+                        {confirmResetTask === task.id ? (
+                          <span className="flex items-center gap-2 text-xs">
+                            <span className="text-muted-foreground">Reset this task?</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                onResetTask(task.id);
+                                setConfirmResetTask(null);
+                              }}
+                              className="text-destructive font-medium hover:underline"
+                            >
+                              Yes
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setConfirmResetTask(null)}
+                              className="text-muted-foreground hover:text-foreground"
+                            >
+                              Cancel
+                            </button>
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setConfirmResetTask(task.id)}
+                            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            <RotateCcw className="h-3 w-3" />
+                            Reset task
+                          </button>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Compare Results */}
+                    <div className="pt-2 mt-1 border-t border-border space-y-1">
+                      {compareState === "neither" && (
+                        <>
+                          <Button size="sm" variant="outline" disabled className="w-full opacity-50">
+                            Compare Results
+                          </Button>
+                          <p className="text-xs text-muted-foreground text-center">
+                            Complete both SLM and LLM versions first.
+                          </p>
+                        </>
+                      )}
+                      {compareState === "one" && (
+                        <>
+                          <Button size="sm" variant="outline" disabled className="w-full opacity-50">
+                            Compare Results
+                          </Button>
+                          <p className="text-xs text-muted-foreground text-center">
+                            Complete the {slmDone ? "LLM" : "SLM"} version first.
+                          </p>
+                        </>
+                      )}
+                      {compareState === "ready" && (
+                        <>
+                          <Button
+                            size="sm"
+                            variant="primary"
+                            className="w-full"
+                            onClick={() => onCompare(task.id)}
+                          >
+                            Compare Results
+                          </Button>
+                          <p className="text-xs text-muted-foreground text-center">
+                            Both versions complete — review side by side.
+                          </p>
+                        </>
+                      )}
+                      {compareState === "submitted" && (
+                        <>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => onCompare(task.id)}
+                          >
+                            View Comparison
+                          </Button>
+                          <p className="text-xs text-green-600 text-center font-medium">
+                            Comparison submitted.
+                          </p>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </Card>
               );
@@ -391,8 +514,50 @@ export function StudyHomePage({ onStartTask, completedTasks }: StudyHomePageProp
           </div>
         </section>
 
-        <footer className="text-center text-xs text-muted-foreground pb-4">
-          SLM Prompting Tool — Study Interface
+        <footer className="flex items-center justify-between text-xs text-muted-foreground pb-4">
+          <span>SLM Prompting Tool — Study Interface</span>
+          <div className="flex items-center gap-4">
+            {/* Export */}
+            <button
+              type="button"
+              onClick={onExport}
+              className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Download className="h-3 w-3" />
+              Export results
+            </button>
+
+            {/* Reset with confirmation */}
+            {!confirmReset ? (
+              <button
+                type="button"
+                onClick={() => setConfirmReset(true)}
+                className="flex items-center gap-1 text-muted-foreground hover:text-destructive transition-colors"
+              >
+                <RotateCcw className="h-3 w-3" />
+                Reset study
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span className="text-destructive font-medium">Reset all progress?</span>
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  className="h-6 px-2 text-xs"
+                  onClick={() => { onReset(); setConfirmReset(false); }}
+                >
+                  Yes, reset
+                </Button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmReset(false)}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
         </footer>
       </div>
     </div>

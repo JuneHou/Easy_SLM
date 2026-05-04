@@ -121,7 +121,8 @@ async function streamAnthropic(
   bodyMessages: { role: string; content: string }[],
   _systemContent: string,
   maxTokens: number,
-  apiKey: string
+  apiKey: string,
+  temperature: number = 0.7
 ): Promise<ReadableStream<Uint8Array>> {
   const encoder = new TextEncoder();
   // Anthropic: only user/assistant in messages; system is separate. For study we use minimal system.
@@ -141,6 +142,7 @@ async function streamAnthropic(
     body: JSON.stringify({
       model,
       max_tokens: maxTokens,
+      temperature,
       system: "You are a helpful assistant.",
       messages: messagesToSend,
       stream: true,
@@ -211,7 +213,12 @@ export async function POST(req: NextRequest) {
       (intent
         ? `Goal: ${intent.goalFraming ?? intent.goalText ?? "No goal"}. Output format: ${intent.outputFormat ?? "paragraph"}.`
         : "You are a helpful assistant.");
-    const model = modelConfig?.modelName ?? "Qwen/Qwen2.5-3B-Instruct";
+    const DEFAULT_SLM = "Qwen/Qwen2.5-3B-Instruct";
+    const requestedModel = modelConfig?.modelName ?? DEFAULT_SLM;
+    // Never forward a cloud model name to effGen — it cannot load OpenAI/Anthropic
+    // models and the attempt corrupts its event loop.
+    const isCloudModel = /gpt|claude|anthropic|openai/i.test(requestedModel);
+    const model = provider === "effgen" && isCloudModel ? DEFAULT_SLM : requestedModel;
     const temperature = modelConfig?.params?.temperature ?? 0.7;
     const maxTokens = modelConfig?.params?.maxTokens ?? 1024;
     const max_iterations = 10;
@@ -254,7 +261,7 @@ export async function POST(req: NextRequest) {
         );
       }
       try {
-        const stream = await streamAnthropic(model, messages, systemContent, maxTokens, apiKey);
+        const stream = await streamAnthropic(model, messages, systemContent, maxTokens, apiKey, temperature);
         return new Response(stream, {
           headers: {
             "Content-Type": "text/event-stream",

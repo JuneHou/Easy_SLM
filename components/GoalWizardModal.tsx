@@ -33,7 +33,6 @@ export function GoalWizardModal({ open, onClose }: GoalWizardModalProps) {
 
   const handleCommit = () => {
     const next = commit();
-    // Recompile so the compiled system prompt immediately reflects the new intent.
     recompile(next);
     toast?.("Intent updated", "success");
     onClose();

@@ -58,17 +58,22 @@ export const usePromptPlanStore = create<PromptPlanState>((set, get) => ({
     })),
   generateVariantsForCompare: (intent) => {
     const { plan } = get();
-    const vars = generateVariants(intent, plan, compilePrompt);
+    // Always generate from empty steps so variant modifiers don't accumulate
+    // across repeated generate-and-pick cycles.
+    const basePlan = { ...plan, steps: [] };
+    const vars = generateVariants(intent, basePlan, compilePrompt);
     set({ variants: vars });
   },
   pickBest: (variantId) => {
     const { variants } = get();
     if (!variants) return;
     const chosen = variants[variantId];
-    set({
-      plan: { ...chosen, variantId: undefined },
+    // Store only the compiled prompt; reset steps so the next variant
+    // generation always starts from a clean base.
+    set((s) => ({
+      plan: { ...s.plan, compiledPrompt: chosen.compiledPrompt, steps: [] },
       variants: null,
-    });
+    }));
   },
   clearVariants: () => set({ variants: null }),
 }));

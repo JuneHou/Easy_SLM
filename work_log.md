@@ -259,5 +259,70 @@ The task bar now shows a pill badge next to the task title:
 - SLM: `bg-primary/10 border-primary/40 text-primary` with Cpu icon
 - LLM: `bg-muted/50 border-border text-muted-foreground` with Cloud icon
 
-### 9.8 Completed state simplified
-When `done`, the two buttons are replaced with a single "✓ Completed" line (no buttons). A small helper text "SLM guides you step-by-step · LLM goes straight to chat" sits below the buttons when the task is not yet done.
+### 9.8 Completed state simplified *(superseded by §10)*
+~~When `done`, the two buttons are replaced with a single "✓ Completed" line. See §10 for current behavior.~~
+
+---
+
+## 10. Per-Mode Completion Tracking (completed)
+
+**Problem:** Submitting either the SLM or LLM attempt marked the whole task card as completed, hiding both buttons. The design requires independent tracking so participants can still attempt the second condition after finishing the first.
+
+### 10.1 Completion key format (`app/page.tsx`)
+- `completedTasks` type changed from `Set<TaskId>` → `Set<string>`.
+- Keys are now `"${taskId}-${mode}"` (e.g. `"writing-slm"`, `"writing-llm"`).
+- `handleSubmitTask` guards on `selectedMode !== null` and writes `${selectedTask}-${selectedMode}` into the set.
+
+### 10.2 Per-mode state in `StudyHomePage.tsx`
+- `StudyHomePageProps.completedTasks` type updated to `Set<string>`.
+- Per-card: `slmDone = completedTasks.has(`${task.id}-slm`)`, `llmDone = completedTasks.has(`${task.id}-llm`)`, `bothDone = slmDone && llmDone`.
+- `allDone` banner: requires all six combinations (`TASKS.every(t => slm + llm both done)`).
+
+### 10.3 Card button area behavior
+| State | SLM slot | LLM slot |
+|-------|----------|----------|
+| Neither done | "Begin with SLM" button | "Begin with LLM" button |
+| SLM done only | Green "SLM Done" badge | "Begin with LLM" button |
+| LLM done only | "Begin with SLM" button | Green "LLM Done" badge |
+| Both done | Green "SLM Done" badge | Green "LLM Done" badge |
+
+- Card goes `opacity-70` only when `bothDone`.
+- "Completed" badge in card header appears only when `bothDone`.
+- Helper text "SLM guides you step-by-step · LLM goes straight to chat" hidden when `bothDone`.
+
+---
+
+## 11. Environment / Port Configuration
+
+### 11.1 effGen port conflict
+- effGen `--port 8000` conflicts with the Cursor IDE process (PID bound to `localhost:8000`).
+- Resolution: run effGen on port **8002** (`effgen serve --port 8002`).
+
+### 11.2 `.env.local` (new file, git-ignored)
+Created `.env.local` pointing the Next.js app at port 8002:
+```
+EFFGEN_BASE_URL=http://localhost:8002
+```
+- `.env.example` retains the original `8000` default for documentation purposes.
+- The Next.js dev server must be restarted after changing `.env.local` (env is read at startup).
+
+---
+
+## 12. Paper Draft (`paper/`)
+
+A full ACM SIGCHI two-column paper draft was added to `paper/`. Structure:
+
+| File | Section |
+|------|---------|
+| `main.tex` | Document shell (acmart sigconf class, abstract, keywords) |
+| `sections/intro.tex` | Introduction — motivations, 4 RQs, contributions |
+| `sections/related_work.tex` | Related Work — Gulf of Envisioning, prompt tools, SLM HCI, comparative eval, sustainability |
+| `sections/method.tex` | Easy\_SLM System Design — DG1–DG4 with rationale and implementation |
+| `sections/task_selection.tex` | Task Selection — Reddit pipeline, GPT-4o annotation, canonical grouping, 19 shared tasks, 3-task shortlist |
+| `sections/results.tex` | Results & Discussion — formative findings, RQ1–RQ4 placeholders with hypotheses, discussion, limitations, conclusion |
+| `references.bib` | BibTeX entries for all cited works |
+
+Paste sections into the Overleaf ACM template or compile locally:
+```
+pdflatex main && bibtex main && pdflatex main && pdflatex main
+```
